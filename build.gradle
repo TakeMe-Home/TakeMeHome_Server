@@ -27,7 +27,12 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+    //querydsl
     implementation 'com.querydsl:querydsl-jpa'
+
+    // swagger
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 
     implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6")
 
