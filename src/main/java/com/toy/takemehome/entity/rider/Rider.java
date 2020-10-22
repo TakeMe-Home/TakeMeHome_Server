@@ -19,10 +19,6 @@ public class Rider extends BaseTimeEntity {
     @Column(name = "rider_id")
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "delivery_id")
-    private Delivery delivery;
-
     @Column(nullable = false)
     private String name;
 
