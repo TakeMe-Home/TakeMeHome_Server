@@ -5,6 +5,7 @@ import com.toy.takemehome.entity.delivery.Delivery;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 
 import static javax.persistence.FetchType.*;
 import static javax.persistence.GenerationType.*;
@@ -21,6 +22,13 @@ public class Rider extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String name;
+
+    @Email
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
 
     @Column(nullable = false)
     private int age;

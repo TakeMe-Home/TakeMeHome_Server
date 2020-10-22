@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 
 import static javax.persistence.GenerationType.*;
 
@@ -21,6 +22,13 @@ public class Customer extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String name;
+
+    @Email
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
 
     @Column(nullable = false)
     private String phoneNumber;
