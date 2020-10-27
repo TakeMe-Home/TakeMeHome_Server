@@ -17,6 +17,7 @@ import static javax.persistence.GenerationType.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "orders")
 public class Order extends BaseTimeEntity {
 
     @Id
