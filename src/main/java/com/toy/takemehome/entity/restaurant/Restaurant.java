@@ -2,6 +2,7 @@ package com.toy.takemehome.entity.restaurant;
 
 import com.toy.takemehome.entity.Address;
 import com.toy.takemehome.entity.BaseTimeEntity;
+import com.toy.takemehome.entity.Location;
 import com.toy.takemehome.entity.owner.Owner;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,7 +18,8 @@ import static javax.persistence.GenerationType.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Restaurant extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = IDENTITY)
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "restaurant_id")
     private Long id;
 
@@ -33,4 +35,7 @@ public class Restaurant extends BaseTimeEntity {
 
     @Embedded
     private Address address;
+
+    @Embedded
+    private Location location;
 }
