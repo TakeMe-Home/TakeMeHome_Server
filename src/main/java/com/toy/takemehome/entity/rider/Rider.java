@@ -31,8 +31,21 @@ public class Rider extends BaseTimeEntity {
     private String password;
 
     @Column(nullable = false)
-    private int age;
-
-    @Column(nullable = false)
     private String phoneNumber;
+
+    @Builder
+    public Rider(Long id, String name, @Email String email, String password, String phoneNumber) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void update(String name, String email, String password, String phoneNumber) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+    }
 }
