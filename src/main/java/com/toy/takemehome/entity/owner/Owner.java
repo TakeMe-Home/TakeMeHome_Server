@@ -1,6 +1,5 @@
 package com.toy.takemehome.entity.owner;
 
-import com.toy.takemehome.entity.Address;
 import com.toy.takemehome.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -33,6 +32,6 @@ public class Owner extends BaseTimeEntity {
     @Column(nullable = false)
     private String phoneNumber;
 
-    @Embedded
-    private Address address;
+    @Column(nullable = false)
+    private String address;
 }

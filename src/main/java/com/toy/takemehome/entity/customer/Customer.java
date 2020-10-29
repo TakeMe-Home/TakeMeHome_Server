@@ -1,6 +1,5 @@
 package com.toy.takemehome.entity.customer;
 
-import com.toy.takemehome.entity.Address;
 import com.toy.takemehome.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -35,11 +34,11 @@ public class Customer extends BaseTimeEntity {
     @Column(nullable = false)
     private String phoneNumber;
 
-    @Embedded
-    private Address address;
+    @Column(nullable = false)
+    private String address;
 
     @Builder
-    public Customer(Long id, String name, @Email String email, String password, String phoneNumber, Address address) {
+    public Customer(Long id, String name, @Email String email, String password, String phoneNumber, String address) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -48,7 +47,7 @@ public class Customer extends BaseTimeEntity {
         this.address = address;
     }
 
-    public void update(String name, String email, String password, String phoneNumber, Address address) {
+    public void update(String name, String email, String password, String phoneNumber, String address) {
         this.name = name;
         this.email = email;
         this.password = password;

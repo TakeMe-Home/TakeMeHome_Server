@@ -1,6 +1,5 @@
 package com.toy.takemehome.entity.delivery;
 
-import com.toy.takemehome.entity.Address;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,8 +22,8 @@ public class Delivery {
     @Column(nullable = false)
     private int distance;
 
-    @Embedded
-    private Address address;
+    @Column(nullable = false)
+    private String address;
 
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;

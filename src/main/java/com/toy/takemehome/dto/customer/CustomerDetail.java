@@ -1,6 +1,5 @@
 package com.toy.takemehome.dto.customer;
 
-import com.toy.takemehome.entity.Address;
 import com.toy.takemehome.entity.customer.Customer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +11,9 @@ public class CustomerDetail {
     private String name;
     private String email;
     private String password;
-    private Address address;
+    private String address;
 
-    public CustomerDetail(Long id, String name, String email, String password, Address address) {
+    public CustomerDetail(Long id, String name, String email, String password, String address) {
         this.id = id;
         this.name = name;
         this.email = email;
