@@ -1,6 +1,5 @@
 package com.toy.takemehome.dto.customer;
 
-import com.toy.takemehome.entity.Address;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,9 +11,9 @@ public class CustomerSignUpRequest {
     private String email;
     private String password;
     private String phoneNumber;
-    private Address address;
+    private String address;
 
-    public CustomerSignUpRequest(String name, String email, String password, Address address) {
+    public CustomerSignUpRequest(String name, String email, String password, String address) {
         this.name = name;
         this.email = email;
         this.password = password;
