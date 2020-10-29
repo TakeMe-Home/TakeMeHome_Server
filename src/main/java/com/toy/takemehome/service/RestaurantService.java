@@ -1,6 +1,7 @@
 package com.toy.takemehome.service;
 
 import com.toy.takemehome.dto.restaurant.RestaurantSaveRequest;
+import com.toy.takemehome.dto.restaurant.RestaurantUpdateRequest;
 import com.toy.takemehome.entity.owner.Owner;
 import com.toy.takemehome.entity.restaurant.Restaurant;
 import com.toy.takemehome.repository.OwnerRepository;
@@ -33,6 +34,32 @@ public class RestaurantService {
         restaurantRepository.save(restaurant);
 
         return restaurant.getId();
+    }
+
+    public Restaurant findOneById(Long id) {
+        final Restaurant restaurant = findRestaurantById(id);
+        return restaurant;
+    }
+
+    @Transactional
+    public void update(Long id, RestaurantUpdateRequest updateRequest) {
+        final Restaurant restaurant = findRestaurantById(id);
+        final Owner owner = findOwnerById(updateRequest.getOwnerId());
+
+        restaurant.update(owner, restaurant.getName(), restaurant.getNumber(), restaurant.getAddress(),
+                restaurant.getLocation());
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        final Restaurant restaurant = findRestaurantById(id);
+        restaurantRepository.delete(restaurant);
+    }
+
+    private Restaurant findRestaurantById(Long id) {
+        return restaurantRepository.findOneByIdWithOwner(id)
+                .orElseThrow(() -> new NoSuchElementException(
+                        String.format("input owner id: %d, no such elementException", id)));
     }
 
     private Owner findOwnerById(Long ownerId) {

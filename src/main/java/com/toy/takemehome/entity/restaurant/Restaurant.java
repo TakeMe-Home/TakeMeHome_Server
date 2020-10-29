@@ -48,4 +48,12 @@ public class Restaurant extends BaseTimeEntity {
         this.address = address;
         this.location = location;
     }
+
+    public void update(Owner owner, String name, String number, String address, Location location) {
+        this.owner = owner;
+        this.name = name;
+        this.number = number;
+        this.address = address;
+        this.location = location;
+    }
 }
