@@ -2,6 +2,7 @@ package com.toy.takemehome.entity.owner;
 
 import com.toy.takemehome.entity.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,4 +35,22 @@ public class Owner extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String address;
+
+    @Builder
+    public Owner(Long id, String name, @Email String email, String password, String phoneNumber, String address) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+    }
+
+    public void update(String name, String email, String password, String phoneNumber, String address) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+    }
 }
