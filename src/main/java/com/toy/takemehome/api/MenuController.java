@@ -1,14 +1,13 @@
 package com.toy.takemehome.api;
 
+import com.toy.takemehome.dto.menu.MenuDetail;
 import com.toy.takemehome.dto.menu.MenuRegisterRequest;
+import com.toy.takemehome.entity.menu.Menu;
 import com.toy.takemehome.service.MenuService;
 import com.toy.takemehome.utils.DefaultRes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.toy.takemehome.utils.ResponseMessage.*;
 import static com.toy.takemehome.utils.StatusCode.*;
@@ -22,13 +21,25 @@ public class MenuController {
     private final MenuService menuService;
 
     @PostMapping
-    public DefaultRes<Long> register(@RequestBody MenuRegisterRequest registerRequest){
+    public DefaultRes<Long> register(@RequestBody MenuRegisterRequest registerRequest) {
         try {
             final Long id = menuService.register(registerRequest);
             return DefaultRes.res(OK, CREATE_MENU, id);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, CREATE_MENU_FAIL);
+        }
+    }
+
+    @GetMapping("/menu/{id}")
+    public DefaultRes<MenuDetail> findOneById(@PathVariable("id") Long id) {
+        try {
+            final Menu menu = menuService.findOneById(id);
+            final MenuDetail menuDetail = new MenuDetail(menu);
+            return DefaultRes.res(OK, FIND_MENU, menuDetail);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(NOT_FOUND, NOT_FOUND_MENU);
         }
     }
 }

@@ -34,6 +34,17 @@ public class MenuService {
         return menu.getId();
     }
 
+    public Menu findOneById(Long id) {
+        final Menu menu = findMenuById(id);
+        return menu;
+    }
+
+    private Menu findMenuById(Long menuId) {
+        return menuRepository.findById(menuId)
+                .orElseThrow(() -> new NoSuchElementException(
+                        String.format("input menu id: %d, no such elementException", menuId)));
+    }
+
     private Restaurant findRestaurantById(Long id) {
         return restaurantRepository.findOneByIdWithOwner(id)
                 .orElseThrow(() -> new NoSuchElementException(
