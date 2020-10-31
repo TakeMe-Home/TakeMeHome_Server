@@ -7,11 +7,13 @@ import com.toy.takemehome.entity.restaurant.Restaurant;
 import com.toy.takemehome.repository.OwnerRepository;
 import com.toy.takemehome.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RestaurantService {
