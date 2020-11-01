@@ -37,10 +37,10 @@ public class CustomerController {
         try {
             final Customer findCustomer = customerService.findOneById(id);
             final CustomerDetail customerDetail = new CustomerDetail(findCustomer);
-            return DefaultRes.res(OK, CREATE_CUSTOMER, customerDetail);
+            return DefaultRes.res(OK, FIND_CUSTOMER, customerDetail);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return DefaultRes.res(BAD_REQUEST, CREATE_CUSTOMER_FAIL);
+            return DefaultRes.res(BAD_REQUEST, NOT_FOUND_CUSTOMER);
         }
     }
 
@@ -57,11 +57,11 @@ public class CustomerController {
     }
 
     @DeleteMapping("/{id}")
-    public DefaultRes<Long> delete(@PathVariable("id") Long id){
+    public DefaultRes<Long> delete(@PathVariable("id") Long id) {
         try {
             customerService.delete(id);
             return DefaultRes.res(OK, DELETE_CUSTOMER, id);
-        }catch (Exception e){
+        } catch (Exception e) {
             return DefaultRes.res(BAD_REQUEST, DELETE_CUSTOMER_FAIL);
         }
     }
