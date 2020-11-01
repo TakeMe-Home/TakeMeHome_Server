@@ -5,9 +5,7 @@ import com.toy.takemehome.entity.customer.Customer;
 import com.toy.takemehome.entity.delivery.Delivery;
 import com.toy.takemehome.entity.restaurant.Restaurant;
 import com.toy.takemehome.entity.rider.Rider;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -44,4 +42,25 @@ public class Order extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    @Builder
+    public Order(Long id, Customer customer, Restaurant restaurant, Rider rider, Delivery delivery, OrderStatus status) {
+        this.id = id;
+        this.customer = customer;
+        this.restaurant = restaurant;
+        this.rider = rider;
+        this.delivery = delivery;
+        this.status = status;
+    }
+
+    public static Order createOrder(Customer customer, Restaurant restaurant, Rider rider, Delivery delivery) {
+        final Order order = Order.builder()
+                .customer(customer)
+                .restaurant(restaurant)
+                .rider(rider)
+                .delivery(delivery)
+                .status(OrderStatus.ORDER)
+                .build();
+
+        return order;
+    }
 }

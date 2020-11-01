@@ -2,6 +2,7 @@ package com.toy.takemehome.entity.order;
 
 import com.toy.takemehome.entity.menu.Menu;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,4 +30,12 @@ public class OrderMenu {
 
     @Column(nullable = false)
     private int count;
+
+    @Builder
+    public OrderMenu(Long id, Order order, Menu menu, int count) {
+        this.id = id;
+        this.order = order;
+        this.menu = menu;
+        this.count = count;
+    }
 }
