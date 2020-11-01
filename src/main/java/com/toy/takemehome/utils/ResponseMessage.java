@@ -54,4 +54,17 @@ public class ResponseMessage {
 
     public static String DELETE_OWNER = "가게 주인 삭제 성공";
     public static String DELETE_OWNER_FAIL = "가게 주인 삭제 실패";
+
+    //menu
+    public static final String CREATE_MENU = "메뉴 등록 성공";
+    public static final String CREATE_MENU_FAIL = "메뉴 등록 실패";
+
+    public static final String FIND_MENU = "메뉴 조회 성공";
+    public static final String NOT_FOUND_MENU = "메뉴 조회 실패";
+
+    public static String UPDATE_MENU = "메뉴 수정 성공";
+    public static String UPDATE_MENU_FAIL = "메뉴 수정 실패";
+
+    public static String DELETE_MENU = "메뉴 삭제 성공";
+    public static String DELETE_MENU_FAIL = "메뉴 삭제 실패";
 }

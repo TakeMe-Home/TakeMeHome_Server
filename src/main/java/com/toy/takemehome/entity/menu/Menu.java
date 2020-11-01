@@ -2,6 +2,7 @@ package com.toy.takemehome.entity.menu;
 
 import com.toy.takemehome.entity.restaurant.Restaurant;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,4 +32,19 @@ public class Menu {
 
     @Enumerated(EnumType.STRING)
     private MenuStatus status;
+
+    @Builder
+    public Menu(Long id, Restaurant restaurant, String name, int price, MenuStatus status) {
+        this.id = id;
+        this.restaurant = restaurant;
+        this.name = name;
+        this.price = price;
+        this.status = status;
+    }
+
+    public void update(String name, int price, MenuStatus status) {
+        this.name = name;
+        this.price = price;
+        this.status = status;
+    }
 }

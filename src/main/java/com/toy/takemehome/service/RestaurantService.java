@@ -61,7 +61,7 @@ public class RestaurantService {
     private Restaurant findRestaurantById(Long id) {
         return restaurantRepository.findOneByIdWithOwner(id)
                 .orElseThrow(() -> new NoSuchElementException(
-                        String.format("input owner id: %d, no such elementException", id)));
+                        String.format("input restaurant id: %d, no such elementException", id)));
     }
 
     private Owner findOwnerById(Long ownerId) {
