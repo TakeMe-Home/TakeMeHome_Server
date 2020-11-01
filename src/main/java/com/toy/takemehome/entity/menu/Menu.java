@@ -41,4 +41,10 @@ public class Menu {
         this.price = price;
         this.status = status;
     }
+
+    public void update(String name, int price, MenuStatus status) {
+        this.name = name;
+        this.price = price;
+        this.status = status;
+    }
 }

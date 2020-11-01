@@ -1,6 +1,7 @@
 package com.toy.takemehome.service;
 
 import com.toy.takemehome.dto.menu.MenuRegisterRequest;
+import com.toy.takemehome.dto.menu.MenuUpdateRequest;
 import com.toy.takemehome.entity.menu.Menu;
 import com.toy.takemehome.entity.menu.MenuStatus;
 import com.toy.takemehome.entity.restaurant.Restaurant;
@@ -37,6 +38,18 @@ public class MenuService {
     public Menu findOneById(Long id) {
         final Menu menu = findMenuById(id);
         return menu;
+    }
+
+    @Transactional
+    public void update(Long id, MenuUpdateRequest updateRequest) {
+        final Menu menu = findMenuById(id);
+        menu.update(updateRequest.getName(), updateRequest.getPrice(), updateRequest.getMenuStatus());
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        final Menu menu = findMenuById(id);
+        menuRepository.delete(menu);
     }
 
     private Menu findMenuById(Long menuId) {
