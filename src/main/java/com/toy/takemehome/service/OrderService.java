@@ -1,7 +1,7 @@
 package com.toy.takemehome.service;
 
 import com.toy.takemehome.dto.delivery.DeliveryOrderRequest;
-import com.toy.takemehome.dto.order.OrderMenusRequest;
+import com.toy.takemehome.dto.menu.MenuIdCounts;
 import com.toy.takemehome.dto.order.OrderSaveRequest;
 import com.toy.takemehome.entity.customer.Customer;
 import com.toy.takemehome.entity.delivery.Delivery;
@@ -12,11 +12,14 @@ import com.toy.takemehome.entity.order.OrderMenu;
 import com.toy.takemehome.entity.restaurant.Restaurant;
 import com.toy.takemehome.entity.rider.Rider;
 import com.toy.takemehome.repository.*;
+import com.toy.takemehome.repository.order.OrderMenuRepository;
+import com.toy.takemehome.repository.order.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -35,7 +38,6 @@ public class OrderService {
     public Long save(OrderSaveRequest saveRequest) {
         final Customer customer = findCustomerById(saveRequest.getCustomerId());
         final Restaurant restaurant = findRestaurantById(saveRequest.getRestaurantId());
-        final Rider rider = findRiderById(saveRequest.getRiderId());
 
         final DeliveryOrderRequest deliveryOrderRequest = saveRequest.getDeliveryOrderRequest();
         final Delivery delivery = Delivery.builder()
@@ -45,11 +47,36 @@ public class OrderService {
                 .status(DeliveryStatus.NONE)
                 .build();
 
-        final Order order = Order.createOrder(customer, restaurant, rider, delivery);
-        saveOrderMenusRepository(order, saveRequest.getOrderMenusRequest());
-
+        final Order order = Order.createOrder(customer, restaurant, delivery);
         orderRepository.save(order);
+        saveOrderMenusRepository(order, saveRequest.getMenuIdCounts());
         return order.getId();
+    }
+
+    public Order findOne(Long id) {
+        final Order order = findOrderByIdWithAll(id);
+        return order;
+    }
+
+    public List<OrderMenu> findOrderMenus(Order order) {
+        final List<OrderMenu> orderMenus = orderMenuRepository.findAllByOrder(order);
+        return orderMenus;
+    }
+
+    private void saveOrderMenusRepository(Order order, MenuIdCounts menuIdCounts) {
+        menuIdCounts.getMenuIdCounts().stream()
+                .map(orderMenu -> OrderMenu.builder()
+                        .menu(findMenuById(orderMenu.getMenuId()))
+                        .order(order)
+                        .count(orderMenu.getCount())
+                        .build())
+                .forEach(orderMenuRepository::save);
+    }
+
+    private Order findOrderByIdWithAll(Long id) {
+        return orderRepository.findOrderByIdWithAll(id)
+                .orElseThrow(() -> new NoSuchElementException(
+                        String.format("input order id: %d, no such elementException", id)));
     }
 
     private Customer findCustomerById(Long customerId) {
@@ -69,19 +96,15 @@ public class OrderService {
                 .orElseThrow(() -> new NoSuchElementException(String.format("input rider id: %d, no such elementException", riderId)));
     }
 
-    private void saveOrderMenusRepository(Order order, OrderMenusRequest orderMenusRequest) {
-        orderMenusRequest.getOrderMenusRequest().stream()
-                .map(orderMenu -> OrderMenu.builder()
-                        .menu(findMenuById(orderMenu.getMenuId()))
-                        .order(order)
-                        .count(orderMenu.getCount())
-                        .build())
-                .forEach(orderMenuRepository::save);
-    }
-
     private Menu findMenuById(Long menuId) {
         return menuRepository.findById(menuId)
                 .orElseThrow(() -> new NoSuchElementException(
                         String.format("input menu id: %d, no such elementException", menuId)));
+    }
+
+    private Order findOrderById(Long id) {
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException(
+                        String.format("input menu id: %d, no such elementException", id)));
     }
 }

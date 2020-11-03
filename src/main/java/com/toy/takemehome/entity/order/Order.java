@@ -52,11 +52,10 @@ public class Order extends BaseTimeEntity {
         this.status = status;
     }
 
-    public static Order createOrder(Customer customer, Restaurant restaurant, Rider rider, Delivery delivery) {
+    public static Order createOrder(Customer customer, Restaurant restaurant, Delivery delivery) {
         final Order order = Order.builder()
                 .customer(customer)
                 .restaurant(restaurant)
-                .rider(rider)
                 .delivery(delivery)
                 .status(OrderStatus.ORDER)
                 .build();
