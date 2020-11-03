@@ -56,4 +56,10 @@ public class Restaurant extends BaseTimeEntity {
         this.address = address;
         this.location = location;
     }
+
+    public void changeNameNumberAddress(String name, String number, String address) {
+        this.name = name;
+        this.number = number;
+        this.address = address;
+    }
 }

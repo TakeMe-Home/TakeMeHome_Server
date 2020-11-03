@@ -1,6 +1,7 @@
 package com.toy.takemehome.entity.delivery;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,11 +21,27 @@ public class Delivery {
     private int price;
 
     @Column(nullable = false)
-    private int distance;
+    private double distance;
 
     @Column(nullable = false)
     private String address;
 
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
+
+    @Builder
+    public Delivery(Long id, int price, double distance, String address, DeliveryStatus status) {
+        this.id = id;
+        this.price = price;
+        this.distance = distance;
+        this.address = address;
+        this.status = status;
+    }
+
+    public void changeAll(int price, double distance, String address, DeliveryStatus status) {
+        this.price = price;
+        this.distance = distance;
+        this.address = address;
+        this.status = status;
+    }
 }

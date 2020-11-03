@@ -67,4 +67,17 @@ public class ResponseMessage {
 
     public static String DELETE_MENU = "메뉴 삭제 성공";
     public static String DELETE_MENU_FAIL = "메뉴 삭제 실패";
+
+    //order
+    public static final String CREATE_ORDER = "주문 등록 성공";
+    public static final String CREATE_ORDER_FAIL = "주문 등록 실패";
+
+    public static final String FIND_ORDER = "주문 조회 성공";
+    public static final String NOT_FOUND_ORDER = "주문 조회 실패";
+
+    public static String UPDATE_ORDER = "주문 수정 성공";
+    public static String UPDATE_ORDER_FAIL = "주문 수정 실패";
+
+    public static String CANCLE_ORDER = "주문 취소 성공";
+    public static String CANCLE_ORDER_FAIL = "주문 취소 실패";
 }

@@ -54,4 +54,8 @@ public class Customer extends BaseTimeEntity {
         this.phoneNumber = phoneNumber;
         this.address = address;
     }
+
+    public void changePhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }
