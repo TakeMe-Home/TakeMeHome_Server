@@ -70,6 +70,14 @@ public class OrderService {
         order.update(updateRequest);
     }
 
+    @Transactional
+    public void delete(Long id) {
+        final Order order = findOrderById(id);
+        final List<OrderMenu> orderMenus = findOrderMenus(order);
+        deleteOrderMenus(orderMenus);
+        orderRepository.delete(order);
+    }
+
     private void saveOrderMenusRepository(Order order, MenuIdCounts menuIdCounts) {
         menuIdCounts.getMenuIdCounts().stream()
                 .map(orderMenu -> OrderMenu.builder()
@@ -84,6 +92,10 @@ public class OrderService {
         return orderRepository.findOrderByIdWithAll(id)
                 .orElseThrow(() -> new NoSuchElementException(
                         String.format("input order id: %d, no such elementException", id)));
+    }
+
+    private void deleteOrderMenus(List<OrderMenu> orderMenus) {
+        orderMenus.forEach(orderMenuRepository::delete);
     }
 
     private Customer findCustomerById(Long customerId) {

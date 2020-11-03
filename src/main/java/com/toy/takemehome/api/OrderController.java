@@ -60,4 +60,15 @@ public class OrderController {
             return DefaultRes.res(BAD_REQUEST, UPDATE_ORDER_FAIL);
         }
     }
+
+    @DeleteMapping("/order/{id}")
+    public DefaultRes<Long> delete(@PathVariable("id") Long id) {
+        try {
+            orderService.delete(id);
+            return DefaultRes.res(OK, CANCLE_ORDER, id);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, CANCLE_ORDER_FAIL);
+        }
+    }
 }
