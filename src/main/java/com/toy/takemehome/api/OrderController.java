@@ -2,6 +2,7 @@ package com.toy.takemehome.api;
 
 import com.toy.takemehome.dto.order.OrderFindResponse;
 import com.toy.takemehome.dto.order.OrderSaveRequest;
+import com.toy.takemehome.dto.order.OrderUpdateRequest;
 import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
 import com.toy.takemehome.service.OrderService;
@@ -23,10 +24,10 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping
-    public DefaultRes<Long> save(@RequestBody OrderSaveRequest saveRequest) {
+    @PostMapping("/reception")
+    public DefaultRes<Long> reception(@RequestBody OrderSaveRequest saveRequest) {
         try {
-            final Long id = orderService.save(saveRequest);
+            final Long id = orderService.reception(saveRequest);
             return DefaultRes.res(OK, CREATE_ORDER, id);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -45,6 +46,18 @@ public class OrderController {
         } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(NOT_FOUND, NOT_FOUND_ORDER);
+        }
+    }
+
+    @PutMapping("/order/{id}")
+    public DefaultRes<Long> update(@PathVariable("id") Long id,
+                                   @RequestBody OrderUpdateRequest updateRequest) {
+        try {
+            orderService.update(id, updateRequest);
+            return DefaultRes.res(OK, UPDATE_ORDER, id);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, UPDATE_ORDER_FAIL);
         }
     }
 }

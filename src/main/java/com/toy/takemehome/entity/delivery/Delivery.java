@@ -37,4 +37,11 @@ public class Delivery {
         this.address = address;
         this.status = status;
     }
+
+    public void changeAll(int price, double distance, String address, DeliveryStatus status) {
+        this.price = price;
+        this.distance = distance;
+        this.address = address;
+        this.status = status;
+    }
 }

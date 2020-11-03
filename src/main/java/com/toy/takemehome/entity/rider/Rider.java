@@ -48,4 +48,9 @@ public class Rider extends BaseTimeEntity {
         this.password = password;
         this.phoneNumber = phoneNumber;
     }
+
+    public void changeNamePhoneNumber(String name, String phoneNumber) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+    }
 }

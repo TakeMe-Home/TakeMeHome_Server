@@ -3,6 +3,7 @@ package com.toy.takemehome.service;
 import com.toy.takemehome.dto.delivery.DeliveryOrderRequest;
 import com.toy.takemehome.dto.menu.MenuIdCounts;
 import com.toy.takemehome.dto.order.OrderSaveRequest;
+import com.toy.takemehome.dto.order.OrderUpdateRequest;
 import com.toy.takemehome.entity.customer.Customer;
 import com.toy.takemehome.entity.delivery.Delivery;
 import com.toy.takemehome.entity.delivery.DeliveryStatus;
@@ -35,7 +36,7 @@ public class OrderService {
     private final MenuRepository menuRepository;
 
     @Transactional
-    public Long save(OrderSaveRequest saveRequest) {
+    public Long reception(OrderSaveRequest saveRequest) {
         final Customer customer = findCustomerById(saveRequest.getCustomerId());
         final Restaurant restaurant = findRestaurantById(saveRequest.getRestaurantId());
 
@@ -61,6 +62,12 @@ public class OrderService {
     public List<OrderMenu> findOrderMenus(Order order) {
         final List<OrderMenu> orderMenus = orderMenuRepository.findAllByOrder(order);
         return orderMenus;
+    }
+
+    @Transactional
+    public void update(Long id, OrderUpdateRequest updateRequest) {
+        final Order order = findOrderByIdWithAll(id);
+        order.update(updateRequest);
     }
 
     private void saveOrderMenusRepository(Order order, MenuIdCounts menuIdCounts) {

@@ -12,12 +12,12 @@ public class OrderDelivery {
     private int price;
     private double distance;
     private String address;
-    private DeliveryStatus deliveryStatus;
+    private DeliveryStatus status;
 
     public OrderDelivery(Delivery delivery) {
         this.price = delivery.getPrice();
         this.distance = delivery.getDistance();
         this.address = delivery.getAddress();
-        this.deliveryStatus = delivery.getStatus();
+        this.status = delivery.getStatus();
     }
 }
