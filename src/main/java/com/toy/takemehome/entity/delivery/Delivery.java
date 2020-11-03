@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static com.toy.takemehome.entity.delivery.DeliveryStatus.*;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -43,5 +45,13 @@ public class Delivery {
         this.distance = distance;
         this.address = address;
         this.status = status;
+    }
+
+    public boolean isAssigned() {
+        return this.status == ASSIGNED;
+    }
+
+    public void assigned() {
+        this.status = ASSIGNED;
     }
 }

@@ -78,6 +78,13 @@ public class OrderService {
         orderRepository.delete(order);
     }
 
+    @Transactional
+    public void assigned(Long orderId, Long riderId) {
+        final Order order = findOrderById(orderId);
+        final Rider rider = findRiderById(riderId);
+        order.assigned(rider);
+    }
+
     private void saveOrderMenusRepository(Order order, MenuIdCounts menuIdCounts) {
         menuIdCounts.getMenuIdCounts().stream()
                 .map(orderMenu -> OrderMenu.builder()
@@ -124,6 +131,6 @@ public class OrderService {
     private Order findOrderById(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(
-                        String.format("input menu id: %d, no such elementException", id)));
+                        String.format("input orderId id: %d, no such elementException", id)));
     }
 }

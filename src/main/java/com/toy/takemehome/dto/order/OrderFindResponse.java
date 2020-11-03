@@ -2,8 +2,6 @@ package com.toy.takemehome.dto.order;
 
 import com.toy.takemehome.dto.menu.MenuNameCount;
 import com.toy.takemehome.dto.menu.MenuNameCounts;
-import com.toy.takemehome.entity.delivery.Delivery;
-import com.toy.takemehome.entity.delivery.DeliveryStatus;
 import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
 import com.toy.takemehome.entity.order.OrderStatus;
@@ -25,7 +23,7 @@ public class OrderFindResponse {
     private MenuNameCounts menuNameCounts;
 
     public OrderFindResponse(Order order, List<OrderMenu> orderMenus) {
-        if (assignedRider(order.getDelivery())) {
+        if (order.assigned()) {
             this.orderRider = new OrderRider(order.getRider());
         }
         this.orderCustomer = new OrderCustomer(order.getCustomer());
@@ -33,10 +31,6 @@ public class OrderFindResponse {
         this.orderRestaurant = new OrderRestaurant(order.getRestaurant());
         this.orderStatus = order.getStatus();
         this.menuNameCounts = new MenuNameCounts(createMenuNameCounts(orderMenus));
-    }
-
-    private boolean assignedRider(Delivery delivery) {
-        return delivery.getStatus() == DeliveryStatus.ASSIGNED;
     }
 
     private List<MenuNameCount> createMenuNameCounts(List<OrderMenu> orderMenus) {

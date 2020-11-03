@@ -78,6 +78,9 @@ public class ResponseMessage {
     public static String UPDATE_ORDER = "주문 수정 성공";
     public static String UPDATE_ORDER_FAIL = "주문 수정 실패";
 
-    public static String CANCLE_ORDER = "주문 취소 성공";
-    public static String CANCLE_ORDER_FAIL = "주문 취소 실패";
+    public static String CANCEL_ORDER = "주문 취소 성공";
+    public static String CANCEL_ORDER_FAIL = "주문 취소 실패";
+
+    public static String ASSIGNED_ORDER = "주문 배차 완료";
+    public static String ASSIGNED_ORDER_FAIL = "주문 배차 실패";
 }
