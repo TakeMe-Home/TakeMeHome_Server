@@ -1,16 +1,16 @@
-package com.toy.takemehome.dto.order;
+package com.toy.takemehome.dto.menu;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class OrderMenuRequest {
+public class MenuIdCount {
 
     private Long menuId;
     private int count;
 
-    public OrderMenuRequest(Long menuId, int count) {
+    public MenuIdCount(Long menuId, int count) {
         this.menuId = menuId;
         this.count = count;
     }
