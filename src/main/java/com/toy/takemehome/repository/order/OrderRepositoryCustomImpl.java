@@ -1,18 +1,14 @@
 package com.toy.takemehome.repository.order;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.toy.takemehome.entity.order.Order;
-import com.toy.takemehome.entity.order.QOrder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-import static com.toy.takemehome.entity.customer.QCustomer.*;
-import static com.toy.takemehome.entity.delivery.QDelivery.*;
 import static com.toy.takemehome.entity.order.QOrder.*;
-import static com.toy.takemehome.entity.restaurant.QRestaurant.*;
-import static com.toy.takemehome.entity.rider.QRider.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -24,11 +20,26 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
     public Optional<Order> findOneByIdWithAll(Long orderId) {
         return Optional.ofNullable(queryFactory
                 .selectFrom(order)
-                .leftJoin(order.customer, customer)
-                .leftJoin(order.restaurant, restaurant)
-                .leftJoin(order.delivery, delivery)
-                .leftJoin(order.rider, rider)
-                .where(order.id.eq(orderId))
+                .innerJoin(order.customer).fetchJoin()
+                .innerJoin(order.restaurant).fetchJoin()
+                .innerJoin(order.delivery).fetchJoin()
+                .innerJoin(order.rider).fetchJoin()
+                .where(orderIdEq(orderId))
                 .fetchOne());
+    }
+
+    @Override
+    public Optional<Order> findOneByIdWithoutRider(Long orderId) {
+        return Optional.ofNullable(queryFactory
+                .selectFrom(order)
+                .innerJoin(order.customer).fetchJoin()
+                .innerJoin(order.restaurant).fetchJoin()
+                .innerJoin(order.delivery).fetchJoin()
+                .where(orderIdEq(orderId))
+                .fetchOne());
+    }
+
+    private BooleanExpression orderIdEq(Long orderId) {
+        return order.id.eq(orderId);
     }
 }

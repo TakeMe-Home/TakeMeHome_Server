@@ -54,8 +54,12 @@ public class OrderService {
         return order.getId();
     }
 
+    @Transactional
     public Order findOne(Long id) {
-        final Order order = findOrderByIdWithAll(id);
+        final Order order = findOrderByIdWithoutRider(id);
+        if (order.isAssigned()) {
+            findRiderById(order.getRider().getId());
+        }
         return order;
     }
 
@@ -96,7 +100,13 @@ public class OrderService {
     }
 
     private Order findOrderByIdWithAll(Long id) {
-        return orderRepository.findOrderByIdWithAll(id)
+        return orderRepository.findOneByIdWithAll(id)
+                .orElseThrow(() -> new NoSuchElementException(
+                        String.format("input order id: %d, no such elementException", id)));
+    }
+
+    private Order findOrderByIdWithoutRider(Long id) {
+        return orderRepository.findOneByIdWithoutRider(id)
                 .orElseThrow(() -> new NoSuchElementException(
                         String.format("input order id: %d, no such elementException", id)));
     }

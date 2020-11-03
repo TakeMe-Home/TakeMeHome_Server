@@ -23,7 +23,7 @@ public class OrderFindResponse {
     private MenuNameCounts menuNameCounts;
 
     public OrderFindResponse(Order order, List<OrderMenu> orderMenus) {
-        if (order.assigned()) {
+        if (order.isAssigned()) {
             this.orderRider = new OrderRider(order.getRider());
         }
         this.orderCustomer = new OrderCustomer(order.getCustomer());

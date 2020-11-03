@@ -83,12 +83,12 @@ public class Order extends BaseTimeEntity {
         this.delivery.assigned();
     }
 
-    public boolean assigned() {
+    public boolean isAssigned() {
         return this.delivery.isAssigned();
     }
 
     private boolean notAssignedRider() {
-        return !assigned();
+        return !isAssigned();
     }
 
     private void checkAssignedRider() {

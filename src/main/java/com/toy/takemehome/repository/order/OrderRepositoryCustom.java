@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface OrderRepositoryCustom{
     Optional<Order> findOneByIdWithAll(Long orderId);
+    Optional<Order> findOneByIdWithoutRider(Long orderId);
 }
