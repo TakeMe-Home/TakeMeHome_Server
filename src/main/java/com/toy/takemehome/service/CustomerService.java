@@ -27,6 +27,7 @@ public class CustomerService {
                 .password(signUpRequest.getPassword())
                 .phoneNumber(signUpRequest.getPhoneNumber())
                 .address(signUpRequest.getAddress())
+                .location(signUpRequest.getLocation())
                 .build();
 
         customerRepository.save(createCustomer);
@@ -45,7 +46,7 @@ public class CustomerService {
 
         Customer customer = findCustomerById(id);
         customer.update(updateRequest.getName(), updateRequest.getEmail(), updateRequest.getPassword(),
-                updateRequest.getPhoneNumber(), updateRequest.getAddress());
+                updateRequest.getPhoneNumber(), updateRequest.getAddress(), updateRequest.getLocation());
     }
 
     @Transactional
