@@ -87,6 +87,11 @@ public class Order extends BaseTimeEntity {
         return this.delivery.isAssigned();
     }
 
+    public void cancel() {
+        this.status = CANCLE;
+        delivery.cancel();
+    }
+
     private boolean notAssignedRider() {
         return !isAssigned();
     }

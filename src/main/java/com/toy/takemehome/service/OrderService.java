@@ -89,6 +89,12 @@ public class OrderService {
         order.assigned(rider);
     }
 
+    @Transactional
+    public void cancel(Long id) {
+        final Order order = findOrderById(id);
+        order.cancel();
+    }
+
     private void saveOrderMenusRepository(Order order, MenuIdCounts menuIdCounts) {
         menuIdCounts.getMenuIdCounts().stream()
                 .map(orderMenu -> OrderMenu.builder()

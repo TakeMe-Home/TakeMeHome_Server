@@ -83,4 +83,15 @@ public class OrderController {
             return DefaultRes.res(BAD_REQUEST, ASSIGNED_ORDER_FAIL);
         }
     }
+
+    @PutMapping("/order/{id}/cancel")
+    public DefaultRes<Long> cancel(@PathVariable("id") Long id) {
+        try {
+            orderService.cancel(id);
+            return DefaultRes.res(OK, CANCEL_ORDER, id);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, CANCEL_ORDER_FAIL);
+        }
+    }
 }

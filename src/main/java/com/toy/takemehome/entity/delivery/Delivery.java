@@ -54,4 +54,8 @@ public class Delivery {
     public void assigned() {
         this.status = ASSIGNED;
     }
+
+    public void cancel() {
+        this.status = NONE;
+    }
 }
