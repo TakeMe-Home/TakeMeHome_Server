@@ -10,6 +10,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import static com.toy.takemehome.entity.order.OrderStatus.*;
 import static javax.persistence.FetchType.*;
 import static javax.persistence.GenerationType.*;
 
@@ -58,7 +59,7 @@ public class Order extends BaseTimeEntity {
                 .customer(customer)
                 .restaurant(restaurant)
                 .delivery(delivery)
-                .status(OrderStatus.ORDER)
+                .status(ORDER)
                 .build();
 
         return order;
@@ -77,17 +78,27 @@ public class Order extends BaseTimeEntity {
         this.status = updateRequest.getOrderStatus();
     }
 
+    public void assigned(Rider rider) {
+        this.rider = rider;
+        this.delivery.assigned();
+    }
+
+    public boolean isAssigned() {
+        return this.delivery.isAssigned();
+    }
+
+    public void cancel() {
+        this.status = CANCLE;
+        delivery.cancel();
+    }
+
+    private boolean notAssignedRider() {
+        return !isAssigned();
+    }
+
     private void checkAssignedRider() {
         if (notAssignedRider()) {
             throw new IllegalArgumentException(String.format("current order id: %d, not assigned rider!", this.id));
         }
-    }
-
-    private boolean notAssignedRider() {
-        return !assignedRider();
-    }
-
-    private boolean assignedRider() {
-        return this.rider != null;
     }
 }

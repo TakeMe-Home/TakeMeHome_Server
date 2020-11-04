@@ -65,10 +65,33 @@ public class OrderController {
     public DefaultRes<Long> delete(@PathVariable("id") Long id) {
         try {
             orderService.delete(id);
-            return DefaultRes.res(OK, CANCLE_ORDER, id);
+            return DefaultRes.res(OK, CANCEL_ORDER, id);
         } catch (Exception e) {
             log.error(e.getMessage());
-            return DefaultRes.res(BAD_REQUEST, CANCLE_ORDER_FAIL);
+            return DefaultRes.res(BAD_REQUEST, CANCEL_ORDER_FAIL);
+        }
+    }
+
+    @PutMapping("/order/{orderId}/assigned/{riderId}")
+    public DefaultRes<Long> assigned(@PathVariable("orderId") Long orderId,
+                                     @PathVariable("riderId") Long riderId) {
+        try {
+            orderService.assigned(orderId, riderId);
+            return DefaultRes.res(OK, ASSIGNED_ORDER, orderId);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, ASSIGNED_ORDER_FAIL);
+        }
+    }
+
+    @PutMapping("/order/{id}/cancel")
+    public DefaultRes<Long> cancel(@PathVariable("id") Long id) {
+        try {
+            orderService.cancel(id);
+            return DefaultRes.res(OK, CANCEL_ORDER, id);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, CANCEL_ORDER_FAIL);
         }
     }
 }

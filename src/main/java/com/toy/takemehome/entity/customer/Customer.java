@@ -1,6 +1,7 @@
 package com.toy.takemehome.entity.customer;
 
 import com.toy.takemehome.entity.BaseTimeEntity;
+import com.toy.takemehome.entity.Location;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

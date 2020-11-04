@@ -54,8 +54,12 @@ public class OrderService {
         return order.getId();
     }
 
+    @Transactional
     public Order findOne(Long id) {
-        final Order order = findOrderByIdWithAll(id);
+        final Order order = findOrderByIdWithoutRider(id);
+        if (order.isAssigned()) {
+            findRiderById(order.getRider().getId());
+        }
         return order;
     }
 
@@ -78,6 +82,19 @@ public class OrderService {
         orderRepository.delete(order);
     }
 
+    @Transactional
+    public void assigned(Long orderId, Long riderId) {
+        final Order order = findOrderById(orderId);
+        final Rider rider = findRiderById(riderId);
+        order.assigned(rider);
+    }
+
+    @Transactional
+    public void cancel(Long id) {
+        final Order order = findOrderById(id);
+        order.cancel();
+    }
+
     private void saveOrderMenusRepository(Order order, MenuIdCounts menuIdCounts) {
         menuIdCounts.getMenuIdCounts().stream()
                 .map(orderMenu -> OrderMenu.builder()
@@ -89,7 +106,13 @@ public class OrderService {
     }
 
     private Order findOrderByIdWithAll(Long id) {
-        return orderRepository.findOrderByIdWithAll(id)
+        return orderRepository.findOneByIdWithAll(id)
+                .orElseThrow(() -> new NoSuchElementException(
+                        String.format("input order id: %d, no such elementException", id)));
+    }
+
+    private Order findOrderByIdWithoutRider(Long id) {
+        return orderRepository.findOneByIdWithoutRider(id)
                 .orElseThrow(() -> new NoSuchElementException(
                         String.format("input order id: %d, no such elementException", id)));
     }
@@ -124,6 +147,6 @@ public class OrderService {
     private Order findOrderById(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(
-                        String.format("input menu id: %d, no such elementException", id)));
+                        String.format("input orderId id: %d, no such elementException", id)));
     }
 }
