@@ -5,12 +5,14 @@ import com.toy.takemehome.dto.customer.CustomerUpdateRequest;
 import com.toy.takemehome.entity.customer.Customer;
 import com.toy.takemehome.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
