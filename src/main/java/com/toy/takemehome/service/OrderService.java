@@ -95,6 +95,11 @@ public class OrderService {
         order.cancel();
     }
 
+    public List<Order> findAllByRequestStatus() {
+        final List<Order> orders = findAllOrderByRequestStatus();
+        return orders;
+    }
+
     private void saveOrderMenusRepository(Order order, MenuIdCounts menuIdCounts) {
         menuIdCounts.getMenuIdCounts().stream()
                 .map(orderMenu -> OrderMenu.builder()
@@ -115,6 +120,10 @@ public class OrderService {
         return orderRepository.findOneByIdWithoutRider(id)
                 .orElseThrow(() -> new NoSuchElementException(
                         String.format("input order id: %d, no such elementException", id)));
+    }
+
+    private List<Order> findAllOrderByRequestStatus() {
+        return orderRepository.findAllByRequestStatus();
     }
 
     private void deleteOrderMenus(List<OrderMenu> orderMenus) {

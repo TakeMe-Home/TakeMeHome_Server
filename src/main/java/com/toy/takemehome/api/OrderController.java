@@ -1,5 +1,6 @@
 package com.toy.takemehome.api;
 
+import com.toy.takemehome.dto.order.OrderFindAllRequestStatusResponse;
 import com.toy.takemehome.dto.order.OrderFindResponse;
 import com.toy.takemehome.dto.order.OrderSaveRequest;
 import com.toy.takemehome.dto.order.OrderUpdateRequest;
@@ -92,6 +93,19 @@ public class OrderController {
         } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, CANCEL_ORDER_FAIL);
+        }
+    }
+
+    @GetMapping("status/request")
+    public DefaultRes<OrderFindAllRequestStatusResponse> findAllRequestStatusDto() {
+        try {
+            final List<Order> orders = orderService.findAllByRequestStatus();
+            final OrderFindAllRequestStatusResponse orderFindAllRequestStatusResponse = new OrderFindAllRequestStatusResponse(orders);
+
+            return DefaultRes.res(OK, FIND_ORDER, orderFindAllRequestStatusResponse);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, NOT_FOUND_ORDER);
         }
     }
 }

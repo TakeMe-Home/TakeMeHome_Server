@@ -3,7 +3,7 @@ package com.toy.takemehome.service;
 import com.toy.takemehome.dto.owner.OwnerRestaurantSignUpRequest;
 import com.toy.takemehome.dto.owner.OwnerSignUpRequest;
 import com.toy.takemehome.dto.owner.OwnerUpdateRequest;
-import com.toy.takemehome.dto.restaurant.RestaurantSaveRequest;
+import com.toy.takemehome.dto.restaurant.RestaurantSaveWithoutIdRequest;
 import com.toy.takemehome.entity.owner.Owner;
 import com.toy.takemehome.entity.restaurant.Restaurant;
 import com.toy.takemehome.repository.OwnerRepository;
@@ -62,7 +62,7 @@ public class OwnerService {
     @Transactional
     public Long signUpWithRestaurant(OwnerRestaurantSignUpRequest signUpRequest) {
         final OwnerSignUpRequest ownerSignUpRequest = signUpRequest.getOwnerSignUpRequest();
-        final RestaurantSaveRequest restaurantSaveRequest = signUpRequest.getRestaurantSaveRequest();
+        final RestaurantSaveWithoutIdRequest restaurantSaveWithoutIdRequest = signUpRequest.getRestaurantSaveWithoutIdRequest();
 
         checkDuplicateEmail(ownerSignUpRequest.getEmail());
 
@@ -76,11 +76,11 @@ public class OwnerService {
         ownerRepository.save(owner);
 
         final Restaurant restaurant = Restaurant.builder()
-                .name(restaurantSaveRequest.getName())
-                .number(restaurantSaveRequest.getNumber())
+                .name(restaurantSaveWithoutIdRequest.getName())
+                .number(restaurantSaveWithoutIdRequest.getNumber())
                 .owner(owner)
-                .address(restaurantSaveRequest.getAddress())
-                .location(restaurantSaveRequest.getLocation())
+                .address(restaurantSaveWithoutIdRequest.getAddress())
+                .location(restaurantSaveWithoutIdRequest.getLocation())
                 .build();
         restaurantRepository.save(restaurant);
 

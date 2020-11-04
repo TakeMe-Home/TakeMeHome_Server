@@ -1,6 +1,6 @@
 package com.toy.takemehome.dto.owner;
 
-import com.toy.takemehome.dto.restaurant.RestaurantSaveRequest;
+import com.toy.takemehome.dto.restaurant.RestaurantSaveWithoutIdRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 public class OwnerRestaurantSignUpRequest {
 
     OwnerSignUpRequest ownerSignUpRequest;
-    RestaurantSaveRequest restaurantSaveRequest;
+    RestaurantSaveWithoutIdRequest restaurantSaveWithoutIdRequest;
 
-    public OwnerRestaurantSignUpRequest(OwnerSignUpRequest ownerSignUpRequest, RestaurantSaveRequest restaurantSaveRequest) {
+    public OwnerRestaurantSignUpRequest(OwnerSignUpRequest ownerSignUpRequest, RestaurantSaveWithoutIdRequest restaurantSaveWithoutIdRequest) {
         this.ownerSignUpRequest = ownerSignUpRequest;
-        this.restaurantSaveRequest = restaurantSaveRequest;
+        this.restaurantSaveWithoutIdRequest = restaurantSaveWithoutIdRequest;
     }
 }
