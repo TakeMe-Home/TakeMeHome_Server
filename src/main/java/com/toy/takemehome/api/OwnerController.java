@@ -1,6 +1,7 @@
 package com.toy.takemehome.api;
 
 import com.toy.takemehome.dto.owner.OwnerDetail;
+import com.toy.takemehome.dto.owner.OwnerRestaurantSignUpRequest;
 import com.toy.takemehome.dto.owner.OwnerSignUpRequest;
 import com.toy.takemehome.dto.owner.OwnerUpdateRequest;
 import com.toy.takemehome.entity.owner.Owner;
@@ -64,6 +65,17 @@ public class OwnerController {
         } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, DELETE_OWNER_FAIL);
+        }
+    }
+
+    @PostMapping("/with/restaurant")
+    public DefaultRes<Long> signUpWithRestaurant(@RequestBody OwnerRestaurantSignUpRequest signUpRequest) {
+        try {
+            final Long ownerId = ownerService.signUpWithRestaurant(signUpRequest);
+            return DefaultRes.res(OK, CREATE_OWNER, ownerId);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, CREATE_OWNER_FAIL);
         }
     }
 }
