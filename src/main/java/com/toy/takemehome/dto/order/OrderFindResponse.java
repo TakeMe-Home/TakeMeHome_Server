@@ -1,5 +1,6 @@
 package com.toy.takemehome.dto.order;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.toy.takemehome.dto.menu.MenuNameCount;
 import com.toy.takemehome.dto.menu.MenuNameCounts;
 import com.toy.takemehome.entity.order.Order;
@@ -22,6 +23,7 @@ public class OrderFindResponse {
     private OrderStatus orderStatus;
     private MenuNameCounts menuNameCounts;
 
+    @QueryProjection
     public OrderFindResponse(Order order, List<OrderMenu> orderMenus) {
         if (order.isAssigned()) {
             this.orderRider = new OrderRider(order.getRider());

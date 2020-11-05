@@ -19,7 +19,7 @@ public class OrderFindAllRequestStatusResponse {
 
     private List<OrderFindRequestStatusResponse> createOrderFindAll(List<Order> orders) {
         return orders.stream()
-                .map(order -> new OrderFindRequestStatusResponse(order))
+                .map(OrderFindRequestStatusResponse::new)
                 .collect(Collectors.toList());
     }
 }
