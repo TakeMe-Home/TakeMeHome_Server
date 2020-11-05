@@ -1,5 +1,6 @@
 package com.toy.takemehome.service;
 
+import com.toy.takemehome.dto.common.LoginRequest;
 import com.toy.takemehome.dto.customer.CustomerSignUpRequest;
 import com.toy.takemehome.dto.customer.CustomerUpdateRequest;
 import com.toy.takemehome.entity.customer.Customer;
@@ -37,6 +38,11 @@ public class CustomerService {
         return createCustomer.getId();
     }
 
+    public Long login(LoginRequest loginRequest) {
+        final Customer customer = findCustomerByEmailPassword(loginRequest.getEmail(), loginRequest.getPassword());
+        return customer.getId();
+    }
+
     public Customer findOneById(Long id) {
         final Customer findCustomer = findCustomerById(id);
         return findCustomer;
@@ -64,6 +70,11 @@ public class CustomerService {
                     String.format("input email: %s, customer signUp email duplicate!", email)
             );
         }
+    }
+
+    private Customer findCustomerByEmailPassword(String email, String password) {
+        return customerRepository.findByEmailAndPassword(email, password)
+                .orElseThrow(() -> new IllegalArgumentException("customer login fail!! mismatch email or password"));
     }
 
     private Customer findCustomerById(Long id) {
