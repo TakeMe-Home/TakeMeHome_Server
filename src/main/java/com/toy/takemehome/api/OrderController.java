@@ -108,4 +108,15 @@ public class OrderController {
             return DefaultRes.res(BAD_REQUEST, NOT_FOUND_ORDER);
         }
     }
+
+    @PutMapping("/order/{orderId}/request/delivery/")
+    public DefaultRes<Long> requestDelivery(@PathVariable("orderId") Long orderId) {
+        try {
+            orderService.requestDelivery(orderId);
+            return DefaultRes.res(OK, ORDER_DELIVERY_REQUEST, orderId);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, ORDER_DELIVERY_REQUEST_FAIL);
+        }
+    }
 }

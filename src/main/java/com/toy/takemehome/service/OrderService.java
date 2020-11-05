@@ -100,6 +100,12 @@ public class OrderService {
         return orders;
     }
 
+    @Transactional
+    public void requestDelivery(Long orderId) {
+        final Order order = findOrderById(orderId);
+        order.requestDelivery();
+    }
+
     private void saveOrderMenusRepository(Order order, MenuIdCounts menuIdCounts) {
         menuIdCounts.getMenuIdCounts().stream()
                 .map(orderMenu -> OrderMenu.builder()

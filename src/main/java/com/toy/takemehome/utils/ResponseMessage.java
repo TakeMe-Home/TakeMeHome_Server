@@ -83,4 +83,7 @@ public class ResponseMessage {
 
     public static String ASSIGNED_ORDER = "주문 배차 완료";
     public static String ASSIGNED_ORDER_FAIL = "주문 배차 실패";
+
+    public static String ORDER_DELIVERY_REQUEST = "주문 배달 요청 성공";
+    public static String ORDER_DELIVERY_REQUEST_FAIL = "주문 배달 요청 실패";
 }

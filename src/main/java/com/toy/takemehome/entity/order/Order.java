@@ -88,8 +88,12 @@ public class Order extends BaseTimeEntity {
     }
 
     public void cancel() {
-        this.status = CANCLE;
+        this.status = CANCEL;
         delivery.cancel();
+    }
+
+    public void requestDelivery() {
+        delivery.request();
     }
 
     private boolean notAssignedRider() {
