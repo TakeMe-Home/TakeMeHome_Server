@@ -1,5 +1,6 @@
 package com.toy.takemehome.service;
 
+import com.toy.takemehome.dto.common.LoginRequest;
 import com.toy.takemehome.dto.owner.OwnerRestaurantSignUpRequest;
 import com.toy.takemehome.dto.owner.OwnerSignUpRequest;
 import com.toy.takemehome.dto.owner.OwnerUpdateRequest;
@@ -36,6 +37,11 @@ public class OwnerService {
 
         ownerRepository.save(owner);
 
+        return owner.getId();
+    }
+
+    public Long login(LoginRequest loginRequest) {
+        final Owner owner = findOwnerByEmailPassword(loginRequest.getEmail(), loginRequest.getPassword());
         return owner.getId();
     }
 
@@ -85,6 +91,11 @@ public class OwnerService {
         restaurantRepository.save(restaurant);
 
         return owner.getId();
+    }
+
+    private Owner findOwnerByEmailPassword(String email, String password) {
+        return ownerRepository.findByEmailAndPassword(email, password)
+                .orElseThrow(() -> new IllegalArgumentException("owner login fail!! mismatch email or password"));
     }
 
     private void checkDuplicateEmail(String email) {
