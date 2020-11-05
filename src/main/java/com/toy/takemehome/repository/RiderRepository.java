@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface RiderRepository extends JpaRepository<Rider, Long> {
     Optional<Rider> findByEmail(String email);
+    Optional<Rider> findByEmailAndPassword(String email, String password);
 }

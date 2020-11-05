@@ -1,5 +1,6 @@
 package com.toy.takemehome.api;
 
+import com.toy.takemehome.dto.common.LoginRequest;
 import com.toy.takemehome.dto.owner.OwnerDetail;
 import com.toy.takemehome.dto.owner.OwnerRestaurantSignUpRequest;
 import com.toy.takemehome.dto.owner.OwnerSignUpRequest;
@@ -30,6 +31,17 @@ public class OwnerController {
         } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, CREATE_OWNER_FAIL);
+        }
+    }
+
+    @GetMapping("/login")
+    public DefaultRes<Long> login(@RequestBody LoginRequest loginRequest){
+        try {
+            Long id = ownerService.login(loginRequest);
+            return DefaultRes.res(OK, LOGIN_SUCCESS, id);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, LOGIN_FAIL);
         }
     }
 
