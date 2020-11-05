@@ -1,5 +1,6 @@
 package com.toy.takemehome.entity.delivery;
 
+import com.fasterxml.jackson.core.sym.NameN;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,7 +49,7 @@ public class Delivery {
     }
 
     public boolean isAssigned() {
-        return this.status == ASSIGNED;
+        return this.status != NONE && this.status != REQUEST;
     }
 
     public void assigned() {
