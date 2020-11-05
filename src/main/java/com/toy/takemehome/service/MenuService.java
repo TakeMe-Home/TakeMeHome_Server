@@ -6,7 +6,7 @@ import com.toy.takemehome.entity.menu.Menu;
 import com.toy.takemehome.entity.menu.MenuStatus;
 import com.toy.takemehome.entity.restaurant.Restaurant;
 import com.toy.takemehome.repository.MenuRepository;
-import com.toy.takemehome.repository.RestaurantRepository;
+import com.toy.takemehome.repository.restaurant.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

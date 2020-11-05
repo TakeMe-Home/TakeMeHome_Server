@@ -15,6 +15,7 @@ import com.toy.takemehome.entity.rider.Rider;
 import com.toy.takemehome.repository.*;
 import com.toy.takemehome.repository.order.OrderMenuRepository;
 import com.toy.takemehome.repository.order.OrderRepository;
+import com.toy.takemehome.repository.restaurant.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

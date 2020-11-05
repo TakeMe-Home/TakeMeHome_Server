@@ -8,7 +8,7 @@ import com.toy.takemehome.dto.restaurant.RestaurantSaveWithoutIdRequest;
 import com.toy.takemehome.entity.owner.Owner;
 import com.toy.takemehome.entity.restaurant.Restaurant;
 import com.toy.takemehome.repository.OwnerRepository;
-import com.toy.takemehome.repository.RestaurantRepository;
+import com.toy.takemehome.repository.restaurant.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
