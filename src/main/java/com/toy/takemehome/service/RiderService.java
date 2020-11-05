@@ -1,5 +1,6 @@
 package com.toy.takemehome.service;
 
+import com.toy.takemehome.dto.common.LoginRequest;
 import com.toy.takemehome.dto.rider.RiderSignUpRequest;
 import com.toy.takemehome.dto.rider.RiderUpdateRequest;
 import com.toy.takemehome.entity.rider.Rider;
@@ -33,6 +34,11 @@ public class RiderService {
         return rider.getId();
     }
 
+    public Long login(LoginRequest loginRequest) {
+        final Rider rider = findRiderByEmailPassword(loginRequest.getEmail(), loginRequest.getPassword());
+        return rider.getId();
+    }
+
     public Rider findOneById(Long id) {
         final Rider rider = findRiderById(id);
         return rider;
@@ -51,6 +57,11 @@ public class RiderService {
     public void delete(Long id) {
         final Rider rider = findRiderById(id);
         riderRepository.delete(rider);
+    }
+
+    private Rider findRiderByEmailPassword(String email, String password) {
+        return riderRepository.findByEmailAndPassword(email, password)
+                .orElseThrow(() -> new IllegalArgumentException("rider login fail!! mismatch email or password"));
     }
 
     private Rider findRiderById(Long id) {
