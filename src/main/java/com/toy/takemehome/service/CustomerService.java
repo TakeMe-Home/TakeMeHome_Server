@@ -5,12 +5,14 @@ import com.toy.takemehome.dto.customer.CustomerUpdateRequest;
 import com.toy.takemehome.entity.customer.Customer;
 import com.toy.takemehome.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
@@ -27,6 +29,7 @@ public class CustomerService {
                 .password(signUpRequest.getPassword())
                 .phoneNumber(signUpRequest.getPhoneNumber())
                 .address(signUpRequest.getAddress())
+                .location(signUpRequest.getLocation())
                 .build();
 
         customerRepository.save(createCustomer);
@@ -45,7 +48,7 @@ public class CustomerService {
 
         Customer customer = findCustomerById(id);
         customer.update(updateRequest.getName(), updateRequest.getEmail(), updateRequest.getPassword(),
-                updateRequest.getPhoneNumber(), updateRequest.getAddress());
+                updateRequest.getPhoneNumber(), updateRequest.getAddress(), updateRequest.getLocation());
     }
 
     @Transactional

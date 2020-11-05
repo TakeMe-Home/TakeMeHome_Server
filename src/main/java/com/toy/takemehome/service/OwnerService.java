@@ -1,8 +1,11 @@
 package com.toy.takemehome.service;
 
+import com.toy.takemehome.dto.owner.OwnerRestaurantSignUpRequest;
 import com.toy.takemehome.dto.owner.OwnerSignUpRequest;
 import com.toy.takemehome.dto.owner.OwnerUpdateRequest;
+import com.toy.takemehome.dto.restaurant.RestaurantSaveWithoutIdRequest;
 import com.toy.takemehome.entity.owner.Owner;
+import com.toy.takemehome.entity.restaurant.Restaurant;
 import com.toy.takemehome.repository.OwnerRepository;
 import com.toy.takemehome.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +24,7 @@ public class OwnerService {
 
     @Transactional
     public Long signUp(OwnerSignUpRequest signUpRequest) {
-        checkDuplicatePhoneNumber(signUpRequest.getEmail());
+        checkDuplicateEmail(signUpRequest.getEmail());
 
         final Owner owner = Owner.builder()
                 .name(signUpRequest.getName())
@@ -56,7 +59,35 @@ public class OwnerService {
         ownerRepository.delete(owner);
     }
 
-    private void checkDuplicatePhoneNumber(String email) {
+    @Transactional
+    public Long signUpWithRestaurant(OwnerRestaurantSignUpRequest signUpRequest) {
+        final OwnerSignUpRequest ownerSignUpRequest = signUpRequest.getOwnerSignUpRequest();
+        final RestaurantSaveWithoutIdRequest restaurantSaveWithoutIdRequest = signUpRequest.getRestaurantSaveWithoutIdRequest();
+
+        checkDuplicateEmail(ownerSignUpRequest.getEmail());
+
+        final Owner owner = Owner.builder()
+                .name(ownerSignUpRequest.getName())
+                .email(ownerSignUpRequest.getEmail())
+                .password(ownerSignUpRequest.getPassword())
+                .phoneNumber(ownerSignUpRequest.getPhoneNumber())
+                .address(ownerSignUpRequest.getAddress())
+                .build();
+        ownerRepository.save(owner);
+
+        final Restaurant restaurant = Restaurant.builder()
+                .name(restaurantSaveWithoutIdRequest.getName())
+                .number(restaurantSaveWithoutIdRequest.getNumber())
+                .owner(owner)
+                .address(restaurantSaveWithoutIdRequest.getAddress())
+                .location(restaurantSaveWithoutIdRequest.getLocation())
+                .build();
+        restaurantRepository.save(restaurant);
+
+        return owner.getId();
+    }
+
+    private void checkDuplicateEmail(String email) {
         final Optional<Owner> owner = ownerRepository.findByEmail(email);
         if (owner.isPresent()) {
             throw new IllegalArgumentException(

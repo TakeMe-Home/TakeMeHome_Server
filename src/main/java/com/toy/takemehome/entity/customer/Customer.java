@@ -38,22 +38,26 @@ public class Customer extends BaseTimeEntity {
     @Column(nullable = false)
     private String address;
 
+    @Embedded
+    private Location location;
+
     @Builder
-    public Customer(Long id, String name, @Email String email, String password, String phoneNumber, String address) {
-        this.id = id;
+    public Customer(String name, @Email String email, String password, String phoneNumber, String address, Location location) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.location = location;
     }
 
-    public void update(String name, String email, String password, String phoneNumber, String address) {
+    public void update(String name, String email, String password, String phoneNumber, String address, Location location) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.location = location;
     }
 
     public void changePhoneNumber(String phoneNumber) {

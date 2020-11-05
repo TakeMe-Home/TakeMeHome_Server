@@ -52,10 +52,22 @@ public class Delivery {
     }
 
     public void assigned() {
+        checkAssigned();
         this.status = ASSIGNED;
     }
 
     public void cancel() {
         this.status = NONE;
+    }
+
+    public void request() {
+        this.status = REQUEST;
+    }
+
+    private void checkAssigned() {
+        if (this.status != REQUEST) {
+            throw new IllegalArgumentException(
+                    String.format("current assigment status: %s, can't assigned delivery!", this.status));
+        }
     }
 }

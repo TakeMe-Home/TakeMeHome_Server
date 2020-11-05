@@ -6,8 +6,10 @@ import com.toy.takemehome.entity.order.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
+import static com.toy.takemehome.entity.order.OrderStatus.*;
 import static com.toy.takemehome.entity.order.QOrder.*;
 
 @Repository
@@ -37,6 +39,21 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
                 .innerJoin(order.delivery).fetchJoin()
                 .where(orderIdEq(orderId))
                 .fetchOne());
+    }
+
+    @Override
+    public List<Order> findAllByRequestStatus() {
+        return queryFactory
+                .selectFrom(order)
+                .innerJoin(order.customer).fetchJoin()
+                .innerJoin(order.restaurant).fetchJoin()
+                .innerJoin(order.delivery).fetchJoin()
+                .where(orderStatusRequest())
+                .fetch();
+    }
+
+    private BooleanExpression orderStatusRequest() {
+        return order.status.eq(REQUEST);
     }
 
     private BooleanExpression orderIdEq(Long orderId) {

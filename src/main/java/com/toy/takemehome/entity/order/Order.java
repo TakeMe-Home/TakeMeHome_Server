@@ -37,7 +37,7 @@ public class Order extends BaseTimeEntity {
     @JoinColumn(name = "rider_id")
     private Rider rider;
 
-    @OneToOne(fetch = LAZY)
+    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
@@ -88,8 +88,12 @@ public class Order extends BaseTimeEntity {
     }
 
     public void cancel() {
-        this.status = CANCLE;
+        this.status = CANCEL;
         delivery.cancel();
+    }
+
+    public void requestDelivery() {
+        delivery.request();
     }
 
     private boolean notAssignedRider() {
