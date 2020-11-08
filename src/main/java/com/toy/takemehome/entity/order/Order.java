@@ -44,14 +44,24 @@ public class Order extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    @Enumerated(EnumType.STRING)
+    private PaymentType paymentType;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
+
+    private long totalPrice;
+
     @Builder
-    public Order(Long id, Customer customer, Restaurant restaurant, Rider rider, Delivery delivery, OrderStatus status) {
+    public Order(Long id, Customer customer, Restaurant restaurant, Rider rider,
+                 Delivery delivery, OrderStatus status, long totalPrice) {
         this.id = id;
         this.customer = customer;
         this.restaurant = restaurant;
         this.rider = rider;
         this.delivery = delivery;
         this.status = status;
+        this.totalPrice = totalPrice;
     }
 
     public static Order createOrder(Customer customer, Restaurant restaurant, Delivery delivery) {

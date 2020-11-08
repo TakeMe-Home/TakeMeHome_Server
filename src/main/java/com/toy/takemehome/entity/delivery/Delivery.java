@@ -1,6 +1,5 @@
 package com.toy.takemehome.entity.delivery;
 
-import com.fasterxml.jackson.core.sym.NameN;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
