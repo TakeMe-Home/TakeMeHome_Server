@@ -5,12 +5,13 @@ import com.toy.takemehome.dto.restaurant.RestaurantUpdateRequest;
 import com.toy.takemehome.entity.owner.Owner;
 import com.toy.takemehome.entity.restaurant.Restaurant;
 import com.toy.takemehome.repository.OwnerRepository;
-import com.toy.takemehome.repository.RestaurantRepository;
+import com.toy.takemehome.repository.restaurant.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -58,6 +59,12 @@ public class RestaurantService {
         restaurantRepository.delete(restaurant);
     }
 
+    public List<Restaurant> findAllByOwner(Long ownerId) {
+        final Owner owner = findOwnerById(ownerId);
+        final List<Restaurant> restaurants = findAllRestaurantByOwner(owner);
+        return restaurants;
+    }
+
     private Restaurant findRestaurantById(Long id) {
         return restaurantRepository.findOneByIdWithOwner(id)
                 .orElseThrow(() -> new NoSuchElementException(
@@ -69,5 +76,9 @@ public class RestaurantService {
                 .orElseThrow(() -> new NoSuchElementException(
                         String.format("input owner id: %d, no such elementException", ownerId)));
 
+    }
+
+    private List<Restaurant> findAllRestaurantByOwner(Owner owner) {
+        return restaurantRepository.findAllByOwner(owner);
     }
 }

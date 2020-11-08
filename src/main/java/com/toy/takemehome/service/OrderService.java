@@ -15,6 +15,7 @@ import com.toy.takemehome.entity.rider.Rider;
 import com.toy.takemehome.repository.*;
 import com.toy.takemehome.repository.order.OrderMenuRepository;
 import com.toy.takemehome.repository.order.OrderRepository;
+import com.toy.takemehome.repository.restaurant.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -106,6 +107,12 @@ public class OrderService {
         order.requestDelivery();
     }
 
+    public List<Order> findAllByRestaurant(Long restaurantId) {
+        final Restaurant restaurant = findRestaurantById(restaurantId);
+        final List<Order> orders = findAllOrderByRestaurant(restaurant);
+        return orders;
+    }
+
     private void saveOrderMenusRepository(Order order, MenuIdCounts menuIdCounts) {
         menuIdCounts.getMenuIdCounts().stream()
                 .map(orderMenu -> OrderMenu.builder()
@@ -163,5 +170,10 @@ public class OrderService {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(
                         String.format("input orderId id: %d, no such elementException", id)));
+    }
+
+    private List<Order> findAllOrderByRestaurant(Restaurant restaurant) {
+        return orderRepository.findAllByRestaurant(restaurant);
+
     }
 }

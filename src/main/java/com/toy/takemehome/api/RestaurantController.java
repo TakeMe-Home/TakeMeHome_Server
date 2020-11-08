@@ -1,16 +1,17 @@
 package com.toy.takemehome.api;
 
 import com.toy.takemehome.dto.restaurant.RestaurantDetail;
+import com.toy.takemehome.dto.restaurant.RestaurantFindAllResponse;
 import com.toy.takemehome.dto.restaurant.RestaurantSaveRequest;
 import com.toy.takemehome.dto.restaurant.RestaurantUpdateRequest;
 import com.toy.takemehome.entity.restaurant.Restaurant;
 import com.toy.takemehome.service.RestaurantService;
 import com.toy.takemehome.utils.DefaultRes;
-import com.toy.takemehome.utils.ResponseMessage;
-import com.toy.takemehome.utils.StatusCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.toy.takemehome.utils.ResponseMessage.*;
 import static com.toy.takemehome.utils.StatusCode.*;
@@ -59,13 +60,25 @@ public class RestaurantController {
     }
 
     @DeleteMapping("/restaurant/{id}")
-    public DefaultRes<Long> delete(@PathVariable("id") Long id){
+    public DefaultRes<Long> delete(@PathVariable("id") Long id) {
         try {
             restaurantService.delete(id);
             return DefaultRes.res(OK, DELETE_RESTAURANT, id);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, DELETE_RESTAURANT_FAIL);
+        }
+    }
+
+    @GetMapping("/{ownerId}")
+    public DefaultRes<RestaurantFindAllResponse> findAllByOwner(@PathVariable("ownerId") Long ownerId) {
+        try {
+            final List<Restaurant> restaurants = restaurantService.findAllByOwner(ownerId);
+            final RestaurantFindAllResponse restaurantFindAllRequest = new RestaurantFindAllResponse(restaurants);
+            return DefaultRes.res(OK, FIND_RESTAURANT, restaurantFindAllRequest);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(NOT_FOUND, NOT_FOUND_RESTAURANT);
         }
     }
 }

@@ -1,11 +1,9 @@
 package com.toy.takemehome.api;
 
-import com.toy.takemehome.dto.order.OrderFindAllRequestStatusResponse;
-import com.toy.takemehome.dto.order.OrderFindResponse;
-import com.toy.takemehome.dto.order.OrderSaveRequest;
-import com.toy.takemehome.dto.order.OrderUpdateRequest;
+import com.toy.takemehome.dto.order.*;
 import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
+import com.toy.takemehome.repository.order.OrderRepository;
 import com.toy.takemehome.service.OrderService;
 import com.toy.takemehome.utils.DefaultRes;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +22,7 @@ import static com.toy.takemehome.utils.StatusCode.*;
 public class OrderController {
 
     private final OrderService orderService;
+    private final OrderRepository orderRepository;
 
     @PostMapping("/reception")
     public DefaultRes<Long> reception(@RequestBody OrderSaveRequest saveRequest) {
@@ -117,6 +116,17 @@ public class OrderController {
         } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, ORDER_DELIVERY_REQUEST_FAIL);
+        }
+    }
+
+    @GetMapping("/{restaurantId}")
+    public DefaultRes<OrderFindAllResponse> findAllByRestaurant(@PathVariable("restaurantId") Long restaurantId) {
+        try {
+            final OrderFindAllResponse orderFindAllResponse = orderRepository.findAllByRestaurantWithMenus(restaurantId);
+            return DefaultRes.res(OK, FIND_ORDER, orderFindAllResponse);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, NOT_FOUND_ORDER);
         }
     }
 }
