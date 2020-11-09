@@ -66,4 +66,26 @@ public class MenuController {
             return DefaultRes.res(BAD_REQUEST, DELETE_MENU_FAIL);
         }
     }
+    
+    @PutMapping("/menu/{id}/soldout")
+    public DefaultRes<Long> soldOut(@PathVariable("id") Long id){
+        try {
+            menuService.soldOut(id);
+            return DefaultRes.res(OK, SOLD_OUT_MENU, id);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, SOLD_OUT_MENU_FAIL);
+        }
+    }
+
+    @PutMapping("/menu/{id}/sale")
+    public DefaultRes<Long> sale(@PathVariable("id") Long id){
+        try {
+            menuService.sale(id);
+            return DefaultRes.res(OK, SALE_MENU, id);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, SALE_MENU_FAIL);
+        }
+    }
 }

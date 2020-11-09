@@ -52,6 +52,18 @@ public class MenuService {
         menuRepository.delete(menu);
     }
 
+    @Transactional
+    public void soldOut(Long id) {
+        final Menu menu = findMenuById(id);
+        menu.soldOut();
+    }
+
+    @Transactional
+    public void sale(Long id) {
+        final Menu menu = findMenuById(id);
+        menu.sale();
+    }
+
     private Menu findMenuById(Long menuId) {
         return menuRepository.findById(menuId)
                 .orElseThrow(() -> new NoSuchElementException(

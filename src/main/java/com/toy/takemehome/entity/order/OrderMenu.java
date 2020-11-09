@@ -38,4 +38,8 @@ public class OrderMenu {
         this.menu = menu;
         this.count = count;
     }
+
+    public boolean isSoldOut() {
+        return this.getMenu().isSoldOut();
+    }
 }
