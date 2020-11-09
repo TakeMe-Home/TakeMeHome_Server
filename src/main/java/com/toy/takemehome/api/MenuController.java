@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.toy.takemehome.utils.ResponseMessage.*;
 import static com.toy.takemehome.utils.StatusCode.*;
 
@@ -66,26 +69,40 @@ public class MenuController {
             return DefaultRes.res(BAD_REQUEST, DELETE_MENU_FAIL);
         }
     }
-    
+
     @PutMapping("/menu/{id}/soldout")
-    public DefaultRes<Long> soldOut(@PathVariable("id") Long id){
+    public DefaultRes<Long> soldOut(@PathVariable("id") Long id) {
         try {
             menuService.soldOut(id);
             return DefaultRes.res(OK, SOLD_OUT_MENU, id);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, SOLD_OUT_MENU_FAIL);
         }
     }
 
     @PutMapping("/menu/{id}/sale")
-    public DefaultRes<Long> sale(@PathVariable("id") Long id){
+    public DefaultRes<Long> sale(@PathVariable("id") Long id) {
         try {
             menuService.sale(id);
             return DefaultRes.res(OK, SALE_MENU, id);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, SALE_MENU_FAIL);
+        }
+    }
+
+    @GetMapping("/{restaurantId}")
+    public DefaultRes<List<MenuDetail>> findAllByRestaurant(@PathVariable("restaurantId") Long restaurantId) {
+        try {
+            final List<Menu> menus = menuService.findAllByRestaurant(restaurantId);
+            final List<MenuDetail> menuDetails = menus.stream()
+                    .map(MenuDetail::new)
+                    .collect(Collectors.toList());
+            return DefaultRes.res(OK, FIND_MENU, menuDetails);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, NOT_FOUND_MENU);
         }
     }
 }
