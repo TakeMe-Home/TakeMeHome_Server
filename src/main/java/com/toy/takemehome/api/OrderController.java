@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.toy.takemehome.utils.ResponseMessage.*;
 import static com.toy.takemehome.utils.StatusCode.*;
@@ -144,11 +145,26 @@ public class OrderController {
     }
 
     @GetMapping("nearby")
-    public DefaultRes<List<OrderNearbyResponse>> findAllNearby(@RequestBody LocationDetail locationDetail){
+    public DefaultRes<List<OrderNearbyResponse>> findAllNearby(@RequestBody LocationDetail locationDetail) {
         try {
             final List<OrderNearbyResponse> orderNearbyResponses = orderRepository.findAllNearBy(locationDetail);
             return DefaultRes.res(OK, FIND_ORDER, orderNearbyResponses);
-        }catch (Exception e){
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(NOT_FOUND, NOT_FOUND_ORDER);
+        }
+    }
+
+    @GetMapping("/riders/{riderId}")
+    public DefaultRes<List<OrderResponseWithoutMenu>> findAllByRider(@PathVariable("riderId") Long riderId) {
+        try {
+            final List<Order> orders = orderService.findAllByRider(riderId);
+            final List<OrderResponseWithoutMenu> ordersResponseWithoutMenu = orders.stream()
+                    .map(OrderResponseWithoutMenu::new)
+                    .collect(Collectors.toList());
+
+            return DefaultRes.res(OK, FIND_ORDER, ordersResponseWithoutMenu);
+        } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(NOT_FOUND, NOT_FOUND_ORDER);
         }

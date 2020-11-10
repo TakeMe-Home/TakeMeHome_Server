@@ -6,6 +6,7 @@ import com.toy.takemehome.dto.order.OrderNearbyResponse;
 import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
 import com.toy.takemehome.entity.restaurant.Restaurant;
+import com.toy.takemehome.entity.rider.Rider;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,4 +23,5 @@ public interface OrderRepositoryCustom{
     List<Order> findAllByDate(LocalDateTime startDate, LocalDateTime endDate);
     List<Order> findAllWithAll();
     List<OrderNearbyResponse> findAllNearBy(LocationDetail locationDetail);
+    List<Order> findAllByRiderWithAll(Rider rider);
 }

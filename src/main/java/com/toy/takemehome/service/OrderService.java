@@ -121,6 +121,13 @@ public class OrderService {
         return orders;
     }
 
+    public List<Order> findAllByRider(Long riderid) {
+        final Rider rider = findRiderById(riderid);
+        final List<Order> orders = findAllOrderByRider(rider);
+
+        return orders;
+    }
+
     private void saveOrderMenusRepository(Order order, MenuIdCounts menuIdCounts) {
         final List<OrderMenu> orderMenus = menuIdCounts.getMenuIdCounts().stream()
                 .map(orderMenu -> OrderMenu.builder()
@@ -193,5 +200,9 @@ public class OrderService {
 
     private List<Order> findAllOrderByDate(LocalDateTime startDate, LocalDateTime endDate) {
         return orderRepository.findAllByDate(startDate, endDate);
+    }
+
+    private List<Order> findAllOrderByRider(Rider rider) {
+        return orderRepository.findAllByRiderWithAll(rider);
     }
 }

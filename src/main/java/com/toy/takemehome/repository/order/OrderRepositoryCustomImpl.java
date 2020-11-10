@@ -12,6 +12,7 @@ import com.toy.takemehome.entity.delivery.DeliveryStatus;
 import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
 import com.toy.takemehome.entity.restaurant.Restaurant;
+import com.toy.takemehome.entity.rider.Rider;
 import com.toy.takemehome.utils.MapUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -139,6 +140,17 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
                 .collect(Collectors.toList());
 
         return orderNearbyResponses.size() > 10 ? orderNearbyResponses.subList(0, 11) : orderNearbyResponses;
+    }
+
+    @Override
+    public List<Order> findAllByRiderWithAll(Rider rider) {
+        return queryFactory
+                .selectFrom(order)
+                .innerJoin(order.customer).fetchJoin()
+                .innerJoin(order.restaurant).fetchJoin()
+                .innerJoin(order.delivery).fetchJoin()
+                .innerJoin(order.rider).fetchJoin()
+                .fetch();
     }
 
     @Override
