@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderFindRequestStatusResponse {
 
+    private Long orderId;
     private OrderCustomer orderCustomer;
     private OrderDelivery orderDelivery;
     private OrderRestaurant orderRestaurant;
@@ -20,6 +21,7 @@ public class OrderFindRequestStatusResponse {
     private int totalPrice;
 
     public OrderFindRequestStatusResponse(Order order) {
+        this.orderId = order.getId();
         this.orderCustomer = new OrderCustomer(order.getCustomer());
         this.orderDelivery = new OrderDelivery(order.getDelivery());
         this.orderRestaurant = new OrderRestaurant(order.getRestaurant());
