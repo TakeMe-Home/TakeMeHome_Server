@@ -50,26 +50,32 @@ public class Order extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
-    private long totalPrice;
+    private int totalPrice;
 
     @Builder
-    public Order(Long id, Customer customer, Restaurant restaurant, Rider rider,
-                 Delivery delivery, OrderStatus status, long totalPrice) {
+    public Order(Long id, Customer customer, Restaurant restaurant, Rider rider, Delivery delivery,
+                 OrderStatus status, PaymentType paymentType, PaymentStatus paymentStatus, int totalPrice) {
         this.id = id;
         this.customer = customer;
         this.restaurant = restaurant;
         this.rider = rider;
         this.delivery = delivery;
         this.status = status;
+        this.paymentType = paymentType;
+        this.paymentStatus = paymentStatus;
         this.totalPrice = totalPrice;
     }
 
-    public static Order createOrder(Customer customer, Restaurant restaurant, Delivery delivery) {
+    public static Order createOrder(Customer customer, Restaurant restaurant, Delivery delivery,
+                                    PaymentType paymentType, PaymentStatus paymentStatus, int totalPrice) {
         final Order order = Order.builder()
                 .customer(customer)
                 .restaurant(restaurant)
                 .delivery(delivery)
                 .status(ORDER)
+                .paymentType(paymentType)
+                .paymentStatus(paymentStatus)
+                .totalPrice(totalPrice)
                 .build();
 
         return order;
@@ -86,6 +92,9 @@ public class Order extends BaseTimeEntity {
         this.delivery.changeAll(orderDelivery.getPrice(), orderDelivery.getDistance(),
                 orderDelivery.getAddress(), orderDelivery.getStatus());
         this.status = updateRequest.getOrderStatus();
+        this.paymentType = updateRequest.getPaymentType();
+        this.paymentStatus = updateRequest.getPaymentStatus();
+        this.totalPrice = updateRequest.getTotalPrice();
     }
 
     public void assigned(Rider rider) {
