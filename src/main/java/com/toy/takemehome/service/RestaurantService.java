@@ -59,6 +59,11 @@ public class RestaurantService {
         restaurantRepository.delete(restaurant);
     }
 
+    public List<Restaurant> findAll() {
+        final List<Restaurant> restaurants = findAllRestaurant();
+        return restaurants;
+    }
+
     public List<Restaurant> findAllByOwner(Long ownerId) {
         final Owner owner = findOwnerById(ownerId);
         final List<Restaurant> restaurants = findAllRestaurantByOwner(owner);
@@ -76,6 +81,10 @@ public class RestaurantService {
                 .orElseThrow(() -> new NoSuchElementException(
                         String.format("input owner id: %d, no such elementException", ownerId)));
 
+    }
+
+    private List<Restaurant> findAllRestaurant() {
+        return restaurantRepository.findAll();
     }
 
     private List<Restaurant> findAllRestaurantByOwner(Owner owner) {
