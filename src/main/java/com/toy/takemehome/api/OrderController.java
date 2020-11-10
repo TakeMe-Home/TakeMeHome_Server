@@ -1,5 +1,6 @@
 package com.toy.takemehome.api;
 
+import com.toy.takemehome.dto.location.LocationDetail;
 import com.toy.takemehome.dto.order.*;
 import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
@@ -137,6 +138,17 @@ public class OrderController {
             final OrdersResponseWithoutMenu ordersResponse = new OrdersResponseWithoutMenu(orders);
             return DefaultRes.res(OK, FIND_ORDER, ordersResponse);
         } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(NOT_FOUND, NOT_FOUND_ORDER);
+        }
+    }
+
+    @GetMapping("nearby")
+    public DefaultRes<List<OrderNearbyResponse>> findAllNearby(@RequestBody LocationDetail locationDetail){
+        try {
+            final List<OrderNearbyResponse> orderNearbyResponses = orderRepository.findAllNearBy(locationDetail);
+            return DefaultRes.res(OK, FIND_ORDER, orderNearbyResponses);
+        }catch (Exception e){
             log.error(e.getMessage());
             return DefaultRes.res(NOT_FOUND, NOT_FOUND_ORDER);
         }
