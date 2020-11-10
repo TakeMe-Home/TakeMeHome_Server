@@ -49,8 +49,8 @@ public class RestaurantService {
         final Restaurant restaurant = findRestaurantById(id);
         final Owner owner = findOwnerById(updateRequest.getOwnerId());
 
-        restaurant.update(owner, restaurant.getName(), restaurant.getNumber(), restaurant.getAddress(),
-                restaurant.getLocation());
+        restaurant.update(owner, updateRequest.getName(), updateRequest.getNumber(), updateRequest.getAddress(),
+                updateRequest.getLocation());
     }
 
     @Transactional
