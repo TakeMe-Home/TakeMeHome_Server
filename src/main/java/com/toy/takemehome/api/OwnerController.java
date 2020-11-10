@@ -34,7 +34,7 @@ public class OwnerController {
         }
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public DefaultRes<Long> login(@RequestBody LoginRequest loginRequest){
         try {
             Long id = ownerService.login(loginRequest);

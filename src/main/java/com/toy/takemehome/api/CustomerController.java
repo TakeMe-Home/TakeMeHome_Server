@@ -33,7 +33,7 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public DefaultRes<Long> login(@RequestBody LoginRequest loginRequest){
         try {
             Long id = customerService.login(loginRequest);

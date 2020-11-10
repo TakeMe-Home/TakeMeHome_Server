@@ -3,9 +3,7 @@ package com.toy.takemehome.dto.order;
 import com.querydsl.core.annotations.QueryProjection;
 import com.toy.takemehome.dto.menu.MenuNameCount;
 import com.toy.takemehome.dto.menu.MenuNameCounts;
-import com.toy.takemehome.entity.order.Order;
-import com.toy.takemehome.entity.order.OrderMenu;
-import com.toy.takemehome.entity.order.OrderStatus;
+import com.toy.takemehome.entity.order.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +19,9 @@ public class OrderFindResponse {
     private OrderRestaurant orderRestaurant;
     private OrderRider orderRider;
     private OrderStatus orderStatus;
+    private PaymentType paymentType;
+    private PaymentStatus paymentStatus;
+    private int totalPrice;
     private MenuNameCounts menuNameCounts;
 
     @QueryProjection
@@ -32,6 +33,9 @@ public class OrderFindResponse {
         this.orderDelivery = new OrderDelivery(order.getDelivery());
         this.orderRestaurant = new OrderRestaurant(order.getRestaurant());
         this.orderStatus = order.getStatus();
+        this.paymentType = order.getPaymentType();
+        this.paymentStatus = order.getPaymentStatus();
+        this.totalPrice = order.getTotalPrice();
         this.menuNameCounts = new MenuNameCounts(createMenuNameCounts(orderMenus));
     }
 

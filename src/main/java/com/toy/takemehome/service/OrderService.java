@@ -49,7 +49,8 @@ public class OrderService {
                 .status(DeliveryStatus.NONE)
                 .build();
 
-        final Order order = Order.createOrder(customer, restaurant, delivery);
+        final Order order = Order.createOrder(customer, restaurant, delivery, saveRequest.getPaymentType(),
+                saveRequest.getPaymentStatus(), saveRequest.getTotalPrice());
         orderRepository.save(order);
         saveOrderMenusRepository(order, saveRequest.getMenuIdCounts());
         return order.getId();

@@ -33,7 +33,7 @@ public class RiderController {
         }
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public DefaultRes<Long> login(@RequestBody LoginRequest loginRequest){
         try {
             Long id = riderService.login(loginRequest);
