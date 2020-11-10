@@ -12,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.toy.takemehome.utils.ResponseMessage.*;
 import static com.toy.takemehome.utils.StatusCode.*;
 
@@ -35,11 +38,11 @@ public class OwnerController {
     }
 
     @PostMapping("/login")
-    public DefaultRes<Long> login(@RequestBody LoginRequest loginRequest){
+    public DefaultRes<Long> login(@RequestBody LoginRequest loginRequest) {
         try {
             Long id = ownerService.login(loginRequest);
             return DefaultRes.res(OK, LOGIN_SUCCESS, id);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, LOGIN_FAIL);
         }
@@ -77,6 +80,20 @@ public class OwnerController {
         } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, DELETE_OWNER_FAIL);
+        }
+    }
+
+    @GetMapping
+    public DefaultRes<List<OwnerDetail>> findAll() {
+        try {
+            final List<Owner> owners = ownerService.findAll();
+            final List<OwnerDetail> ownerDetails = owners.stream()
+                    .map(OwnerDetail::new)
+                    .collect(Collectors.toList());
+            return DefaultRes.res(OK, FIND_ORDER, ownerDetails);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, NOT_FOUND_OWNER);
         }
     }
 
