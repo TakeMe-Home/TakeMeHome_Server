@@ -1,5 +1,6 @@
 package com.toy.takemehome.repository.order;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.toy.takemehome.dto.order.OrderFindAllResponse;
@@ -8,10 +9,13 @@ import com.toy.takemehome.entity.menu.QMenu;
 import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
 import com.toy.takemehome.entity.restaurant.Restaurant;
+import com.toy.takemehome.entity.rider.QRider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -107,6 +111,30 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
         return new OrderFindAllResponse(orderFindResponses);
     }
 
+    @Override
+    @Transactional
+    public List<Order> findAllByDate(LocalDateTime startDate, LocalDateTime endDate) {
+        final List<Order> orders = queryFactory
+                .selectFrom(order)
+                .innerJoin(order.customer).fetchJoin()
+                .innerJoin(order.restaurant).fetchJoin()
+                .innerJoin(order.delivery).fetchJoin()
+                .where(dateBetween(startDate, endDate))
+                .fetch();
+
+        final List<Order> assignedOrders = orders.stream()
+                .filter(Order::isAssigned)
+                .collect(Collectors.toList());
+
+        queryFactory
+                .selectFrom(order)
+                .innerJoin(order.rider).fetchJoin()
+                .where(order.id.in(toOrderIds(assignedOrders)))
+                .fetch();
+
+        return orders;
+    }
+
     private List<Long> toOrderIds(List<Order> orders) {
         return orders.stream()
                 .map(Order::getId)
@@ -140,5 +168,9 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
 
     private BooleanExpression restaurantEq(Long restaurantId) {
         return order.restaurant.id.eq(restaurantId);
+    }
+
+    private BooleanExpression dateBetween(LocalDateTime startDate, LocalDateTime endDate) {
+        return order.createdDate.between(startDate, endDate);
     }
 }

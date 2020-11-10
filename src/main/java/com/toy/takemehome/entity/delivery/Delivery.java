@@ -51,6 +51,10 @@ public class Delivery {
         return this.status != NONE && this.status != REQUEST;
     }
 
+    public boolean isNotAssigned() {
+        return !isAssigned();
+    }
+
     public void assigned() {
         checkAssigned();
         this.status = ASSIGNED;

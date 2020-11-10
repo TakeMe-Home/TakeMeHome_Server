@@ -2,6 +2,7 @@ package com.toy.takemehome.service;
 
 import com.toy.takemehome.dto.delivery.DeliveryOrderRequest;
 import com.toy.takemehome.dto.menu.MenuIdCounts;
+import com.toy.takemehome.dto.order.OrderDateCondition;
 import com.toy.takemehome.dto.order.OrderSaveRequest;
 import com.toy.takemehome.dto.order.OrderUpdateRequest;
 import com.toy.takemehome.entity.customer.Customer;
@@ -21,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -115,6 +117,11 @@ public class OrderService {
         return orders;
     }
 
+    public List<Order> findAlLByDate(OrderDateCondition orderDataCondition) {
+        final List<Order> orders = findAllOrderByDate(orderDataCondition.getStartDate(), orderDataCondition.getEndDate());
+        return orders;
+    }
+
     private void saveOrderMenusRepository(Order order, MenuIdCounts menuIdCounts) {
         final List<OrderMenu> orderMenus = menuIdCounts.getMenuIdCounts().stream()
                 .map(orderMenu -> OrderMenu.builder()
@@ -183,5 +190,9 @@ public class OrderService {
     private List<Order> findAllOrderByRestaurant(Restaurant restaurant) {
         return orderRepository.findAllByRestaurant(restaurant);
 
+    }
+
+    private List<Order> findAllOrderByDate(LocalDateTime startDate, LocalDateTime endDate) {
+        return orderRepository.findAllByDate(startDate, endDate);
     }
 }

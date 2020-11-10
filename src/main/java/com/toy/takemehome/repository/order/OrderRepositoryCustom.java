@@ -5,6 +5,7 @@ import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
 import com.toy.takemehome.entity.restaurant.Restaurant;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,4 +17,5 @@ public interface OrderRepositoryCustom{
     List<Order> findAllByRestaurant(Long restaurantId);
     List<OrderMenu> findOrderMenusByOrderId(Long orderId);
     OrderFindAllResponse findAllByRestaurantWithMenus(Long RestaurantId);
+    List<Order> findAllByDate(LocalDateTime startDate, LocalDateTime endDate);
 }
