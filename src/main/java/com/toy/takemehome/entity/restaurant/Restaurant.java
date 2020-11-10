@@ -62,4 +62,8 @@ public class Restaurant extends BaseTimeEntity {
         this.number = number;
         this.address = address;
     }
+
+    public double calculateDistance(Location location){
+        return this.location.calculateDistance(location);
+    }
 }

@@ -1,12 +1,12 @@
 package com.toy.takemehome.service;
 
-import com.toy.takemehome.dto.delivery.DeliveryOrderRequest;
 import com.toy.takemehome.dto.menu.MenuIdCounts;
 import com.toy.takemehome.dto.order.OrderDateCondition;
 import com.toy.takemehome.dto.order.OrderSaveRequest;
 import com.toy.takemehome.dto.order.OrderUpdateRequest;
 import com.toy.takemehome.entity.customer.Customer;
 import com.toy.takemehome.entity.delivery.Delivery;
+import com.toy.takemehome.entity.delivery.DeliveryPrice;
 import com.toy.takemehome.entity.delivery.DeliveryStatus;
 import com.toy.takemehome.entity.menu.Menu;
 import com.toy.takemehome.entity.order.Order;
@@ -44,11 +44,11 @@ public class OrderService {
         final Customer customer = findCustomerById(saveRequest.getCustomerId());
         final Restaurant restaurant = findRestaurantById(saveRequest.getRestaurantId());
 
-        final DeliveryOrderRequest deliveryOrderRequest = saveRequest.getDeliveryOrderRequest();
+        double distance = restaurant.calculateDistance(customer.getLocation());
         final Delivery delivery = Delivery.builder()
                 .address(customer.getAddress())
-                .distance(deliveryOrderRequest.getDistance())
-                .price(deliveryOrderRequest.getPrice())
+                .distance(distance)
+                .price(DeliveryPrice.findPrice(distance))
                 .status(DeliveryStatus.NONE)
                 .build();
 

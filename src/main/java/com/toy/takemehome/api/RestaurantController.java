@@ -1,5 +1,6 @@
 package com.toy.takemehome.api;
 
+import com.toy.takemehome.dto.delivery.DeliveryPrice;
 import com.toy.takemehome.dto.restaurant.RestaurantDetail;
 import com.toy.takemehome.dto.restaurant.RestaurantFindAllResponse;
 import com.toy.takemehome.dto.restaurant.RestaurantSaveRequest;
@@ -71,12 +72,12 @@ public class RestaurantController {
     }
 
     @GetMapping
-    public DefaultRes<RestaurantFindAllResponse> findAll(){
+    public DefaultRes<RestaurantFindAllResponse> findAll() {
         try {
             final List<Restaurant> restaurants = restaurantService.findAll();
             final RestaurantFindAllResponse restaurantFindAllResponse = new RestaurantFindAllResponse(restaurants);
             return DefaultRes.res(OK, FIND_RESTAURANT, restaurantFindAllResponse);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, NOT_FOUND_RESTAURANT);
         }
@@ -91,6 +92,19 @@ public class RestaurantController {
         } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(NOT_FOUND, NOT_FOUND_RESTAURANT);
+        }
+    }
+
+    @GetMapping("/restaurant/{restaurantId}/{customerId}/distance")
+    public DefaultRes<DeliveryPrice> findDeliveryPrice(@PathVariable("restaurantId") Long restaurantId,
+                                                       @PathVariable("customerId") Long customerId) {
+        try {
+            final int price = restaurantService.findDeliveryPrice(restaurantId, customerId);
+            final DeliveryPrice deliveryPrice = new DeliveryPrice(price);
+            return DefaultRes.res(OK, FIND_DELIVERY_PRICE, deliveryPrice);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(NOT_FOUND, NOT_FOUND_DELIVERY_PRICE);
         }
     }
 }
