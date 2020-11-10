@@ -24,4 +24,5 @@ public interface OrderRepositoryCustom{
     List<Order> findAllWithAll();
     List<OrderNearbyResponse> findAllNearBy(LocationDetail locationDetail);
     List<Order> findAllByRiderWithAll(Rider rider);
+    List<Order> findAllByRiderAssigned(Rider rider);
 }

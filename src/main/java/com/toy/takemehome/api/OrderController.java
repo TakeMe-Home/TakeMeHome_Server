@@ -169,4 +169,19 @@ public class OrderController {
             return DefaultRes.res(NOT_FOUND, NOT_FOUND_ORDER);
         }
     }
+
+    @GetMapping("/riders/{riderId}/assigned")
+    public DefaultRes<List<OrderResponseWithoutMenu>> findAllByRiderAssigned(@PathVariable("riderId") Long riderId) {
+        try {
+            final List<Order> orders = orderService.findAllByRiderAssigned(riderId);
+            final List<OrderResponseWithoutMenu> ordersResponseWithoutMenu = orders.stream()
+                    .map(OrderResponseWithoutMenu::new)
+                    .collect(Collectors.toList());
+
+            return DefaultRes.res(OK, FIND_ORDER, ordersResponseWithoutMenu);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(NOT_FOUND, NOT_FOUND_ORDER);
+        }
+    }
 }

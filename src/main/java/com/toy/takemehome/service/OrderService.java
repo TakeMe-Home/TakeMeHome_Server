@@ -128,6 +128,13 @@ public class OrderService {
         return orders;
     }
 
+    public List<Order> findAllByRiderAssigned(Long riderId) {
+        final Rider rider = findRiderById(riderId);
+        final List<Order> orders = findAllOrderByRiderAssigned(rider);
+
+        return orders;
+    }
+
     private void saveOrderMenusRepository(Order order, MenuIdCounts menuIdCounts) {
         final List<OrderMenu> orderMenus = menuIdCounts.getMenuIdCounts().stream()
                 .map(orderMenu -> OrderMenu.builder()
@@ -204,5 +211,9 @@ public class OrderService {
 
     private List<Order> findAllOrderByRider(Rider rider) {
         return orderRepository.findAllByRiderWithAll(rider);
+    }
+
+    private List<Order> findAllOrderByRiderAssigned(Rider rider) {
+        return orderRepository.findAllByRiderAssigned(rider);
     }
 }

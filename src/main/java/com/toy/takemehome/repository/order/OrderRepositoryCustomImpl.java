@@ -154,6 +154,18 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
     }
 
     @Override
+    public List<Order> findAllByRiderAssigned(Rider rider) {
+        return queryFactory
+                .selectFrom(order)
+                .innerJoin(order.customer).fetchJoin()
+                .innerJoin(order.restaurant).fetchJoin()
+                .innerJoin(order.delivery).fetchJoin()
+                .innerJoin(order.rider).fetchJoin()
+                .where(assigned())
+                .fetch();
+    }
+
+    @Override
     public List<Order> findAllWithAll() {
         final List<Order> orders = queryFactory
                 .selectFrom(order)
@@ -224,5 +236,9 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
 
     private BooleanExpression dateBetween(LocalDateTime startDate, LocalDateTime endDate) {
         return order.createdDate.between(startDate, endDate);
+    }
+
+    private BooleanExpression assigned() {
+        return order.delivery.status.eq(DeliveryStatus.ASSIGNED);
     }
 }
