@@ -1,28 +1,26 @@
 package com.toy.takemehome.repository.order;
 
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.toy.takemehome.dto.location.Distance;
+import com.toy.takemehome.dto.location.LocationDetail;
 import com.toy.takemehome.dto.order.OrderFindAllResponse;
 import com.toy.takemehome.dto.order.OrderFindResponse;
-import com.toy.takemehome.entity.menu.QMenu;
+import com.toy.takemehome.dto.order.OrderNearbyResponse;
+import com.toy.takemehome.entity.Location;
+import com.toy.takemehome.entity.delivery.DeliveryStatus;
 import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
 import com.toy.takemehome.entity.restaurant.Restaurant;
-import com.toy.takemehome.entity.rider.QRider;
+import com.toy.takemehome.utils.MapUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.toy.takemehome.entity.menu.QMenu.*;
-import static com.toy.takemehome.entity.order.OrderStatus.*;
 import static com.toy.takemehome.entity.order.QOrder.*;
 import static com.toy.takemehome.entity.order.QOrderMenu.*;
 
@@ -122,15 +120,38 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
                 .where(dateBetween(startDate, endDate))
                 .fetch();
 
-        final List<Order> assignedOrders = orders.stream()
-                .filter(Order::isAssigned)
+        final List<Order> assignedOrders = findAssignedOrders(orders);
+        innerJoinRidersForOrders(assignedOrders);
+
+        return orders;
+    }
+
+    @Override
+    public List<OrderNearbyResponse> findAllNearBy(LocationDetail locationDetail) {
+        final List<Order> orders = findAllByRequestStatus();
+        final Location targetLocation = new Location(locationDetail.getX(), locationDetail.getY());
+
+        final Map<Order, Distance> orderDistanceMap = createOrderDistanceMap(orders, targetLocation);
+        final Map<Order, Distance> sortByValue = MapUtil.sortByValue(orderDistanceMap);
+
+        final List<OrderNearbyResponse> orderNearbyResponses = sortByValue.keySet().stream()
+                .map(o -> new OrderNearbyResponse(o, sortByValue.get(o).getDistance()))
                 .collect(Collectors.toList());
 
-        queryFactory
+        return orderNearbyResponses.size() > 10 ? orderNearbyResponses.subList(0, 11) : orderNearbyResponses;
+    }
+
+    @Override
+    public List<Order> findAllWithAll() {
+        final List<Order> orders = queryFactory
                 .selectFrom(order)
-                .innerJoin(order.rider).fetchJoin()
-                .where(order.id.in(toOrderIds(assignedOrders)))
+                .innerJoin(order.customer).fetchJoin()
+                .innerJoin(order.restaurant).fetchJoin()
+                .innerJoin(order.delivery).fetchJoin()
                 .fetch();
+
+        final List<Order> assignedOrders = findAssignedOrders(orders);
+        innerJoinRidersForOrders(assignedOrders);
 
         return orders;
     }
@@ -154,12 +175,31 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
                 .collect(Collectors.groupingBy(om -> om.getOrder().getId()));
     }
 
+    private Map<Order, Distance> createOrderDistanceMap(List<Order> orders, Location location) {
+        return orders.stream()
+                .collect(Collectors.toMap(o -> o, o -> new Distance(o.getTotalDistance(location))));
+    }
+
+    private List<Order> findAssignedOrders(List<Order> orders) {
+        return orders.stream()
+                .filter(Order::isAssigned)
+                .collect(Collectors.toList());
+    }
+
+    private void innerJoinRidersForOrders(List<Order> orders) {
+        queryFactory
+                .selectFrom(order)
+                .innerJoin(order.rider).fetchJoin()
+                .where(order.id.in(toOrderIds(orders)))
+                .fetch();
+    }
+
     private BooleanExpression orderIdEq(Long orderId) {
         return order.id.eq(orderId);
     }
 
     private BooleanExpression orderStatusRequest() {
-        return order.status.eq(REQUEST);
+        return order.delivery.status.eq(DeliveryStatus.REQUEST);
     }
 
     private BooleanExpression restaurantEq(Restaurant restaurant) {

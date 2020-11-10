@@ -2,6 +2,7 @@ package com.toy.takemehome.entity.order;
 
 import com.toy.takemehome.dto.order.*;
 import com.toy.takemehome.entity.BaseTimeEntity;
+import com.toy.takemehome.entity.Location;
 import com.toy.takemehome.entity.customer.Customer;
 import com.toy.takemehome.entity.delivery.Delivery;
 import com.toy.takemehome.entity.restaurant.Restaurant;
@@ -18,6 +19,7 @@ import static javax.persistence.GenerationType.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "orders")
+@EqualsAndHashCode(of = {"id"}, callSuper = false)
 public class Order extends BaseTimeEntity {
 
     @Id
@@ -113,6 +115,14 @@ public class Order extends BaseTimeEntity {
     public void cancel() {
         this.status = CANCEL;
         delivery.cancel();
+    }
+
+    public double getTotalDistance(Location location) {
+        return restaurant.calculateDistance(location) + customer.calculateDistance(location);
+    }
+
+    public double calculateLocation(Location location) {
+        return location.calculateDistance(location);
     }
 
     public void requestDelivery() {

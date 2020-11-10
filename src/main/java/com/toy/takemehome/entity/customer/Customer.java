@@ -63,4 +63,8 @@ public class Customer extends BaseTimeEntity {
     public void changePhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public double calculateDistance(Location location) {
+        return this.location.calculateDistance(location);
+    }
 }
