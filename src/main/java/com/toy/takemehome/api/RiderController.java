@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.toy.takemehome.utils.ResponseMessage.*;
 import static com.toy.takemehome.utils.StatusCode.*;
 
@@ -34,11 +37,11 @@ public class RiderController {
     }
 
     @PostMapping("/login")
-    public DefaultRes<Long> login(@RequestBody LoginRequest loginRequest){
+    public DefaultRes<Long> login(@RequestBody LoginRequest loginRequest) {
         try {
             Long id = riderService.login(loginRequest);
             return DefaultRes.res(OK, LOGIN_SUCCESS, id);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, LOGIN_FAIL);
         }
@@ -69,12 +72,27 @@ public class RiderController {
     }
 
     @DeleteMapping("/{id}")
-    public DefaultRes<Long> delete(@PathVariable("id") Long id){
+    public DefaultRes<Long> delete(@PathVariable("id") Long id) {
         try {
             riderService.delete(id);
             return DefaultRes.res(OK, DELETE_RIDER, id);
-        }catch (Exception e){
+        } catch (Exception e) {
+            log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, DELETE_RIDER_FAIL);
+        }
+    }
+
+    @GetMapping
+    public DefaultRes<List<RiderDetail>> findAll() {
+        try {
+            final List<Rider> riders = riderService.findAll();
+            final List<RiderDetail> riderDetails = riders.stream()
+                    .map(RiderDetail::new)
+                    .collect(Collectors.toList());
+            return DefaultRes.res(OK, FIND_RIDER, riderDetails);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(NOT_FOUND, NOT_FOUND_RIDER);
         }
     }
 }

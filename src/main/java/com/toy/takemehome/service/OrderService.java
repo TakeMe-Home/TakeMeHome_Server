@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -115,13 +116,19 @@ public class OrderService {
     }
 
     private void saveOrderMenusRepository(Order order, MenuIdCounts menuIdCounts) {
-        menuIdCounts.getMenuIdCounts().stream()
+        final List<OrderMenu> orderMenus = menuIdCounts.getMenuIdCounts().stream()
                 .map(orderMenu -> OrderMenu.builder()
                         .menu(findMenuById(orderMenu.getMenuId()))
                         .order(order)
                         .count(orderMenu.getCount())
                         .build())
-                .forEach(orderMenuRepository::save);
+                .collect(Collectors.toList());
+
+        orderMenus.forEach(orderMenu -> {
+            if (orderMenu.isSoldOut())
+                throw new IllegalArgumentException(String.format("input menu %s, sold out menu!", orderMenu.getMenu().getName()));
+            orderMenuRepository.save(orderMenu);
+        });
     }
 
     private Order findOrderByIdWithAll(Long id) {

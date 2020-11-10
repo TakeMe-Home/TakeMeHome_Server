@@ -49,14 +49,19 @@ public class RestaurantService {
         final Restaurant restaurant = findRestaurantById(id);
         final Owner owner = findOwnerById(updateRequest.getOwnerId());
 
-        restaurant.update(owner, restaurant.getName(), restaurant.getNumber(), restaurant.getAddress(),
-                restaurant.getLocation());
+        restaurant.update(owner, updateRequest.getName(), updateRequest.getNumber(), updateRequest.getAddress(),
+                updateRequest.getLocation());
     }
 
     @Transactional
     public void delete(Long id) {
         final Restaurant restaurant = findRestaurantById(id);
         restaurantRepository.delete(restaurant);
+    }
+
+    public List<Restaurant> findAll() {
+        final List<Restaurant> restaurants = findAllRestaurant();
+        return restaurants;
     }
 
     public List<Restaurant> findAllByOwner(Long ownerId) {
@@ -76,6 +81,10 @@ public class RestaurantService {
                 .orElseThrow(() -> new NoSuchElementException(
                         String.format("input owner id: %d, no such elementException", ownerId)));
 
+    }
+
+    private List<Restaurant> findAllRestaurant() {
+        return restaurantRepository.findAll();
     }
 
     private List<Restaurant> findAllRestaurantByOwner(Owner owner) {

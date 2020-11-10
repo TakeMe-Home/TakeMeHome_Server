@@ -70,12 +70,24 @@ public class RestaurantController {
         }
     }
 
+    @GetMapping
+    public DefaultRes<RestaurantFindAllResponse> findAll(){
+        try {
+            final List<Restaurant> restaurants = restaurantService.findAll();
+            final RestaurantFindAllResponse restaurantFindAllResponse = new RestaurantFindAllResponse(restaurants);
+            return DefaultRes.res(OK, FIND_RESTAURANT, restaurantFindAllResponse);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, NOT_FOUND_RESTAURANT);
+        }
+    }
+
     @GetMapping("/{ownerId}")
     public DefaultRes<RestaurantFindAllResponse> findAllByOwner(@PathVariable("ownerId") Long ownerId) {
         try {
             final List<Restaurant> restaurants = restaurantService.findAllByOwner(ownerId);
-            final RestaurantFindAllResponse restaurantFindAllRequest = new RestaurantFindAllResponse(restaurants);
-            return DefaultRes.res(OK, FIND_RESTAURANT, restaurantFindAllRequest);
+            final RestaurantFindAllResponse restaurantFindAllResponse = new RestaurantFindAllResponse(restaurants);
+            return DefaultRes.res(OK, FIND_RESTAURANT, restaurantFindAllResponse);
         } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(NOT_FOUND, NOT_FOUND_RESTAURANT);

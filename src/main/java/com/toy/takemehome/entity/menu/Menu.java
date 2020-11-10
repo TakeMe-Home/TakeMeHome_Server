@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static com.toy.takemehome.entity.menu.MenuStatus.*;
 import static javax.persistence.FetchType.*;
 
 @Entity
@@ -46,5 +47,21 @@ public class Menu {
         this.name = name;
         this.price = price;
         this.status = status;
+    }
+
+    public void soldOut() {
+        this.status = SOLD_OUT;
+    }
+
+    public void sale() {
+        this.status = SALE;
+    }
+
+    public boolean isSoldOut() {
+        return this.status == SOLD_OUT;
+    }
+
+    public boolean isNotSoldOut() {
+        return !isSoldOut();
     }
 }

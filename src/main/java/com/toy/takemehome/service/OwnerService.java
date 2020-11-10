@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -65,6 +66,11 @@ public class OwnerService {
         ownerRepository.delete(owner);
     }
 
+    public List<Owner> findAll() {
+        final List<Owner> owners = findAllOwner();
+        return owners;
+    }
+
     @Transactional
     public Long signUpWithRestaurant(OwnerRestaurantSignUpRequest signUpRequest) {
         final OwnerSignUpRequest ownerSignUpRequest = signUpRequest.getOwnerSignUpRequest();
@@ -111,5 +117,9 @@ public class OwnerService {
                 .orElseThrow(() -> new NoSuchElementException(
                         String.format("input owner id: %d, no such elementException", ownerId)));
 
+    }
+
+    private List<Owner> findAllOwner() {
+        return ownerRepository.findAll();
     }
 }

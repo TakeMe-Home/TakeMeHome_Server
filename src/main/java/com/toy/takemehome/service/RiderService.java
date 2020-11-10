@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -59,6 +60,11 @@ public class RiderService {
         riderRepository.delete(rider);
     }
 
+    public List<Rider> findAll() {
+        final List<Rider> riders = findAllRider();
+        return riders;
+    }
+
     private Rider findRiderByEmailPassword(String email, String password) {
         return riderRepository.findByEmailAndPassword(email, password)
                 .orElseThrow(() -> new IllegalArgumentException("rider login fail!! mismatch email or password"));
@@ -75,5 +81,9 @@ public class RiderService {
             throw new IllegalArgumentException(
                     String.format("input email: %s, rider signUp email duplicate!", email));
         }
+    }
+
+    private List<Rider> findAllRider() {
+        return riderRepository.findAll();
     }
 }

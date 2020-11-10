@@ -68,6 +68,12 @@ public class ResponseMessage {
     public static String DELETE_MENU = "메뉴 삭제 성공";
     public static String DELETE_MENU_FAIL = "메뉴 삭제 실패";
 
+    public static String SOLD_OUT_MENU = "메뉴 품절 변환 성공";
+    public static String SOLD_OUT_MENU_FAIL = "메뉴 품절 변환 실패";
+
+    public static String SALE_MENU = "메뉴 판매 성공";
+    public static String SALE_MENU_FAIL = "메뉴 판매 실패";
+
     //order
     public static final String CREATE_ORDER = "주문 등록 성공";
     public static final String CREATE_ORDER_FAIL = "주문 등록 실패";

@@ -8,17 +8,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RiderDetail {
 
-    private String id;
+    private Long id;
     private String name;
     private String email;
     private String password;
     private String phoneNumber;
 
     public RiderDetail(Rider rider) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
+        this.id = rider.getId();
+        this.name = rider.getName();
+        this.email = rider.getEmail();
+        this.password = rider.getPassword();
+        this.phoneNumber = rider.getPhoneNumber();
     }
 }
