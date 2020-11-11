@@ -12,6 +12,7 @@ import com.toy.takemehome.entity.delivery.DeliveryStatus;
 import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
 import com.toy.takemehome.entity.restaurant.Restaurant;
+import com.toy.takemehome.entity.rider.Rider;
 import com.toy.takemehome.utils.MapUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -142,6 +143,29 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
     }
 
     @Override
+    public List<Order> findAllByRiderWithAll(Rider rider) {
+        return queryFactory
+                .selectFrom(order)
+                .innerJoin(order.customer).fetchJoin()
+                .innerJoin(order.restaurant).fetchJoin()
+                .innerJoin(order.delivery).fetchJoin()
+                .innerJoin(order.rider).fetchJoin()
+                .fetch();
+    }
+
+    @Override
+    public List<Order> findAllByRiderAssigned(Rider rider) {
+        return queryFactory
+                .selectFrom(order)
+                .innerJoin(order.customer).fetchJoin()
+                .innerJoin(order.restaurant).fetchJoin()
+                .innerJoin(order.delivery).fetchJoin()
+                .innerJoin(order.rider).fetchJoin()
+                .where(assigned())
+                .fetch();
+    }
+
+    @Override
     public List<Order> findAllWithAll() {
         final List<Order> orders = queryFactory
                 .selectFrom(order)
@@ -212,5 +236,9 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
 
     private BooleanExpression dateBetween(LocalDateTime startDate, LocalDateTime endDate) {
         return order.createdDate.between(startDate, endDate);
+    }
+
+    private BooleanExpression assigned() {
+        return order.delivery.status.eq(DeliveryStatus.ASSIGNED);
     }
 }

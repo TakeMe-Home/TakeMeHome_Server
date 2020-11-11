@@ -9,6 +9,10 @@ group = 'com.toy'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
+springBoot {
+    mainClassName = "com.toy.takemehome.TakemehomeApplication"
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor

@@ -121,6 +121,32 @@ public class OrderService {
         return orders;
     }
 
+    public List<Order> findAllByRider(Long riderid) {
+        final Rider rider = findRiderById(riderid);
+        final List<Order> orders = findAllOrderByRider(rider);
+
+        return orders;
+    }
+
+    public List<Order> findAllByRiderAssigned(Long riderId) {
+        final Rider rider = findRiderById(riderId);
+        final List<Order> orders = findAllOrderByRiderAssigned(rider);
+
+        return orders;
+    }
+
+    @Transactional
+    public void pickup(Long orderId) {
+        final Order order = findOrderById(orderId);
+        order.pickup();
+    }
+
+    @Transactional
+    public void complete(Long orderId) {
+        final Order order = findOrderById(orderId);
+        order.complete();
+    }
+
     private void saveOrderMenusRepository(Order order, MenuIdCounts menuIdCounts) {
         final List<OrderMenu> orderMenus = menuIdCounts.getMenuIdCounts().stream()
                 .map(orderMenu -> OrderMenu.builder()
@@ -193,5 +219,13 @@ public class OrderService {
 
     private List<Order> findAllOrderByDate(LocalDateTime startDate, LocalDateTime endDate) {
         return orderRepository.findAllByDate(startDate, endDate);
+    }
+
+    private List<Order> findAllOrderByRider(Rider rider) {
+        return orderRepository.findAllByRiderWithAll(rider);
+    }
+
+    private List<Order> findAllOrderByRiderAssigned(Rider rider) {
+        return orderRepository.findAllByRiderAssigned(rider);
     }
 }

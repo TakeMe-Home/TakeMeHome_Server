@@ -1,5 +1,5 @@
 package com.toy.takemehome.entity.order;
 
 public enum OrderStatus {
-    REQUEST, ORDER, CANCEL
+    REQUEST, ORDER, CANCEL, COMPLETE
 }

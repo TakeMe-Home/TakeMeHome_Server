@@ -93,6 +93,12 @@ public class ResponseMessage {
     public static String ORDER_DELIVERY_REQUEST = "주문 배달 요청 성공";
     public static String ORDER_DELIVERY_REQUEST_FAIL = "주문 배달 요청 실패";
 
+    public static String ORDER_COMPLETE = "주문 완료";
+    public static String ORDER_COMPLETE_FAIL = "주문 완료 실패";
+
+    public static String ORDER_PICKUP = "주문 픽업";
+    public static String ORDER_PICKUP_FAIL = "주문 픽업 실패";
+
     //delivery
     public static String FIND_DELIVERY_PRICE = "배달 가격 조회 성공";
     public static String NOT_FOUND_DELIVERY_PRICE = "배달 가격 조회 실패";
