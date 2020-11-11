@@ -184,4 +184,15 @@ public class OrderController {
             return DefaultRes.res(NOT_FOUND, NOT_FOUND_ORDER);
         }
     }
+
+    @PutMapping("/order/{orderId}/complete")
+    public DefaultRes<Long> complete(@PathVariable("orderId") Long orderId) {
+        try {
+            orderService.complete(orderId);
+            return DefaultRes.res(OK, DELIVERY_COMPLETE, orderId);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, DELIVERY_COMPLETE_FAIL);
+        }
+    }
 }

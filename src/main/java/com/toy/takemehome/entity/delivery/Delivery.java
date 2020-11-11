@@ -68,6 +68,10 @@ public class Delivery {
         this.status = REQUEST;
     }
 
+    public void complete() {
+        this.status = COMPLETE;
+    }
+
     private void checkAssigned() {
         if (this.status != REQUEST) {
             throw new IllegalArgumentException(

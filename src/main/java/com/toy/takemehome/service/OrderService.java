@@ -135,6 +135,12 @@ public class OrderService {
         return orders;
     }
 
+    @Transactional
+    public void complete(Long orderId) {
+        final Order order = findOrderById(orderId);
+        order.complete();
+    }
+
     private void saveOrderMenusRepository(Order order, MenuIdCounts menuIdCounts) {
         final List<OrderMenu> orderMenus = menuIdCounts.getMenuIdCounts().stream()
                 .map(orderMenu -> OrderMenu.builder()

@@ -129,6 +129,11 @@ public class Order extends BaseTimeEntity {
         delivery.request();
     }
 
+    public void complete() {
+        this.status = COMPLETE;
+        this.delivery.complete();
+    }
+
     private boolean notAssignedRider() {
         return !isAssigned();
     }
