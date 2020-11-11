@@ -72,6 +72,18 @@ public class Delivery {
         this.status = COMPLETE;
     }
 
+    public void pickup() {
+        this.status = PICK_UP;
+    }
+
+    public boolean isNotPickup() {
+        return !isPickUp();
+    }
+
+    private boolean isPickUp() {
+        return this.status == PICK_UP;
+    }
+
     private void checkAssigned() {
         if (this.status != REQUEST) {
             throw new IllegalArgumentException(

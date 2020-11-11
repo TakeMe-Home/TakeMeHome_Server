@@ -136,6 +136,12 @@ public class OrderService {
     }
 
     @Transactional
+    public void pickup(Long orderId) {
+        final Order order = findOrderById(orderId);
+        order.pickup();
+    }
+
+    @Transactional
     public void complete(Long orderId) {
         final Order order = findOrderById(orderId);
         order.complete();

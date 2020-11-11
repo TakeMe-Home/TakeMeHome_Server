@@ -130,8 +130,16 @@ public class Order extends BaseTimeEntity {
     }
 
     public void complete() {
+        if (this.delivery.isNotPickup()) {
+            throw new IllegalArgumentException(
+                    String.format("current delivery status: %s, delivery status must pickup", this.delivery.getStatus()));
+        }
         this.status = COMPLETE;
         this.delivery.complete();
+    }
+
+    public void pickup() {
+        this.delivery.pickup();
     }
 
     private boolean notAssignedRider() {

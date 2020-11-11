@@ -185,14 +185,25 @@ public class OrderController {
         }
     }
 
+    @PutMapping("/order/{orderId}/pickup")
+    public DefaultRes<Long> pickup(@PathVariable("orderId") Long orderId) {
+        try {
+            orderService.pickup(orderId);
+            return DefaultRes.res(OK, ORDER_PICKUP, orderId);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, ORDER_PICKUP_FAIL);
+        }
+    }
+
     @PutMapping("/order/{orderId}/complete")
     public DefaultRes<Long> complete(@PathVariable("orderId") Long orderId) {
         try {
             orderService.complete(orderId);
-            return DefaultRes.res(OK, DELIVERY_COMPLETE, orderId);
+            return DefaultRes.res(OK, ORDER_COMPLETE, orderId);
         }catch (Exception e){
             log.error(e.getMessage());
-            return DefaultRes.res(BAD_REQUEST, DELIVERY_COMPLETE_FAIL);
+            return DefaultRes.res(BAD_REQUEST, ORDER_COMPLETE_FAIL);
         }
     }
 }
