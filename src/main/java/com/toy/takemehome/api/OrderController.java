@@ -2,11 +2,15 @@ package com.toy.takemehome.api;
 
 import com.toy.takemehome.dto.location.LocationDetail;
 import com.toy.takemehome.dto.order.*;
+import com.toy.takemehome.entity.customer.Customer;
 import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
 import com.toy.takemehome.repository.order.OrderRepository;
+import com.toy.takemehome.service.CustomerService;
 import com.toy.takemehome.service.OrderService;
+import com.toy.takemehome.service.fcm.FirebaseCloudMessageService;
 import com.toy.takemehome.utils.DefaultRes;
+import com.toy.takemehome.utils.notification.NotificationBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +20,7 @@ import java.util.stream.Collectors;
 
 import static com.toy.takemehome.utils.ResponseMessage.*;
 import static com.toy.takemehome.utils.StatusCode.*;
+import static com.toy.takemehome.utils.notification.NotificationTitle.*;
 
 @Slf4j
 @RestController
@@ -25,11 +30,15 @@ public class OrderController {
 
     private final OrderService orderService;
     private final OrderRepository orderRepository;
+    private final CustomerService customerService;
+    private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     @PostMapping("/reception")
     public DefaultRes<Long> reception(@RequestBody OrderSaveRequest saveRequest) {
         try {
             final Long id = orderService.reception(saveRequest);
+            final Customer customer = customerService.findOneById(saveRequest.getCustomerId());
+            firebaseCloudMessageService.sendMessageTo(customer.getToken(), ORDER_RECEPTION, NotificationBody.ORDER_RECEPTION);
             return DefaultRes.res(OK, CREATE_ORDER, id);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -190,7 +199,7 @@ public class OrderController {
         try {
             orderService.pickup(orderId);
             return DefaultRes.res(OK, ORDER_PICKUP, orderId);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, ORDER_PICKUP_FAIL);
         }
@@ -201,7 +210,7 @@ public class OrderController {
         try {
             orderService.complete(orderId);
             return DefaultRes.res(OK, ORDER_COMPLETE, orderId);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, ORDER_COMPLETE_FAIL);
         }
