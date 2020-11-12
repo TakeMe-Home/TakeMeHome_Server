@@ -1,5 +1,7 @@
 package com.toy.takemehome.dto.common;
 
+import com.sun.istack.NotNull;
+import com.sun.istack.Nullable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,8 +15,12 @@ public class LoginRequest {
     private String email;
     private String password;
 
-    public LoginRequest(String email, String password) {
+    @NotNull
+    private String token;
+
+    public LoginRequest(String email, String password, String token) {
         this.email = email;
         this.password = password;
+        this.token = token;
     }
 }

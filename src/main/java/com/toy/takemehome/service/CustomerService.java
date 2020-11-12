@@ -38,8 +38,10 @@ public class CustomerService {
         return createCustomer.getId();
     }
 
+    @Transactional
     public Long login(LoginRequest loginRequest) {
         final Customer customer = findCustomerByEmailPassword(loginRequest.getEmail(), loginRequest.getPassword());
+        customer.setToken(loginRequest.getToken());
         return customer.getId();
     }
 
