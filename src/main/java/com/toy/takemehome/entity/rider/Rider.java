@@ -33,13 +33,17 @@ public class Rider extends BaseTimeEntity {
     @Column(nullable = false)
     private String phoneNumber;
 
+    @Column
+    private String token;
+
     @Builder
-    public Rider(Long id, String name, @Email String email, String password, String phoneNumber) {
+    public Rider(Long id, String name, @Email String email, String password, String phoneNumber, String token) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
+        this.token = token;
     }
 
     public void update(String name, String email, String password, String phoneNumber) {
@@ -52,5 +56,9 @@ public class Rider extends BaseTimeEntity {
     public void changeNamePhoneNumber(String name, String phoneNumber) {
         this.name = name;
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

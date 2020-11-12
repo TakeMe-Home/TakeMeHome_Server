@@ -36,14 +36,18 @@ public class Owner extends BaseTimeEntity {
     @Column(nullable = false)
     private String address;
 
+    @Column
+    private String token;
+
     @Builder
-    public Owner(Long id, String name, @Email String email, String password, String phoneNumber, String address) {
+    public Owner(Long id, String name, @Email String email, String password, String phoneNumber, String address, String token) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.token = token;
     }
 
     public void update(String name, String email, String password, String phoneNumber, String address) {
@@ -52,5 +56,9 @@ public class Owner extends BaseTimeEntity {
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.address = address;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

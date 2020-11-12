@@ -41,14 +41,19 @@ public class Customer extends BaseTimeEntity {
     @Embedded
     private Location location;
 
+    @Column
+    private String token;
+
     @Builder
-    public Customer(String name, @Email String email, String password, String phoneNumber, String address, Location location) {
+    public Customer(String name, @Email String email, String password, String phoneNumber,
+                    String address, Location location, String token) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.location = location;
+        this.token = token;
     }
 
     public void update(String name, String email, String password, String phoneNumber, String address, Location location) {
@@ -66,5 +71,9 @@ public class Customer extends BaseTimeEntity {
 
     public double calculateDistance(Location location) {
         return this.location.calculateDistance(location);
+    }
+
+    public void setToken(String totken) {
+        this.token = totken;
     }
 }
