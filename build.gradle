@@ -36,6 +36,12 @@ dependencies {
     //p6spy
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
 
+    // firebase sdk
+    implementation 'com.google.firebase:firebase-admin:6.8.1'
+
+    // okhttp
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'mysql:mysql-connector-java'
 
