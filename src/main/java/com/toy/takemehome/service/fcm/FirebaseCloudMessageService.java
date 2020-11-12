@@ -43,7 +43,7 @@ public class FirebaseCloudMessageService {
                 .message(FcmMessage.Message.builder()
                         .token(targetToken)
                         .notification(FcmMessage.Notification.builder()
-                                .titie(title)
+                                .title(title)
                                 .body(body)
                                 .image(null)
                                 .build()
