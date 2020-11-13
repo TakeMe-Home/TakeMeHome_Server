@@ -38,11 +38,25 @@ public class OrderController {
         try {
             final Long id = orderService.reception(saveRequest);
             final Customer customer = customerService.findOneById(saveRequest.getCustomerId());
-            firebaseCloudMessageService.sendMessageTo(customer.getToken(), ORDER_RECEPTION, NotificationBody.ORDER_RECEPTION);
+            firebaseCloudMessageService.sendMessageTo(
+                    customer.getToken(), ORDER_RECEPTION, NotificationBody.orderReceptionWithTime(saveRequest.getRequiredTime()));
             return DefaultRes.res(OK, CREATE_ORDER, id);
         } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, CREATE_ORDER_FAIL);
+        }
+    }
+
+    @PostMapping("/refuse")
+    public DefaultRes refuse(@RequestBody OrderRefuseRequest refuseRequest) {
+        try {
+            final Customer customer = customerService.findOneById(refuseRequest.getCustomerId());
+            firebaseCloudMessageService.sendMessageTo(
+                    customer.getToken(), ORDER_REFUSE, NotificationBody.orderRefuseWithTime(refuseRequest.getReason()));
+            return DefaultRes.res(OK, CANCEL_ORDER);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, CANCEL_ORDER_FAIL);
         }
     }
 
