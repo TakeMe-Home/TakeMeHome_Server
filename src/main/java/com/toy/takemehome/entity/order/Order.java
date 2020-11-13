@@ -53,10 +53,11 @@ public class Order extends BaseTimeEntity {
     private PaymentStatus paymentStatus;
 
     private int totalPrice;
+    private int requiredTime;
 
     @Builder
     public Order(Long id, Customer customer, Restaurant restaurant, Rider rider, Delivery delivery,
-                 OrderStatus status, PaymentType paymentType, PaymentStatus paymentStatus, int totalPrice) {
+                 OrderStatus status, PaymentType paymentType, PaymentStatus paymentStatus, int totalPrice, int requiredTime) {
         this.id = id;
         this.customer = customer;
         this.restaurant = restaurant;
@@ -66,10 +67,11 @@ public class Order extends BaseTimeEntity {
         this.paymentType = paymentType;
         this.paymentStatus = paymentStatus;
         this.totalPrice = totalPrice;
+        this.requiredTime = requiredTime;
     }
 
     public static Order createOrder(Customer customer, Restaurant restaurant, Delivery delivery,
-                                    PaymentType paymentType, PaymentStatus paymentStatus, int totalPrice) {
+                                    PaymentType paymentType, PaymentStatus paymentStatus, int totalPrice, int requiredTime) {
         final Order order = Order.builder()
                 .customer(customer)
                 .restaurant(restaurant)
@@ -78,6 +80,7 @@ public class Order extends BaseTimeEntity {
                 .paymentType(paymentType)
                 .paymentStatus(paymentStatus)
                 .totalPrice(totalPrice)
+                .requiredTime(requiredTime)
                 .build();
 
         return order;

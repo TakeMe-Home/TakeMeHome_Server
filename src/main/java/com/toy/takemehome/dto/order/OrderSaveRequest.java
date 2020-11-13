@@ -16,14 +16,16 @@ public class OrderSaveRequest {
     private PaymentType paymentType;
     private PaymentStatus paymentStatus;
     private int totalPrice;
+    private int requiredTime;
 
-    public OrderSaveRequest(Long customerId, Long restaurantId, MenuIdCounts menuIdCounts,
-                            PaymentType paymentType, PaymentStatus paymentStatus, int totalPrice) {
+    public OrderSaveRequest(Long customerId, Long restaurantId, MenuIdCounts menuIdCounts, PaymentType paymentType,
+                            PaymentStatus paymentStatus, int totalPrice, int requiredTime) {
         this.customerId = customerId;
         this.restaurantId = restaurantId;
         this.menuIdCounts = menuIdCounts;
         this.paymentType = paymentType;
         this.paymentStatus = paymentStatus;
         this.totalPrice = totalPrice;
+        this.requiredTime = requiredTime;
     }
 }
