@@ -54,6 +54,7 @@ public class Order extends BaseTimeEntity {
 
     private int totalPrice;
     private int requiredTime;
+    private int cookingTime;
 
     @Builder
     public Order(Long id, Customer customer, Restaurant restaurant, Rider rider, Delivery delivery,
@@ -128,8 +129,9 @@ public class Order extends BaseTimeEntity {
         return location.calculateDistance(location);
     }
 
-    public void requestDelivery() {
+    public void requestDelivery(int cookingTime) {
         delivery.request();
+        this.cookingTime = cookingTime;
     }
 
     public void complete() {
