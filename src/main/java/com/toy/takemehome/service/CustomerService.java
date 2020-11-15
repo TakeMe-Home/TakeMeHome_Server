@@ -4,7 +4,9 @@ import com.toy.takemehome.dto.common.LoginRequest;
 import com.toy.takemehome.dto.customer.CustomerSignUpRequest;
 import com.toy.takemehome.dto.customer.CustomerUpdateRequest;
 import com.toy.takemehome.entity.customer.Customer;
+import com.toy.takemehome.entity.restaurant.Restaurant;
 import com.toy.takemehome.repository.CustomerRepository;
+import com.toy.takemehome.repository.restaurant.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.Optional;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final RestaurantRepository restaurantRepository;
 
     @Transactional
     public Long signUp(CustomerSignUpRequest signUpRequest) {
@@ -38,8 +41,10 @@ public class CustomerService {
         return createCustomer.getId();
     }
 
+    @Transactional
     public Long login(LoginRequest loginRequest) {
         final Customer customer = findCustomerByEmailPassword(loginRequest.getEmail(), loginRequest.getPassword());
+        customer.setToken(loginRequest.getToken());
         return customer.getId();
     }
 
@@ -63,6 +68,11 @@ public class CustomerService {
         customerRepository.delete(findCustomer);
     }
 
+    public String findOwnerToken(Long restaurantId) {
+        final Restaurant restaurant = findRestaurantById(restaurantId);
+        return restaurant.findOwnerToken();
+    }
+
     private void checkDuplicateEmail(String email) {
         final Optional<Customer> findCustomer = customerRepository.findByEmail(email);
         if (findCustomer.isPresent()) {
@@ -80,5 +90,10 @@ public class CustomerService {
     private Customer findCustomerById(Long id) {
         return customerRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException(String.format("input customer id: %d, no such elementException", id)));
+    }
+
+    private Restaurant findRestaurantById(Long restaurantId) {
+        return restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new NoSuchElementException(String.format("input customer id: %d, no such elementException", restaurantId)));
     }
 }

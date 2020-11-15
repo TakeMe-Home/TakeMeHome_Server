@@ -16,6 +16,9 @@ public class ResponseMessage {
     public static String DELETE_CUSTOMER = "고객 회원 탈퇴 성공";
     public static String DELETE_CUSTOMER_FAIL = "고객 회원 탈퇴 실패";
 
+    public static String CUSTOMER_ORDER = "고객 주문 성공";
+    public static String CUSTOMER_ORDER_FAIL = "고객 주문 실패";
+
     //rider
     public static final String CREATE_RIDER = "라이더 회원 가입 성공";
     public static final String CREATE_RIDER_FAIL = "라이더 회원 가입 실패";

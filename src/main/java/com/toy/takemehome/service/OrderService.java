@@ -52,7 +52,7 @@ public class OrderService {
                 .build();
 
         final Order order = Order.createOrder(customer, restaurant, delivery, saveRequest.getPaymentType(),
-                saveRequest.getPaymentStatus(), saveRequest.getTotalPrice());
+                saveRequest.getPaymentStatus(), saveRequest.getTotalPrice(), saveRequest.getRequiredTime());
         orderRepository.save(order);
         saveOrderMenusRepository(order, saveRequest.getMenuIdCounts());
         return order.getId();

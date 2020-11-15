@@ -41,8 +41,10 @@ public class OwnerService {
         return owner.getId();
     }
 
+    @Transactional
     public Long login(LoginRequest loginRequest) {
         final Owner owner = findOwnerByEmailPassword(loginRequest.getEmail(), loginRequest.getPassword());
+        owner.setToken(loginRequest.getToken());
         return owner.getId();
     }
 

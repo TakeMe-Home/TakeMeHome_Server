@@ -35,8 +35,10 @@ public class RiderService {
         return rider.getId();
     }
 
+    @Transactional
     public Long login(LoginRequest loginRequest) {
         final Rider rider = findRiderByEmailPassword(loginRequest.getEmail(), loginRequest.getPassword());
+        rider.setToken(loginRequest.getToken());
         return rider.getId();
     }
 
