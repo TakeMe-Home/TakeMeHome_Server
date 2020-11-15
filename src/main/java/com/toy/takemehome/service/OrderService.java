@@ -2,6 +2,7 @@ package com.toy.takemehome.service;
 
 import com.toy.takemehome.dto.menu.MenuIdCounts;
 import com.toy.takemehome.dto.order.OrderDateCondition;
+import com.toy.takemehome.dto.order.OrderDeliveryRequest;
 import com.toy.takemehome.dto.order.OrderSaveRequest;
 import com.toy.takemehome.dto.order.OrderUpdateRequest;
 import com.toy.takemehome.entity.customer.Customer;
@@ -105,9 +106,9 @@ public class OrderService {
     }
 
     @Transactional
-    public void requestDelivery(Long orderId) {
+    public void requestDelivery(Long orderId, OrderDeliveryRequest orderDeliveryRequest) {
         final Order order = findOrderById(orderId);
-        order.requestDelivery();
+        order.requestDelivery(orderDeliveryRequest.getCookingTime());
     }
 
     public List<Order> findAllByRestaurant(Long restaurantId) {
