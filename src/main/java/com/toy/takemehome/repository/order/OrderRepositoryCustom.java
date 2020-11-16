@@ -22,7 +22,7 @@ public interface OrderRepositoryCustom{
     OrderFindAllResponse findAllByRestaurantWithMenus(Long RestaurantId);
     List<Order> findAllByDate(LocalDateTime startDate, LocalDateTime endDate);
     List<Order> findAllWithAll();
-    List<OrderNearbyResponse> findAllNearBy(LocationDetail locationDetail);
+    List<OrderNearbyResponse> findAllNearBy(double x, double y);
     List<Order> findAllByRiderWithAll(Rider rider);
     List<Order> findAllByRiderAssigned(Rider rider);
 }

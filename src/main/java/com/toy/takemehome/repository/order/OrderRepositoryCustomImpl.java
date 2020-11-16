@@ -128,9 +128,9 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
     }
 
     @Override
-    public List<OrderNearbyResponse> findAllNearBy(LocationDetail locationDetail) {
+    public List<OrderNearbyResponse> findAllNearBy(double x, double y) {
         final List<Order> orders = findAllByRequestStatus();
-        final Location targetLocation = new Location(locationDetail.getX(), locationDetail.getY());
+        final Location targetLocation = new Location(x, y);
 
         final Map<Order, Distance> orderDistanceMap = createOrderDistanceMap(orders, targetLocation);
         final Map<Order, Distance> sortByValue = MapUtil.sortByValue(orderDistanceMap);
