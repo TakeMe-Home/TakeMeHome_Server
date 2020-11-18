@@ -57,8 +57,8 @@ public class Order extends BaseTimeEntity {
     private int cookingTime;
 
     @Builder
-    public Order(Long id, Customer customer, Restaurant restaurant, Rider rider, Delivery delivery,
-                 OrderStatus status, PaymentType paymentType, PaymentStatus paymentStatus, int totalPrice, int requiredTime) {
+    public Order(Long id, Customer customer, Restaurant restaurant, Rider rider, Delivery delivery, OrderStatus status,
+                 PaymentType paymentType, PaymentStatus paymentStatus, int totalPrice, int requiredTime, int cookingTime) {
         this.id = id;
         this.customer = customer;
         this.restaurant = restaurant;
@@ -69,6 +69,7 @@ public class Order extends BaseTimeEntity {
         this.paymentStatus = paymentStatus;
         this.totalPrice = totalPrice;
         this.requiredTime = requiredTime;
+        this.cookingTime = cookingTime;
     }
 
     public static Order createOrder(Customer customer, Restaurant restaurant, Delivery delivery,

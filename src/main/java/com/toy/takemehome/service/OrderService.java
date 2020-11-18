@@ -117,8 +117,8 @@ public class OrderService {
         return orders;
     }
 
-    public List<Order> findAlLByDate(OrderDateCondition orderDataCondition) {
-        final List<Order> orders = findAllOrderByDate(orderDataCondition.getStartDate(), orderDataCondition.getEndDate());
+    public List<Order> findAlLByDate(LocalDateTime startDate, LocalDateTime endDate) {
+        final List<Order> orders = findAllOrderByDate(startDate, endDate);
         return orders;
     }
 

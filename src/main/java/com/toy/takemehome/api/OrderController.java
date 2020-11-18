@@ -1,6 +1,5 @@
 package com.toy.takemehome.api;
 
-import com.toy.takemehome.dto.location.LocationDetail;
 import com.toy.takemehome.dto.order.*;
 import com.toy.takemehome.entity.customer.Customer;
 import com.toy.takemehome.entity.order.Order;
@@ -15,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -156,10 +156,11 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/date")
-    public DefaultRes<OrdersResponseWithoutMenu> findAllByDate(@RequestBody OrderDateCondition orderDataCondition) {
+    @GetMapping("/between")
+    public DefaultRes<OrdersResponseWithoutMenu> findAllByDate(@RequestParam LocalDateTime startDate,
+                                                               @RequestParam LocalDateTime endDate) {
         try {
-            final List<Order> orders = orderService.findAlLByDate(orderDataCondition);
+            final List<Order> orders = orderService.findAlLByDate(startDate, endDate);
             final OrdersResponseWithoutMenu ordersResponse = new OrdersResponseWithoutMenu(orders);
             return DefaultRes.res(OK, FIND_ORDER, ordersResponse);
         } catch (Exception e) {
@@ -169,9 +170,10 @@ public class OrderController {
     }
 
     @GetMapping("nearby")
-    public DefaultRes<List<OrderNearbyResponse>> findAllNearby(@RequestBody LocationDetail locationDetail) {
+    public DefaultRes<List<OrderNearbyResponse>> findAllNearby(@RequestParam double x,
+                                                               @RequestParam double y) {
         try {
-            final List<OrderNearbyResponse> orderNearbyResponses = orderRepository.findAllNearBy(locationDetail);
+            final List<OrderNearbyResponse> orderNearbyResponses = orderRepository.findAllNearBy(x, y);
             return DefaultRes.res(OK, FIND_ORDER, orderNearbyResponses);
         } catch (Exception e) {
             log.error(e.getMessage());
