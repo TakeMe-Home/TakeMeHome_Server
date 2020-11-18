@@ -49,9 +49,11 @@ public class RiderService {
 
     @Transactional
     public void update(Long id, RiderUpdateRequest updateRequest) {
-        checkDuplicateEmail(updateRequest.getEmail());
-
         final Rider rider = findRiderById(id);
+        if(rider.isNotEqualsEmail(updateRequest.getEmail())){
+            checkDuplicateEmail(updateRequest.getEmail());
+        }
+
         rider.update(updateRequest.getName(), updateRequest.getEmail(), updateRequest.getPassword(),
                 updateRequest.getPhoneNumber());
     }
