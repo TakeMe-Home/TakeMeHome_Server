@@ -134,9 +134,10 @@ public class OrderController {
     }
 
     @PutMapping("/order/{orderId}/request/delivery/")
-    public DefaultRes<Long> requestDelivery(@PathVariable("orderId") Long orderId) {
+    public DefaultRes<Long> requestDelivery(@PathVariable("orderId") Long orderId,
+                                            @RequestBody OrderDeliveryRequest orderDeliveryRequest) {
         try {
-            orderService.requestDelivery(orderId);
+            orderService.requestDelivery(orderId, orderDeliveryRequest);
             return DefaultRes.res(OK, ORDER_DELIVERY_REQUEST, orderId);
         } catch (Exception e) {
             log.error(e.getMessage());
