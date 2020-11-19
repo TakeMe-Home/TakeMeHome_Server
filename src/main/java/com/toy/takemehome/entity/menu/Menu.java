@@ -36,6 +36,7 @@ public class Menu {
 
     @Builder
     public Menu(Long id, Restaurant restaurant, String name, int price, MenuStatus status) {
+        checkPositiveOrZeroPrice(price);
         this.id = id;
         this.restaurant = restaurant;
         this.name = name;
@@ -63,5 +64,11 @@ public class Menu {
 
     public boolean isNotSoldOut() {
         return !isSoldOut();
+    }
+
+    private void checkPositiveOrZeroPrice(int price) {
+        if(price <= 0){
+            throw new IllegalArgumentException(String.format("input price %d, price must positive or zero number", price));
+        }
     }
 }

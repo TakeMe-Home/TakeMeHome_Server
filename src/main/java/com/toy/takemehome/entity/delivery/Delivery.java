@@ -33,6 +33,7 @@ public class Delivery {
 
     @Builder
     public Delivery(Long id, int price, double distance, String address, DeliveryStatus status) {
+        checkPositiveOrZeroPrice(price);
         this.id = id;
         this.price = price;
         this.distance = distance;
@@ -41,6 +42,7 @@ public class Delivery {
     }
 
     public void changeAll(int price, double distance, String address, DeliveryStatus status) {
+        checkPositiveOrZeroPrice(price);
         this.price = price;
         this.distance = distance;
         this.address = address;
@@ -88,6 +90,12 @@ public class Delivery {
         if (this.status != REQUEST) {
             throw new IllegalArgumentException(
                     String.format("current assigment status: %s, can't assigned delivery!", this.status));
+        }
+    }
+
+    private void checkPositiveOrZeroPrice(int price) {
+        if (price <= 0) {
+            throw new IllegalArgumentException(String.format("input price %d, price must positive or zero number", price));
         }
     }
 }
