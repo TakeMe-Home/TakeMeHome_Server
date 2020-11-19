@@ -104,6 +104,12 @@ public class OwnerService {
         return owner.getId();
     }
 
+    @Transactional
+    public void logout(Long id) {
+        final Owner owner = findOwnerById(id);
+        owner.logout();
+    }
+
     private Owner findOwnerByEmailPassword(String email, String password) {
         return ownerRepository.findByEmailAndPassword(email, password)
                 .orElseThrow(() -> new IllegalArgumentException("owner login fail!! mismatch email or password"));

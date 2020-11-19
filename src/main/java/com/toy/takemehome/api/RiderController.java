@@ -47,6 +47,17 @@ public class RiderController {
         }
     }
 
+    @DeleteMapping("/rider/{id}/logout")
+    public DefaultRes<Long> logout(@PathVariable("id") Long id) {
+        try {
+            riderService.logout(id);
+            return DefaultRes.res(OK, LOGOUT_SUCCESS, id);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, LOGOUT_FAIL);
+        }
+    }
+
     @GetMapping("/rider/{id}")
     public DefaultRes<RiderDetail> findOne(@PathVariable Long id) {
         try {

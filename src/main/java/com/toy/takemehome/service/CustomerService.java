@@ -44,8 +44,14 @@ public class CustomerService {
     @Transactional
     public Long login(LoginRequest loginRequest) {
         final Customer customer = findCustomerByEmailPassword(loginRequest.getEmail(), loginRequest.getPassword());
-        customer.setToken(loginRequest.getToken());
+        customer.login(loginRequest.getToken());
         return customer.getId();
+    }
+
+    @Transactional
+    public void logout(Long id) {
+        final Customer customer = findCustomerById(id);
+        customer.logout();
     }
 
     public Customer findOneById(Long id) {

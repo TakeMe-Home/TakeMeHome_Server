@@ -48,6 +48,17 @@ public class OwnerController {
         }
     }
 
+    @DeleteMapping("/owner/{id}/logout")
+    public DefaultRes<Long> logout(@PathVariable("id") Long id) {
+        try {
+            ownerService.logout(id);
+            return DefaultRes.res(OK, LOGOUT_SUCCESS, id);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, LOGOUT_FAIL);
+        }
+    }
+
     @GetMapping("/owner/{id}")
     public DefaultRes<OwnerDetail> findOneById(@PathVariable("id") Long id) {
         try {

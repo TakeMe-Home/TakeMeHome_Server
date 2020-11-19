@@ -48,6 +48,17 @@ public class CustomerController {
         }
     }
 
+    @DeleteMapping("/customer/{id}/logout")
+    public DefaultRes<Long> logout(@PathVariable("id") Long id) {
+        try {
+            customerService.logout(id);
+            return DefaultRes.res(OK, LOGOUT_SUCCESS, id);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, LOGOUT_FAIL);
+        }
+    }
+
     @GetMapping("/customer/{id}")
     public DefaultRes<CustomerDetail> findOne(@PathVariable Long id) {
         try {
