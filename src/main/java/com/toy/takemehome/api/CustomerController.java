@@ -1,14 +1,12 @@
 package com.toy.takemehome.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toy.takemehome.dto.common.LoginRequest;
-import com.toy.takemehome.dto.customer.CustomerDetail;
-import com.toy.takemehome.dto.customer.CustomerSignUpRequest;
-import com.toy.takemehome.dto.customer.CustomerUpdateRequest;
+import com.toy.takemehome.dto.customer.*;
 import com.toy.takemehome.entity.customer.Customer;
 import com.toy.takemehome.service.CustomerService;
 import com.toy.takemehome.service.fcm.FirebaseCloudMessageService;
 import com.toy.takemehome.utils.DefaultRes;
-import com.toy.takemehome.utils.notification.NotificationBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +23,7 @@ public class CustomerController {
 
     private final CustomerService customerService;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
+    private final ObjectMapper objectMapper;
 
     @PostMapping
     public DefaultRes<Long> signUp(@RequestBody CustomerSignUpRequest signUpRequest) {
@@ -93,12 +92,16 @@ public class CustomerController {
         }
     }
 
-    @PostMapping("/customer/order/{restaurantId}")
-    public DefaultRes<String> order(@PathVariable("restaurantId") Long restaurantId) {
+    @PostMapping("/customer/order")
+    public DefaultRes<CustomerOrderResponse> order(@RequestBody CustomerOrderRequest customerOrderRequest) {
         try {
-            final String token = customerService.findOwnerToken(restaurantId);
-            firebaseCloudMessageService.sendMessageTo(token, ORDER_REQUEST, NotificationBody.ORDER_REQUEST);
-            return DefaultRes.res(OK, CUSTOMER_ORDER, token);
+            final String token = customerService.findOwnerToken(customerOrderRequest.getRestaurantId());
+            final CustomerOrderResponse customerOrderResponse = new CustomerOrderResponse(customerOrderRequest.getMenuNameCounts(),
+                    customerOrderRequest.getTotalPrice(), customerOrderRequest.getCustomerAddress());
+
+            firebaseCloudMessageService.sendMessageTo(token, ORDER_REQUEST, objectMapper.writeValueAsBytes(customerOrderResponse));
+
+            return DefaultRes.res(OK, CUSTOMER_ORDER, customerOrderResponse);
         } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, CUSTOMER_ORDER_FAIL);
