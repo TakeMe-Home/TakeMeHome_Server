@@ -56,7 +56,7 @@ public class Customer extends BaseTimeEntity {
         this.token = token;
     }
 
-    public void update(String name, String email, String password, String phoneNumber, String address, Location location) {
+    public void update(String name, @Email String email, String password, String phoneNumber, String address, Location location) {
         this.name = name;
         this.email = email;
         this.password = password;
