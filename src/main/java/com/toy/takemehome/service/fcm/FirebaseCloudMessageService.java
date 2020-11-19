@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.common.collect.ImmutableList;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.apache.http.HttpHeaders;
 import org.springframework.core.io.ClassPathResource;
@@ -12,14 +13,16 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
-public class FirebaseCloudMessageService {
+public class FirebaseCloudMessageService<T> {
     private static final String API_URL =
             "https://fcm.googleapis.com/v1/projects/toy-takemehome/messages:send";
     private final ObjectMapper objectMapper;
 
-    public void sendMessageTo(String targetToken, String title, String body) throws IOException {
+    public void
+    sendMessageTo(String targetToken, String title, T body) throws IOException {
         String message = makeMessage(targetToken, title, body);
 
         OkHttpClient client = new OkHttpClient();
@@ -35,10 +38,10 @@ public class FirebaseCloudMessageService {
         Response response = client.newCall(request)
                 .execute();
 
-        System.out.println(response.body().string());
+        log.info(response.body().string());
     }
 
-    private String makeMessage(String targetToken, String title, String body) throws JsonProcessingException {
+    private String makeMessage(String targetToken, String title, T body) throws JsonProcessingException {
         FcmMessage fcmMessage = FcmMessage.builder()
                 .message(FcmMessage.Message.builder()
                         .token(targetToken)

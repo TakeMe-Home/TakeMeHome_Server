@@ -76,7 +76,7 @@ public class CustomerService {
     }
 
     public String findOwnerToken(Long restaurantId) {
-        final Restaurant restaurant = findRestaurantById(restaurantId);
+        final Restaurant restaurant = findRestaurantByIdWithOwner(restaurantId);
         return restaurant.findOwnerToken();
     }
 
@@ -101,6 +101,11 @@ public class CustomerService {
 
     private Restaurant findRestaurantById(Long restaurantId) {
         return restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new NoSuchElementException(String.format("input customer id: %d, no such elementException", restaurantId)));
+                .orElseThrow(() -> new NoSuchElementException(String.format("input restaurant id: %d, no such elementException", restaurantId)));
+    }
+
+    private Restaurant findRestaurantByIdWithOwner(Long restaurantId) {
+        return restaurantRepository.findOneByIdWithOwner(restaurantId)
+                .orElseThrow(() -> new NoSuchElementException(String.format("input restaurant id: %d, no such elementException", restaurantId)));
     }
 }
