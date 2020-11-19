@@ -33,6 +33,8 @@ public class OrderMenu {
 
     @Builder
     public OrderMenu(Long id, Order order, Menu menu, int count) {
+        checkPositiveNumber(count);
+
         this.id = id;
         this.order = order;
         this.menu = menu;
@@ -41,5 +43,11 @@ public class OrderMenu {
 
     public boolean isSoldOut() {
         return this.getMenu().isSoldOut();
+    }
+
+    private void checkPositiveNumber(int count) {
+        if (count <= 0) {
+            throw new IllegalArgumentException(String.format("input count %d, must positive or zero number!", count));
+        }
     }
 }
