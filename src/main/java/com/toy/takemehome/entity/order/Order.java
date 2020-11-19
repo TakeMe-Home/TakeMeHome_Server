@@ -90,6 +90,7 @@ public class Order extends BaseTimeEntity {
 
     public void update(OrderUpdateRequest updateRequest) {
         checkAssignedRider();
+        checkPositiveOrZeroNumber(updateRequest.getTotalPrice());
         this.customer.changePhoneNumber(updateRequest.getCustomerName());
 
         final OrderRider orderRider = updateRequest.getOrderRider();
@@ -155,6 +156,12 @@ public class Order extends BaseTimeEntity {
     private void checkAssignedRider() {
         if (notAssignedRider()) {
             throw new IllegalArgumentException(String.format("current order id: %d, not assigned rider!", this.id));
+        }
+    }
+
+    private void checkPositiveOrZeroNumber(int number) {
+        if (number < 0) {
+            throw new IllegalArgumentException(String.format("input number %d, must positive or zero number!", number));
         }
     }
 }
