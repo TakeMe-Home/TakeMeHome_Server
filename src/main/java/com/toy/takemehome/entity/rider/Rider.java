@@ -46,7 +46,7 @@ public class Rider extends BaseTimeEntity {
         this.token = token;
     }
 
-    public void update(String name, String email, String password, String phoneNumber) {
+    public void update(String name, @Email String email, String password, String phoneNumber) {
         this.name = name;
         this.email = email;
         this.password = password;
