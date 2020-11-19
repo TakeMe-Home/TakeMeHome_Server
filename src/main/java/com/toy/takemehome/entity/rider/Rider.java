@@ -61,4 +61,12 @@ public class Rider extends BaseTimeEntity {
     public void setToken(String token) {
         this.token = token;
     }
+
+    public boolean isNotEqualsEmail(String email) {
+        return !isEqualsEmail(email);
+    }
+
+    private boolean isEqualsEmail(String email) {
+        return this.email.equals(email);
+    }
 }

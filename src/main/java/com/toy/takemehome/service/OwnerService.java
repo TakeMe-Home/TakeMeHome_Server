@@ -56,6 +56,9 @@ public class OwnerService {
     @Transactional
     public void update(Long id, OwnerUpdateRequest updateRequest) {
         final Owner owner = findOwnerById(id);
+        if(owner.isNotEqualsEmail(updateRequest.getEmail())){
+            checkDuplicateEmail(updateRequest.getEmail());
+        }
 
         owner.update(updateRequest.getName(), updateRequest.getEmail(), updateRequest.getPassword(),
                 updateRequest.getPhoneNumber(), updateRequest.getAddress());

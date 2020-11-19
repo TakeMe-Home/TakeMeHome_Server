@@ -61,4 +61,12 @@ public class Owner extends BaseTimeEntity {
     public void setToken(String token) {
         this.token = token;
     }
+
+    public boolean isNotEqualsEmail(String email) {
+        return !isEqualsEmail(email);
+    }
+
+    public boolean isEqualsEmail(String email){
+        return this.email.equals(email);
+    }
 }

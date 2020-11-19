@@ -55,9 +55,10 @@ public class CustomerService {
 
     @Transactional
     public void update(Long id, CustomerUpdateRequest updateRequest) {
-        checkDuplicateEmail(updateRequest.getEmail());
-
         Customer customer = findCustomerById(id);
+        if (customer.isNotEqualsEmail(updateRequest.getEmail())) {
+            checkDuplicateEmail(updateRequest.getEmail());
+        }
         customer.update(updateRequest.getName(), updateRequest.getEmail(), updateRequest.getPassword(),
                 updateRequest.getPhoneNumber(), updateRequest.getAddress(), updateRequest.getLocation());
     }

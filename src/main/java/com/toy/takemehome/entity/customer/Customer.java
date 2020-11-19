@@ -76,4 +76,12 @@ public class Customer extends BaseTimeEntity {
     public void setToken(String totken) {
         this.token = totken;
     }
+
+    public boolean isNotEqualsEmail(String email) {
+        return !isEqualsEmail(email);
+    }
+
+    private boolean isEqualsEmail(String email) {
+        return this.email.equals(email);
+    }
 }
