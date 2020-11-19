@@ -73,8 +73,12 @@ public class Customer extends BaseTimeEntity {
         return this.location.calculateDistance(location);
     }
 
-    public void setToken(String totken) {
+    public void login(String totken) {
         this.token = totken;
+    }
+
+    public void logout() {
+        this.token = null;
     }
 
     public boolean isNotEqualsEmail(String email) {

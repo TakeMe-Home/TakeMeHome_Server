@@ -109,4 +109,7 @@ public class ResponseMessage {
     //common
     public static String LOGIN_SUCCESS = "로그인 성공";
     public static String LOGIN_FAIL = "로그인 실패";
+
+    public static String LOGOUT_SUCCESS = "로그아웃 성공";
+    public static String LOGOUT_FAIL = "로그아웃 실패";
 }

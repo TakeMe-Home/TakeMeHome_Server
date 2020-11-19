@@ -42,6 +42,12 @@ public class RiderService {
         return rider.getId();
     }
 
+    @Transactional
+    public void logout(Long id) {
+        final Rider rider = findRiderById(id);
+        rider.logout();
+    }
+
     public Rider findOneById(Long id) {
         final Rider rider = findRiderById(id);
         return rider;
