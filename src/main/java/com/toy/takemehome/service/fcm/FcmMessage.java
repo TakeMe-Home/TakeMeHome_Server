@@ -1,0 +1,31 @@
+package com.toy.takemehome.service.fcm;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+
+@Builder
+@AllArgsConstructor
+@Getter
+public class FcmMessage {
+
+    private boolean validate_only;
+    private Message message;
+
+    @Builder
+    @AllArgsConstructor
+    @Getter
+    public static class Message {
+        private Notification notification;
+        private String token;
+    }
+
+    @Builder
+    @AllArgsConstructor
+    @Getter
+    public static class Notification <T> {
+        private String title;
+        private T body;
+        private String image;
+    }
+}

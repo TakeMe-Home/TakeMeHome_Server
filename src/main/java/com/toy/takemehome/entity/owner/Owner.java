@@ -1,8 +1,8 @@
 package com.toy.takemehome.entity.owner;
 
-import com.toy.takemehome.entity.Address;
 import com.toy.takemehome.entity.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,6 +33,44 @@ public class Owner extends BaseTimeEntity {
     @Column(nullable = false)
     private String phoneNumber;
 
-    @Embedded
-    private Address address;
+    @Column(nullable = false)
+    private String address;
+
+    @Column
+    private String token;
+
+    @Builder
+    public Owner(Long id, String name, @Email String email, String password, String phoneNumber, String address, String token) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.token = token;
+    }
+
+    public void update(String name, @Email String email, String password, String phoneNumber, String address) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void logout() {
+        this.token = null;
+    }
+
+    public boolean isNotEqualsEmail(String email) {
+        return !isEqualsEmail(email);
+    }
+
+    public boolean isEqualsEmail(String email){
+        return this.email.equals(email);
+    }
 }

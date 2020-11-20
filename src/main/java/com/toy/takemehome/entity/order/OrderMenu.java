@@ -2,6 +2,7 @@ package com.toy.takemehome.entity.order;
 
 import com.toy.takemehome.entity.menu.Menu;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,4 +30,24 @@ public class OrderMenu {
 
     @Column(nullable = false)
     private int count;
+
+    @Builder
+    public OrderMenu(Long id, Order order, Menu menu, int count) {
+        checkPositiveNumber(count);
+
+        this.id = id;
+        this.order = order;
+        this.menu = menu;
+        this.count = count;
+    }
+
+    public boolean isSoldOut() {
+        return this.getMenu().isSoldOut();
+    }
+
+    private void checkPositiveNumber(int count) {
+        if (count <= 0) {
+            throw new IllegalArgumentException(String.format("input count %d, must positive or zero number!", count));
+        }
+    }
 }

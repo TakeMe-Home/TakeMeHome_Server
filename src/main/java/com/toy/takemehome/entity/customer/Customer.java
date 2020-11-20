@@ -1,8 +1,9 @@
 package com.toy.takemehome.entity.customer;
 
-import com.toy.takemehome.entity.Address;
 import com.toy.takemehome.entity.BaseTimeEntity;
+import com.toy.takemehome.entity.Location;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +17,8 @@ import static javax.persistence.GenerationType.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Customer extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = IDENTITY)
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "customer_id")
     private Long id;
 
@@ -33,6 +35,57 @@ public class Customer extends BaseTimeEntity {
     @Column(nullable = false)
     private String phoneNumber;
 
+    @Column(nullable = false)
+    private String address;
+
     @Embedded
-    private Address address;
+    private Location location;
+
+    @Column
+    private String token;
+
+    @Builder
+    public Customer(String name, @Email String email, String password, String phoneNumber,
+                    String address, Location location, String token) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.location = location;
+        this.token = token;
+    }
+
+    public void update(String name, @Email String email, String password, String phoneNumber, String address, Location location) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.location = location;
+    }
+
+    public void changePhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public double calculateDistance(Location location) {
+        return this.location.calculateDistance(location);
+    }
+
+    public void login(String totken) {
+        this.token = totken;
+    }
+
+    public void logout() {
+        this.token = null;
+    }
+
+    public boolean isNotEqualsEmail(String email) {
+        return !isEqualsEmail(email);
+    }
+
+    private boolean isEqualsEmail(String email) {
+        return this.email.equals(email);
+    }
 }

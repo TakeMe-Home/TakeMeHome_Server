@@ -1,5 +1,5 @@
 package com.toy.takemehome.entity.delivery;
 
 public enum  DeliveryStatus {
-    REQUEST, PICK_UP, COMPLITE
+    REQUEST, ASSIGNED, PICK_UP, COMPLETE, NONE
 }

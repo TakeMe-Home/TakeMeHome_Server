@@ -1,9 +1,10 @@
 package com.toy.takemehome.entity.restaurant;
 
-import com.toy.takemehome.entity.Address;
 import com.toy.takemehome.entity.BaseTimeEntity;
+import com.toy.takemehome.entity.Location;
 import com.toy.takemehome.entity.owner.Owner;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +18,8 @@ import static javax.persistence.GenerationType.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Restaurant extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = IDENTITY)
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "restaurant_id")
     private Long id;
 
@@ -31,6 +33,41 @@ public class Restaurant extends BaseTimeEntity {
     @Column(nullable = false)
     private String number;
 
+    @Column(nullable = false)
+    private String address;
+
     @Embedded
-    private Address address;
+    private Location location;
+
+    @Builder
+    public Restaurant(Long id, Owner owner, String name, String number, String address, Location location) {
+        this.id = id;
+        this.owner = owner;
+        this.name = name;
+        this.number = number;
+        this.address = address;
+        this.location = location;
+    }
+
+    public void update(Owner owner, String name, String number, String address, Location location) {
+        this.owner = owner;
+        this.name = name;
+        this.number = number;
+        this.address = address;
+        this.location = location;
+    }
+
+    public void changeNameNumberAddress(String name, String number, String address) {
+        this.name = name;
+        this.number = number;
+        this.address = address;
+    }
+
+    public double calculateDistance(Location location) {
+        return this.location.calculateDistance(location);
+    }
+
+    public String findOwnerToken() {
+        return this.owner.getToken();
+    }
 }
