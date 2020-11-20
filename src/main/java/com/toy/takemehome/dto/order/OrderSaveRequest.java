@@ -6,13 +6,18 @@ import com.toy.takemehome.entity.order.PaymentType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+
 @Getter
 @NoArgsConstructor
 public class OrderSaveRequest {
 
     private Long customerId;
     private Long restaurantId;
+
+    @NotEmpty
     private MenuIdCounts menuIdCounts;
+
     private PaymentType paymentType;
     private PaymentStatus paymentStatus;
     private int totalPrice;

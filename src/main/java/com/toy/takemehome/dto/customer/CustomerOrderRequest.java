@@ -1,17 +1,21 @@
 package com.toy.takemehome.dto.customer;
 
-import com.toy.takemehome.dto.menu.MenuIdCounts;
 import com.toy.takemehome.dto.menu.MenuNameCounts;
 import com.toy.takemehome.entity.order.PaymentStatus;
 import com.toy.takemehome.entity.order.PaymentType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+
 @Getter
 @NoArgsConstructor
 public class CustomerOrderRequest {
     private Long restaurantId;
+
+    @NotEmpty
     private MenuNameCounts menuNameCounts;
+
     private int totalPrice;
     private String customerAddress;
 

@@ -50,7 +50,7 @@ public class Owner extends BaseTimeEntity {
         this.token = token;
     }
 
-    public void update(String name, String email, String password, String phoneNumber, String address) {
+    public void update(String name, @Email String email, String password, String phoneNumber, String address) {
         this.name = name;
         this.email = email;
         this.password = password;
