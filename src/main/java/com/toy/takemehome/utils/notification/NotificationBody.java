@@ -3,6 +3,7 @@ package com.toy.takemehome.utils.notification;
 public class NotificationBody {
 
     public static final String ORDER_REQUEST = "주문 요청이 왔어요!";
+    public static final String DELIVERY_REQUEST = "배달 요청이 왔어요!";
 
     public static String orderReceptionWithTime(int requiredTime) {
         return String.format("고객님이 주문하신 음식이 %d분 내에 도착할 예정입니다.", requiredTime);

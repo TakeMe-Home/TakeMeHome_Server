@@ -17,12 +17,10 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class FirebaseCloudMessageService<T> {
-    private static final String API_URL =
-            "https://fcm.googleapis.com/v1/projects/toy-takemehome/messages:send";
+    private static final String API_URL = "https://fcm.googleapis.com/v1/projects/toy-takemehome/messages:send";
     private final ObjectMapper objectMapper;
 
-    public void
-    sendMessageTo(String targetToken, String title, T body) throws IOException {
+    public void sendMessageTo(String targetToken, String title, T body) throws IOException {
         String message = makeMessage(targetToken, title, body);
 
         OkHttpClient client = new OkHttpClient();
