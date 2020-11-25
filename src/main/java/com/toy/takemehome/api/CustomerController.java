@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+
 import static com.toy.takemehome.utils.ResponseMessage.*;
 import static com.toy.takemehome.utils.StatusCode.*;
 import static com.toy.takemehome.utils.notification.NotificationTitle.*;
@@ -99,7 +101,7 @@ public class CustomerController {
             final CustomerOrderResponse customerOrderResponse = new CustomerOrderResponse(customerOrderRequest.getMenuNameCounts(),
                     customerOrderRequest.getTotalPrice(), customerOrderRequest.getCustomerAddress());
 
-            firebaseCloudMessageService.sendMessageTo(token, ORDER_REQUEST, objectMapper.writeValueAsBytes(customerOrderResponse));
+            firebaseCloudMessageService.sendMessageTo(Arrays.asList(token), ORDER_REQUEST, objectMapper.writeValueAsBytes(customerOrderResponse));
 
             return DefaultRes.res(OK, CUSTOMER_ORDER, customerOrderResponse);
         } catch (Exception e) {

@@ -12,6 +12,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -20,26 +21,28 @@ public class FirebaseCloudMessageService<T> {
     private static final String API_URL = "https://fcm.googleapis.com/v1/projects/toy-takemehome/messages:send";
     private final ObjectMapper objectMapper;
 
-    public void sendMessageTo(String targetToken, String title, T body) throws IOException {
-        String message = makeMessage(targetToken, title, body);
+    public void sendMessageTo(List<String> targetTokens, String title, T body) throws IOException {
+        for (String targetToken : targetTokens) {
+            String message = makeMessage(targetToken, title, objectMapper.writeValueAsBytes(body));
 
-        OkHttpClient client = new OkHttpClient();
-        RequestBody requestBody = RequestBody.create(message,
-                MediaType.get("application/json; charset=utf-8"));
-        Request request = new Request.Builder()
-                .url(API_URL)
-                .post(requestBody)
-                .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
-                .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
-                .build();
+            OkHttpClient client = new OkHttpClient();
+            RequestBody requestBody = RequestBody.create(message,
+                    MediaType.get("application/json; charset=utf-8"));
+            Request request = new Request.Builder()
+                    .url(API_URL)
+                    .post(requestBody)
+                    .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
+                    .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
+                    .build();
 
-        Response response = client.newCall(request)
-                .execute();
+            Response response = client.newCall(request)
+                    .execute();
 
-        log.info(response.body().string());
+            log.info(response.body().string());
+        }
     }
 
-    private String makeMessage(String targetToken, String title, T body) throws JsonProcessingException {
+    private String makeMessage(String targetToken, String title, byte[] body) throws JsonProcessingException {
         FcmMessage fcmMessage = FcmMessage.builder()
                 .message(FcmMessage.Message.builder()
                         .token(targetToken)
@@ -49,7 +52,7 @@ public class FirebaseCloudMessageService<T> {
                                 .image(null)
                                 .build()
                         ).build()
-                ).validate_only(false)
+                ).validateOnly(false)
                 .build();
 
         return objectMapper.writeValueAsString(fcmMessage);

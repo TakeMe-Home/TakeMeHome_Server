@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 public class FcmMessage {
 
-    private boolean validate_only;
+    private boolean validateOnly;
     private Message message;
 
     @Builder
@@ -23,9 +23,9 @@ public class FcmMessage {
     @Builder
     @AllArgsConstructor
     @Getter
-    public static class Notification <T> {
+    public static class Notification {
         private String title;
-        private T body;
+        private byte[] body;
         private String image;
     }
 }
