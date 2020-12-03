@@ -147,7 +147,6 @@ public class OrderController {
                                             @RequestBody OrderDeliveryRequest orderDeliveryRequest) {
         try {
             orderService.requestDelivery(orderId, orderDeliveryRequest);
-            // 모든 라이더 들에게 notification을 날려야 함
             firebaseCloudMessageService.sendMessageTo(riderService.findAll()
                     .stream()
                     .map(Rider::getToken)

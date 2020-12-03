@@ -25,7 +25,7 @@ public class FcmMessage {
     @Getter
     public static class Notification {
         private String title;
-        private byte[] body;
+        private String body;
         private String image;
     }
 }

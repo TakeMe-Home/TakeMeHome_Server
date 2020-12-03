@@ -21,9 +21,9 @@ public class FirebaseCloudMessageService<T> {
     private static final String API_URL = "https://fcm.googleapis.com/v1/projects/toy-takemehome/messages:send";
     private final ObjectMapper objectMapper;
 
-    public void sendMessageTo(List<String> targetTokens, String title, T body) throws IOException {
+    public void sendMessageTo(List<String> targetTokens, String title, String body) throws IOException {
         for (String targetToken : targetTokens) {
-            String message = makeMessage(targetToken, title, objectMapper.writeValueAsBytes(body));
+            String message = makeMessage(targetToken, title, body);
 
             OkHttpClient client = new OkHttpClient();
             RequestBody requestBody = RequestBody.create(message,
@@ -42,7 +42,7 @@ public class FirebaseCloudMessageService<T> {
         }
     }
 
-    private String makeMessage(String targetToken, String title, byte[] body) throws JsonProcessingException {
+    private String makeMessage(String targetToken, String title, String body) throws JsonProcessingException {
         FcmMessage fcmMessage = FcmMessage.builder()
                 .message(FcmMessage.Message.builder()
                         .token(targetToken)

@@ -101,7 +101,7 @@ public class CustomerController {
             final CustomerOrderResponse customerOrderResponse = new CustomerOrderResponse(customerOrderRequest.getMenuNameCounts(),
                     customerOrderRequest.getTotalPrice(), customerOrderRequest.getCustomerAddress());
 
-            firebaseCloudMessageService.sendMessageTo(Arrays.asList(token), ORDER_REQUEST, objectMapper.writeValueAsBytes(customerOrderResponse));
+            firebaseCloudMessageService.sendMessageTo(Arrays.asList(token), ORDER_REQUEST, objectMapper.writeValueAsString(customerOrderResponse));
 
             return DefaultRes.res(OK, CUSTOMER_ORDER, customerOrderResponse);
         } catch (Exception e) {
