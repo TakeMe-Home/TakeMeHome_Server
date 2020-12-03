@@ -4,10 +4,13 @@ import com.toy.takemehome.dto.order.*;
 import com.toy.takemehome.entity.customer.Customer;
 import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
+import com.toy.takemehome.entity.restaurant.Restaurant;
 import com.toy.takemehome.entity.rider.Rider;
 import com.toy.takemehome.repository.order.OrderRepository;
+import com.toy.takemehome.repository.restaurant.RestaurantRepository;
 import com.toy.takemehome.service.CustomerService;
 import com.toy.takemehome.service.OrderService;
+import com.toy.takemehome.service.RestaurantService;
 import com.toy.takemehome.service.RiderService;
 import com.toy.takemehome.service.fcm.FirebaseCloudMessageService;
 import com.toy.takemehome.utils.DefaultRes;
@@ -33,8 +36,10 @@ public class OrderController {
 
     private final OrderService orderService;
     private final OrderRepository orderRepository;
+
     private final CustomerService customerService;
     private final RiderService riderService;
+    private final RestaurantService restaurantService;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     @PostMapping("/reception")
@@ -157,7 +162,8 @@ public class OrderController {
     @GetMapping("/{restaurantId}")
     public DefaultRes<OrderFindAllResponse> findAllByRestaurant(@PathVariable("restaurantId") Long restaurantId) {
         try {
-            final OrderFindAllResponse orderFindAllResponse = orderRepository.findAllByRestaurantWithMenus(restaurantId);
+            final Restaurant restaurant = restaurantService.findOneById(restaurantId);
+            final OrderFindAllResponse orderFindAllResponse = orderRepository.findAllByRestaurantWithMenus(restaurant);
             return DefaultRes.res(OK, FIND_ORDER, orderFindAllResponse);
         } catch (Exception e) {
             log.error(e.getMessage());

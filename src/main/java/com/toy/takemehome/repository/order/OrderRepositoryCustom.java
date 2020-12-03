@@ -19,7 +19,7 @@ public interface OrderRepositoryCustom{
     List<Order> findAllByRestaurant(Restaurant restaurant);
     List<Order> findAllByRestaurant(Long restaurantId);
     List<OrderMenu> findOrderMenusByOrderId(Long orderId);
-    OrderFindAllResponse findAllByRestaurantWithMenus(Long RestaurantId);
+    OrderFindAllResponse findAllByRestaurantWithMenus(Restaurant restaurant);
     List<Order> findAllByDate(LocalDateTime startDate, LocalDateTime endDate);
     List<Order> findAllWithAll();
     List<OrderNearbyResponse> findAllNearBy(double x, double y);

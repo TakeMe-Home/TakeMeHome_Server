@@ -98,8 +98,8 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
 
     @Override
     @Transactional
-    public OrderFindAllResponse findAllByRestaurantWithMenus(Long restaurantId) {
-        final List<Order> orders = findAllByRestaurant(restaurantId);
+    public OrderFindAllResponse findAllByRestaurantWithMenus(Restaurant restaurant) {
+        final List<Order> orders = findAllByRestaurant(restaurant);
         final List<OrderMenu> orderMenus = findOrderMenus(toOrderIds(orders));
 
         final Map<Long, List<OrderMenu>> orderMenusMap = createOrderMenuMap(orderMenus);
