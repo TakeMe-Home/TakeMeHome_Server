@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderResponseWithoutMenu {
 
+    private Long orderId;
     private OrderCustomer orderCustomer;
     private OrderDelivery orderDelivery;
     private OrderRestaurant orderRestaurant;
@@ -24,6 +25,7 @@ public class OrderResponseWithoutMenu {
         if (order.isAssigned()) {
             this.orderRider = new OrderRider(order.getRider());
         }
+        this.orderId = order.getId();
         this.orderCustomer = new OrderCustomer(order.getCustomer());
         this.orderDelivery = new OrderDelivery(order.getDelivery());
         this.orderRestaurant = new OrderRestaurant(order.getRestaurant());
