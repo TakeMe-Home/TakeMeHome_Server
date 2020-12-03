@@ -4,9 +4,11 @@ import com.toy.takemehome.dto.order.*;
 import com.toy.takemehome.entity.customer.Customer;
 import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
+import com.toy.takemehome.entity.rider.Rider;
 import com.toy.takemehome.repository.order.OrderRepository;
 import com.toy.takemehome.service.CustomerService;
 import com.toy.takemehome.service.OrderService;
+import com.toy.takemehome.service.RiderService;
 import com.toy.takemehome.service.fcm.FirebaseCloudMessageService;
 import com.toy.takemehome.utils.DefaultRes;
 import com.toy.takemehome.utils.notification.NotificationBody;
@@ -15,12 +17,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.toy.takemehome.utils.ResponseMessage.*;
 import static com.toy.takemehome.utils.StatusCode.*;
 import static com.toy.takemehome.utils.notification.NotificationTitle.*;
+import static java.util.stream.Collectors.*;
 
 @Slf4j
 @RestController
@@ -31,6 +34,7 @@ public class OrderController {
     private final OrderService orderService;
     private final OrderRepository orderRepository;
     private final CustomerService customerService;
+    private final RiderService riderService;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     @PostMapping("/reception")
@@ -39,7 +43,7 @@ public class OrderController {
             final Long id = orderService.reception(saveRequest);
             final Customer customer = customerService.findOneById(saveRequest.getCustomerId());
             firebaseCloudMessageService.sendMessageTo(
-                    customer.getToken(), ORDER_RECEPTION, NotificationBody.orderReceptionWithTime(saveRequest.getRequiredTime()));
+                    Arrays.asList(customer.getToken()), ORDER_RECEPTION, NotificationBody.orderReceptionWithTime(saveRequest.getRequiredTime()));
             return DefaultRes.res(OK, CREATE_ORDER, id);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -52,7 +56,7 @@ public class OrderController {
         try {
             final Customer customer = customerService.findOneById(refuseRequest.getCustomerId());
             firebaseCloudMessageService.sendMessageTo(
-                    customer.getToken(), ORDER_REFUSE, NotificationBody.orderRefuseWithTime(refuseRequest.getReason()));
+                    Arrays.asList(customer.getToken()), ORDER_REFUSE, NotificationBody.orderRefuseWithTime(refuseRequest.getReason()));
             return DefaultRes.res(OK, CANCEL_ORDER);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -138,6 +142,11 @@ public class OrderController {
                                             @RequestBody OrderDeliveryRequest orderDeliveryRequest) {
         try {
             orderService.requestDelivery(orderId, orderDeliveryRequest);
+            // 모든 라이더 들에게 notification을 날려야 함
+            firebaseCloudMessageService.sendMessageTo(riderService.findAll()
+                    .stream()
+                    .map(Rider::getToken)
+                    .collect(toList()), DELIVERY_REQUEST, NotificationBody.DELIVERY_REQUEST);
             return DefaultRes.res(OK, ORDER_DELIVERY_REQUEST, orderId);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -187,7 +196,7 @@ public class OrderController {
             final List<Order> orders = orderService.findAllByRider(riderId);
             final List<OrderResponseWithoutMenu> ordersResponseWithoutMenu = orders.stream()
                     .map(OrderResponseWithoutMenu::new)
-                    .collect(Collectors.toList());
+                    .collect(toList());
 
             return DefaultRes.res(OK, FIND_ORDER, ordersResponseWithoutMenu);
         } catch (Exception e) {
@@ -202,7 +211,7 @@ public class OrderController {
             final List<Order> orders = orderService.findAllByRiderAssigned(riderId);
             final List<OrderResponseWithoutMenu> ordersResponseWithoutMenu = orders.stream()
                     .map(OrderResponseWithoutMenu::new)
-                    .collect(Collectors.toList());
+                    .collect(toList());
 
             return DefaultRes.res(OK, FIND_ORDER, ordersResponseWithoutMenu);
         } catch (Exception e) {
