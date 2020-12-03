@@ -1,8 +1,9 @@
 package com.toy.takemehome.repository.order;
 
-import com.toy.takemehome.dto.location.LocationDetail;
+import com.toy.takemehome.dto.customer.CustomerOrderListResponse;
 import com.toy.takemehome.dto.order.OrderFindAllResponse;
 import com.toy.takemehome.dto.order.OrderNearbyResponse;
+import com.toy.takemehome.entity.customer.Customer;
 import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
 import com.toy.takemehome.entity.restaurant.Restaurant;
@@ -19,10 +20,13 @@ public interface OrderRepositoryCustom{
     List<Order> findAllByRestaurant(Restaurant restaurant);
     List<Order> findAllByRestaurant(Long restaurantId);
     List<OrderMenu> findOrderMenusByOrderId(Long orderId);
-    OrderFindAllResponse findAllByRestaurantWithMenus(Restaurant restaurant);
     List<Order> findAllByDate(LocalDateTime startDate, LocalDateTime endDate);
     List<Order> findAllWithAll();
-    List<OrderNearbyResponse> findAllNearBy(double x, double y);
     List<Order> findAllByRiderWithAll(Rider rider);
     List<Order> findAllByRiderAssigned(Rider rider);
+
+    OrderFindAllResponse findAllByRestaurantWithMenus(Restaurant restaurant);
+    List<OrderNearbyResponse> findAllNearBy(double x, double y);
+    List<CustomerOrderListResponse> findAllCustomerOrderListByCustomer(Customer customer);
+
 }

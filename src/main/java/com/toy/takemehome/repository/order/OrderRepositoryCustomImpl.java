@@ -1,13 +1,16 @@
 package com.toy.takemehome.repository.order;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.toy.takemehome.dto.customer.CustomerOrderListResponse;
 import com.toy.takemehome.dto.location.Distance;
-import com.toy.takemehome.dto.location.LocationDetail;
 import com.toy.takemehome.dto.order.OrderFindAllResponse;
 import com.toy.takemehome.dto.order.OrderFindResponse;
 import com.toy.takemehome.dto.order.OrderNearbyResponse;
 import com.toy.takemehome.entity.Location;
+import com.toy.takemehome.entity.customer.Customer;
+import com.toy.takemehome.entity.customer.QCustomer;
 import com.toy.takemehome.entity.delivery.DeliveryStatus;
 import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
@@ -143,6 +146,19 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
     }
 
     @Override
+    @Transactional
+    public List<CustomerOrderListResponse> findAllCustomerOrderListByCustomer(Customer customer) {
+        final List<Order> orders = findAllByCustomer(customer);
+        final List<OrderMenu> orderMenus = findOrderMenus(toOrderIds(orders));
+
+        final Map<Long, List<OrderMenu>> orderMenuMap = createOrderMenuMap(orderMenus);
+
+        return orders.stream()
+                .map(o -> new CustomerOrderListResponse(o, orderMenuMap.get(o.getId())))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<Order> findAllByRiderWithAll(Rider rider) {
         return queryFactory
                 .selectFrom(order)
@@ -184,6 +200,17 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
         return orders.stream()
                 .map(Order::getId)
                 .collect(Collectors.toList());
+    }
+
+    private List<Order> findAllByCustomer(Customer customer) {
+        return queryFactory
+                .selectFrom(order)
+                .where(customerEq(customer))
+                .fetch();
+    }
+
+    private BooleanExpression customerEq(Customer customer) {
+        return QCustomer.customer.eq(customer);
     }
 
     private List<OrderMenu> findOrderMenus(List<Long> orderIds) {
