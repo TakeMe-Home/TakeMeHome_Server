@@ -1,11 +1,13 @@
 package com.toy.takemehome.api;
 
+import com.toy.takemehome.dto.customer.CustomerOrderListResponse;
 import com.toy.takemehome.dto.order.*;
 import com.toy.takemehome.entity.customer.Customer;
 import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
 import com.toy.takemehome.entity.restaurant.Restaurant;
 import com.toy.takemehome.entity.rider.Rider;
+import com.toy.takemehome.repository.order.OrderMenuRepository;
 import com.toy.takemehome.repository.order.OrderRepository;
 import com.toy.takemehome.repository.restaurant.RestaurantRepository;
 import com.toy.takemehome.service.CustomerService;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.toy.takemehome.utils.ResponseMessage.*;
 import static com.toy.takemehome.utils.StatusCode.*;
@@ -219,6 +222,19 @@ public class OrderController {
                     .collect(toList());
 
             return DefaultRes.res(OK, FIND_ORDER, ordersResponseWithoutMenu);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(NOT_FOUND, NOT_FOUND_ORDER);
+        }
+    }
+
+    @GetMapping("/customers/{customerId}")
+    public DefaultRes<List<CustomerOrderListResponse>> findAllByCustomer(@PathVariable("customerId") Long customerId) {
+        try {
+            final Customer customer = customerService.findOneById(customerId);
+            List<CustomerOrderListResponse> customerOrderListResponses = orderRepository.findAllCustomerOrderListByCustomer(customer);
+
+            return DefaultRes.res(OK, FIND_ORDER, customerOrderListResponses);
         } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(NOT_FOUND, NOT_FOUND_ORDER);
