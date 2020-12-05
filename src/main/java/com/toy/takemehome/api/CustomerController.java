@@ -5,6 +5,7 @@ import com.toy.takemehome.dto.common.LoginRequest;
 import com.toy.takemehome.dto.customer.*;
 import com.toy.takemehome.entity.customer.Customer;
 import com.toy.takemehome.service.CustomerService;
+import com.toy.takemehome.service.OrderService;
 import com.toy.takemehome.service.fcm.FirebaseCloudMessageService;
 import com.toy.takemehome.utils.DefaultRes;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import static com.toy.takemehome.utils.notification.NotificationTitle.*;
 public class CustomerController {
 
     private final CustomerService customerService;
+    private final OrderService orderService;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
     private final ObjectMapper objectMapper;
 
@@ -97,9 +99,12 @@ public class CustomerController {
     @PostMapping("/customer/order")
     public DefaultRes<CustomerOrderResponse> order(@RequestBody CustomerOrderRequest customerOrderRequest) {
         try {
+            orderService.registerRequestOrder(customerOrderRequest);
+            final Customer customer = customerService.findOneById(customerOrderRequest.getCustomerId());
+
             final String token = customerService.findOwnerToken(customerOrderRequest.getRestaurantId());
             final CustomerOrderResponse customerOrderResponse = new CustomerOrderResponse(customerOrderRequest.getMenuNameCounts(),
-                    customerOrderRequest.getTotalPrice(), customerOrderRequest.getCustomerAddress());
+                    customerOrderRequest.getTotalPrice(), customer.getAddress());
 
             firebaseCloudMessageService.sendMessageTo(Arrays.asList(token), ORDER_REQUEST, objectMapper.writeValueAsString(customerOrderResponse));
 

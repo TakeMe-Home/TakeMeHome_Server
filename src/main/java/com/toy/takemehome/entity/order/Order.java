@@ -72,13 +72,13 @@ public class Order extends BaseTimeEntity {
         this.cookingTime = cookingTime;
     }
 
-    public static Order createOrder(Customer customer, Restaurant restaurant, Delivery delivery,
+    public static Order createOrder(Customer customer, Restaurant restaurant, Delivery delivery, OrderStatus orderStatus,
                                     PaymentType paymentType, PaymentStatus paymentStatus, int totalPrice, int requiredTime) {
         final Order order = Order.builder()
                 .customer(customer)
                 .restaurant(restaurant)
                 .delivery(delivery)
-                .status(ORDER)
+                .status(orderStatus)
                 .paymentType(paymentType)
                 .paymentStatus(paymentStatus)
                 .totalPrice(totalPrice)
