@@ -22,6 +22,8 @@ public class OrderFindResponse {
     private PaymentType paymentType;
     private PaymentStatus paymentStatus;
     private int totalPrice;
+    private int requiredTime;
+    private int cookingTime;
     private MenuNameCounts menuNameCounts;
 
     @QueryProjection
@@ -36,6 +38,8 @@ public class OrderFindResponse {
         this.paymentType = order.getPaymentType();
         this.paymentStatus = order.getPaymentStatus();
         this.totalPrice = order.getTotalPrice();
+        this.requiredTime = order.getRequiredTime();
+        this.cookingTime = order.getCookingTime();
         this.menuNameCounts = new MenuNameCounts(createMenuNameCounts(orderMenus));
     }
 

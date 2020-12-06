@@ -19,6 +19,8 @@ public class OrderFindRequestStatusResponse {
     private PaymentType paymentType;
     private PaymentStatus paymentStatus;
     private int totalPrice;
+    private int requiredTime;
+    private int cookingTime;
 
     public OrderFindRequestStatusResponse(Order order) {
         this.orderId = order.getId();
@@ -29,5 +31,7 @@ public class OrderFindRequestStatusResponse {
         this.paymentType = order.getPaymentType();
         this.paymentStatus = order.getPaymentStatus();
         this.totalPrice = order.getTotalPrice();
+        this.requiredTime = order.getRequiredTime();
+        this.cookingTime = order.getCookingTime();
     }
 }
