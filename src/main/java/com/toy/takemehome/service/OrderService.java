@@ -2,6 +2,7 @@ package com.toy.takemehome.service;
 
 import com.toy.takemehome.dto.customer.CustomerOrderRequest;
 import com.toy.takemehome.dto.menu.MenuIdCounts;
+import com.toy.takemehome.dto.menu.MenuNameCounts;
 import com.toy.takemehome.dto.order.OrderDeliveryRequest;
 import com.toy.takemehome.dto.order.OrderSaveRequest;
 import com.toy.takemehome.dto.order.OrderUpdateRequest;
@@ -77,6 +78,7 @@ public class OrderService {
         final Order order = Order.createOrder(customer, restaurant, delivery, OrderStatus.REQUEST, customerOrderRequest.getPaymentType(),
                 customerOrderRequest.getPaymentStatus(), customerOrderRequest.getTotalPrice(), 0);
         orderRepository.save(order);
+        saveOrderMenusRepository(order, customerOrderRequest.getMenuNameCounts(), restaurant);
 
         return order.getId();
     }
@@ -191,6 +193,28 @@ public class OrderService {
                 throw new IllegalArgumentException(String.format("input menu %s, sold out menu!", orderMenu.getMenu().getName()));
             orderMenuRepository.save(orderMenu);
         });
+    }
+
+    private void saveOrderMenusRepository(Order order, MenuNameCounts menuNameCounts, Restaurant restaurant) {
+        final List<OrderMenu> orderMenus = menuNameCounts.getMenuNameCounts().stream()
+                .map(orderMenu -> OrderMenu.builder()
+                        .menu(findMenuByNameAndRestaurant(orderMenu.getName(), restaurant))
+                        .order(order)
+                        .count(orderMenu.getCount())
+                        .build())
+                .collect(Collectors.toList());
+
+        orderMenus.forEach(orderMenu -> {
+            if (orderMenu.isSoldOut())
+                throw new IllegalArgumentException(String.format("input menu %s, sold out menu!", orderMenu.getMenu().getName()));
+            orderMenuRepository.save(orderMenu);
+        });
+    }
+
+    private Menu findMenuByNameAndRestaurant(String name, Restaurant restaurant) {
+        return menuRepository.findByNameAndRestaurant(name, restaurant)
+                .orElseThrow(() -> new NoSuchElementException(
+                        String.format("input menuName: %s, restaurantId: %d, no such elementException", name, restaurant.getId())));
     }
 
     private Order findOrderByIdWithAll(Long id) {

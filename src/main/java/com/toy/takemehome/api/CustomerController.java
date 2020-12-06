@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toy.takemehome.dto.common.LoginRequest;
 import com.toy.takemehome.dto.customer.*;
 import com.toy.takemehome.entity.customer.Customer;
+import com.toy.takemehome.entity.order.OrderMenu;
 import com.toy.takemehome.service.CustomerService;
 import com.toy.takemehome.service.OrderService;
 import com.toy.takemehome.service.fcm.FirebaseCloudMessageService;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import static com.toy.takemehome.utils.ResponseMessage.*;
 import static com.toy.takemehome.utils.StatusCode.*;
@@ -105,7 +107,6 @@ public class CustomerController {
             final String token = customerService.findOwnerToken(customerOrderRequest.getRestaurantId());
             final CustomerOrderResponse customerOrderResponse = new CustomerOrderResponse(customerOrderRequest.getMenuNameCounts(),
                     customerOrderRequest.getTotalPrice(), customer.getAddress());
-
             firebaseCloudMessageService.sendMessageTo(Arrays.asList(token), ORDER_REQUEST, objectMapper.writeValueAsString(customerOrderResponse));
 
             return DefaultRes.res(OK, CUSTOMER_ORDER, customerOrderResponse);
