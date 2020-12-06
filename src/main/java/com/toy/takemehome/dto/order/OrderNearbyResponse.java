@@ -20,6 +20,8 @@ public class OrderNearbyResponse {
     private PaymentType paymentType;
     private PaymentStatus paymentStatus;
     private int totalPrice;
+    private int requiredTime;
+    private int cookingTime;
     private double totalDistance;
 
     public OrderNearbyResponse(Order order, double totalDistance) {
@@ -33,6 +35,8 @@ public class OrderNearbyResponse {
         this.paymentType = order.getPaymentType();
         this.paymentStatus = order.getPaymentStatus();
         this.totalPrice = order.getTotalPrice();
+        this.requiredTime = order.getRequiredTime();
+        this.cookingTime = order.getCookingTime();
         this.totalDistance = totalDistance;
     }
 

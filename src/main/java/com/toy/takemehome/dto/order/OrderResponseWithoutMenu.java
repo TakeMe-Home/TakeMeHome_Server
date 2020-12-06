@@ -20,6 +20,8 @@ public class OrderResponseWithoutMenu {
     private PaymentType paymentType;
     private PaymentStatus paymentStatus;
     private int totalPrice;
+    private int requiredTime;
+    private int cookingTime;
 
     public OrderResponseWithoutMenu(Order order) {
         if (order.isAssigned()) {
@@ -33,5 +35,7 @@ public class OrderResponseWithoutMenu {
         this.paymentType = order.getPaymentType();
         this.paymentStatus = order.getPaymentStatus();
         this.totalPrice = order.getTotalPrice();
+        this.requiredTime = order.getRequiredTime();
+        this.cookingTime = order.getCookingTime();
     }
 }
