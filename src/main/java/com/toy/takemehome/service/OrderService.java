@@ -1,10 +1,11 @@
 package com.toy.takemehome.service;
 
+import com.toy.takemehome.dto.customer.CustomerOrderRequest;
 import com.toy.takemehome.dto.menu.MenuIdCounts;
-import com.toy.takemehome.dto.order.OrderDateCondition;
 import com.toy.takemehome.dto.order.OrderDeliveryRequest;
 import com.toy.takemehome.dto.order.OrderSaveRequest;
 import com.toy.takemehome.dto.order.OrderUpdateRequest;
+import com.toy.takemehome.dto.order.ReceptionOrder;
 import com.toy.takemehome.entity.customer.Customer;
 import com.toy.takemehome.entity.delivery.Delivery;
 import com.toy.takemehome.entity.delivery.DeliveryPrice;
@@ -12,6 +13,7 @@ import com.toy.takemehome.entity.delivery.DeliveryStatus;
 import com.toy.takemehome.entity.menu.Menu;
 import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
+import com.toy.takemehome.entity.order.OrderStatus;
 import com.toy.takemehome.entity.restaurant.Restaurant;
 import com.toy.takemehome.entity.rider.Rider;
 import com.toy.takemehome.repository.*;
@@ -52,11 +54,38 @@ public class OrderService {
                 .status(DeliveryStatus.NONE)
                 .build();
 
-        final Order order = Order.createOrder(customer, restaurant, delivery, saveRequest.getPaymentType(),
+        final Order order = Order.createOrder(customer, restaurant, delivery, OrderStatus.RECEPTION, saveRequest.getPaymentType(),
                 saveRequest.getPaymentStatus(), saveRequest.getTotalPrice(), saveRequest.getRequiredTime());
         orderRepository.save(order);
         saveOrderMenusRepository(order, saveRequest.getMenuIdCounts());
         return order.getId();
+    }
+
+    @Transactional
+    public Long registerRequestOrder(CustomerOrderRequest customerOrderRequest) {
+        final Customer customer = findCustomerById(customerOrderRequest.getCustomerId());
+        final Restaurant restaurant = findRestaurantById(customerOrderRequest.getRestaurantId());
+
+        final double distance = restaurant.calculateDistance(customer.getLocation());
+        final Delivery delivery = Delivery.builder()
+                .address(customer.getAddress())
+                .distance(distance)
+                .price(DeliveryPrice.findPrice(distance))
+                .status(DeliveryStatus.NONE)
+                .build();
+
+        final Order order = Order.createOrder(customer, restaurant, delivery, OrderStatus.REQUEST, customerOrderRequest.getPaymentType(),
+                customerOrderRequest.getPaymentStatus(), customerOrderRequest.getTotalPrice(), 0);
+        orderRepository.save(order);
+
+        return order.getId();
+    }
+
+    @Transactional
+    public void receptionByOrderId(Long orderId, ReceptionOrder receptionOrder) {
+        final Order order = findOrderById(orderId);
+        order.reception();
+        order.changeRequiredTime(receptionOrder.getRequiredTime());
     }
 
     @Transactional

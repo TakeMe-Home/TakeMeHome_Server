@@ -11,19 +11,23 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @NoArgsConstructor
 public class CustomerOrderRequest {
+    private Long customerId;
     private Long restaurantId;
 
     @NotEmpty
     private MenuNameCounts menuNameCounts;
 
+    private PaymentType paymentType;
+    private PaymentStatus paymentStatus;
     private int totalPrice;
-    private String customerAddress;
 
-    public CustomerOrderRequest(Long restaurantId, MenuNameCounts menuNameCounts, PaymentType paymentType,
-                                PaymentStatus paymentStatus, int totalPrice, String customerAddress) {
+    public CustomerOrderRequest(Long customerId, Long restaurantId, @NotEmpty MenuNameCounts menuNameCounts,
+                                PaymentType paymentType, PaymentStatus paymentStatus, int totalPrice) {
+        this.customerId = customerId;
         this.restaurantId = restaurantId;
         this.menuNameCounts = menuNameCounts;
+        this.paymentType = paymentType;
+        this.paymentStatus = paymentStatus;
         this.totalPrice = totalPrice;
-        this.customerAddress = customerAddress;
     }
 }

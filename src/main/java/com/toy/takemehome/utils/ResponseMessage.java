@@ -84,6 +84,9 @@ public class ResponseMessage {
     public static final String FIND_ORDER = "주문 조회 성공";
     public static final String NOT_FOUND_ORDER = "주문 조회 실패";
 
+    public static final String RECEPTION_ORDER = "주문 접수 성공";
+    public static final String RECEPTION_ORDER_FAIL = "주문 접수 실패";
+
     public static String UPDATE_ORDER = "주문 수정 성공";
     public static String UPDATE_ORDER_FAIL = "주문 수정 실패";
 
