@@ -149,6 +149,14 @@ public class Order extends BaseTimeEntity {
         this.delivery.pickup();
     }
 
+    public void reception() {
+        this.status = RECEPTION;
+    }
+
+    public void changeRequiredTime(int requiredTime) {
+        this.requiredTime = requiredTime;
+    }
+
     private boolean notAssignedRider() {
         return !isAssigned();
     }

@@ -59,6 +59,22 @@ public class OrderController {
         }
     }
 
+    @PostMapping("{orderId}/reception/")
+    public DefaultRes<Long> receptionRequestOrder(@PathVariable("orderId") Long orderId,
+                                                  @RequestBody ReceptionOrder receptionOrder) {
+        try {
+            orderService.receptionByOrderId(orderId, receptionOrder);
+            final Order order = orderService.findOne(orderId);
+
+            firebaseCloudMessageService.sendMessageTo(
+                    Arrays.asList(order.getCustomer().getToken()), ORDER_RECEPTION, NotificationBody.orderReceptionWithTime(order.getRequiredTime()));
+            return DefaultRes.res(OK, RECEPTION_ORDER, order.getId());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(BAD_REQUEST, RECEPTION_ORDER_FAIL);
+        }
+    }
+
     @PostMapping("/refuse")
     public DefaultRes refuse(@RequestBody OrderRefuseRequest refuseRequest) {
         try {

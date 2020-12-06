@@ -5,6 +5,7 @@ import com.toy.takemehome.dto.menu.MenuIdCounts;
 import com.toy.takemehome.dto.order.OrderDeliveryRequest;
 import com.toy.takemehome.dto.order.OrderSaveRequest;
 import com.toy.takemehome.dto.order.OrderUpdateRequest;
+import com.toy.takemehome.dto.order.ReceptionOrder;
 import com.toy.takemehome.entity.customer.Customer;
 import com.toy.takemehome.entity.delivery.Delivery;
 import com.toy.takemehome.entity.delivery.DeliveryPrice;
@@ -53,7 +54,7 @@ public class OrderService {
                 .status(DeliveryStatus.NONE)
                 .build();
 
-        final Order order = Order.createOrder(customer, restaurant, delivery, OrderStatus.ORDER, saveRequest.getPaymentType(),
+        final Order order = Order.createOrder(customer, restaurant, delivery, OrderStatus.RECEPTION, saveRequest.getPaymentType(),
                 saveRequest.getPaymentStatus(), saveRequest.getTotalPrice(), saveRequest.getRequiredTime());
         orderRepository.save(order);
         saveOrderMenusRepository(order, saveRequest.getMenuIdCounts());
@@ -78,6 +79,13 @@ public class OrderService {
         orderRepository.save(order);
 
         return order.getId();
+    }
+
+    @Transactional
+    public void receptionByOrderId(Long orderId, ReceptionOrder receptionOrder) {
+        final Order order = findOrderById(orderId);
+        order.reception();
+        order.changeRequiredTime(receptionOrder.getRequiredTime());
     }
 
     @Transactional
