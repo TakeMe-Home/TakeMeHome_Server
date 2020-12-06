@@ -26,6 +26,7 @@ public interface OrderRepositoryCustom{
     List<Order> findAllByRiderAssigned(Rider rider);
 
     OrderFindAllResponse findAllByRestaurantWithMenus(Restaurant restaurant);
+    OrderFindAllResponse findAllRequestStatusByRestaurantWithMenus(Restaurant restaurant);
     List<OrderNearbyResponse> findAllNearBy(double x, double y);
     List<CustomerOrderListResponse> findAllCustomerOrderListByCustomer(Customer customer);
 

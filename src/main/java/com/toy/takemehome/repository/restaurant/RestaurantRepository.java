@@ -17,4 +17,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long>, R
     Optional<Restaurant> findOneByIdWithOwner(@Param("restaurantId") Long id);
 
     void deleteByOwner(Owner owner);
+
+    Optional<Restaurant> findOneByNameAndAddress(String name, String address);
 }

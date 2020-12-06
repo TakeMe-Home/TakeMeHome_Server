@@ -82,6 +82,10 @@ public class RestaurantService {
         return DeliveryPrice.findPrice(distance);
     }
 
+    public Restaurant findByNameAndAddress(String name, String address) {
+        return findRestaurantByNameAndAddress(name, address);
+    }
+
     private Customer findCustomerById(Long customerId) {
         return customerRepository.findById(customerId)
                 .orElseThrow(() -> new NoSuchElementException(
@@ -107,5 +111,11 @@ public class RestaurantService {
 
     private List<Restaurant> findAllRestaurantByOwner(Owner owner) {
         return restaurantRepository.findAllByOwner(owner);
+    }
+
+    private Restaurant findRestaurantByNameAndAddress(String name, String address) {
+        return restaurantRepository.findOneByNameAndAddress(name, address)
+                .orElseThrow(() -> new NoSuchElementException(
+                        String.format("input restaurant name: %s, address: %s, no such elementException", name, address)));
     }
 }
