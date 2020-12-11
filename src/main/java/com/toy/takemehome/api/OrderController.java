@@ -7,9 +7,7 @@ import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
 import com.toy.takemehome.entity.restaurant.Restaurant;
 import com.toy.takemehome.entity.rider.Rider;
-import com.toy.takemehome.repository.order.OrderMenuRepository;
 import com.toy.takemehome.repository.order.OrderRepository;
-import com.toy.takemehome.repository.restaurant.RestaurantRepository;
 import com.toy.takemehome.service.CustomerService;
 import com.toy.takemehome.service.OrderService;
 import com.toy.takemehome.service.RestaurantService;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.toy.takemehome.utils.ResponseMessage.*;
 import static com.toy.takemehome.utils.StatusCode.*;
@@ -186,6 +183,20 @@ public class OrderController {
         } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, NOT_FOUND_ORDER);
+        }
+    }
+
+    @GetMapping("status/request/restaurant")
+    public DefaultRes<OrderFindAllResponse> showAllRequestStatusByRestaurantNameAddress(@RequestParam String name,
+                                                                                        @RequestParam String address) {
+        try {
+            final Restaurant restaurant = restaurantService.findByNameAndAddress(name, address);
+            final OrderFindAllResponse orderFindAllResponse = orderRepository.findAllRequestStatusByRestaurantWithMenus(restaurant);
+
+            return DefaultRes.res(OK, FIND_ORDER, orderFindAllResponse);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return DefaultRes.res(NOT_FOUND, NOT_FOUND_ORDER);
         }
     }
 

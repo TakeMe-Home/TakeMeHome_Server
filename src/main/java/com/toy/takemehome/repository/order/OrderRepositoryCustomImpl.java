@@ -1,6 +1,5 @@
 package com.toy.takemehome.repository.order;
 
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.toy.takemehome.dto.customer.CustomerOrderListResponse;
@@ -14,6 +13,7 @@ import com.toy.takemehome.entity.customer.QCustomer;
 import com.toy.takemehome.entity.delivery.DeliveryStatus;
 import com.toy.takemehome.entity.order.Order;
 import com.toy.takemehome.entity.order.OrderMenu;
+import com.toy.takemehome.entity.order.OrderStatus;
 import com.toy.takemehome.entity.restaurant.Restaurant;
 import com.toy.takemehome.entity.rider.Rider;
 import com.toy.takemehome.utils.MapUtil;
@@ -111,6 +111,31 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
                 .map(o -> new OrderFindResponse(o, orderMenusMap.get(o.getId())))
                 .collect(Collectors.toList());
         return new OrderFindAllResponse(orderFindResponses);
+    }
+
+    @Override
+    @Transactional
+    public OrderFindAllResponse findAllRequestStatusByRestaurantWithMenus(Restaurant restaurant) {
+        final List<Order> orders = findAllRequestStatusByRestaurant(restaurant);
+        final List<OrderMenu> orderMenus = findOrderMenus(toOrderIds(orders));
+
+        final Map<Long, List<OrderMenu>> orderMenusMap = createOrderMenuMap(orderMenus);
+
+        final List<OrderFindResponse> orderFindResponses = orders.stream()
+                .map(o -> new OrderFindResponse(o, orderMenusMap.get(o.getId())))
+                .collect(Collectors.toList());
+        return new OrderFindAllResponse(orderFindResponses);
+    }
+
+    private List<Order> findAllRequestStatusByRestaurant(Restaurant restaurant) {
+        return queryFactory
+                .selectFrom(order)
+                .innerJoin(order.customer).fetchJoin()
+                .innerJoin(order.restaurant).fetchJoin()
+                .innerJoin(order.delivery).fetchJoin()
+                .where(order.status.eq(OrderStatus.REQUEST),
+                        restaurantEq(restaurant))
+                .fetch();
     }
 
     @Override
