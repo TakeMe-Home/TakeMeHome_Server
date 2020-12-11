@@ -8,10 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderCustomer {
 
+    private Long id;
     private String name;
     private String phoneNumber;
 
     public OrderCustomer(Customer customer) {
+        this.id = customer.getId();
         this.name = customer.getName();
         this.phoneNumber = customer.getPhoneNumber();
     }
