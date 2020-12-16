@@ -72,13 +72,15 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/refuse")
-    public DefaultRes refuse(@RequestBody OrderRefuseRequest refuseRequest) {
+    @PostMapping("/{orderId}/refuse")
+    public DefaultRes<Long> refuse(@PathVariable("orderId") Long orderId,
+                                   @RequestBody OrderRefuseRequest refuseRequest) {
         try {
+            orderService.delete(orderId);
             final Customer customer = customerService.findOneById(refuseRequest.getCustomerId());
             firebaseCloudMessageService.sendMessageTo(
                     Arrays.asList(customer.getToken()), ORDER_REFUSE, NotificationBody.orderRefuseWithTime(refuseRequest.getReason()));
-            return DefaultRes.res(OK, CANCEL_ORDER);
+            return DefaultRes.res(OK, CANCEL_ORDER, orderId);
         } catch (Exception e) {
             log.error(e.getMessage());
             return DefaultRes.res(BAD_REQUEST, CANCEL_ORDER_FAIL);
