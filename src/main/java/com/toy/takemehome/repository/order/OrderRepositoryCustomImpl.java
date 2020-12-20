@@ -191,6 +191,7 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
                 .innerJoin(order.restaurant).fetchJoin()
                 .innerJoin(order.delivery).fetchJoin()
                 .innerJoin(order.rider).fetchJoin()
+                .where(order.rider.eq(rider))
                 .fetch();
     }
 
@@ -202,7 +203,8 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
                 .innerJoin(order.restaurant).fetchJoin()
                 .innerJoin(order.delivery).fetchJoin()
                 .innerJoin(order.rider).fetchJoin()
-                .where(assigned())
+                .where(assigned(),
+                        order.rider.eq(rider))
                 .fetch();
     }
 
