@@ -43,7 +43,7 @@
 - JAVA 8
 - Gradle
 - Spring Boot 2.3.4
-  - String Data JPA
+  - Spring Data JPA
 - Querydsl
 - H2Database
 - Firebase
