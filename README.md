@@ -7,6 +7,12 @@
 
 </br >
 
+## 개발 기간
+
+- 2020.09.20 ~ 2020.12.20
+
+</br >
+
 ## 주요 기능
 
 ### 고객
@@ -48,3 +54,8 @@
 - H2Database
 - Firebase
 
+</br >
+
+## 시연 영상
+
+https://www.youtube.com/watch?v=UZK01HczJjA&list=PLdeK3aeGpu2MchI_GmHhUfRKp7qQgqjIc&index=1
